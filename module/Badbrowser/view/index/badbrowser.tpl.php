@@ -3,39 +3,29 @@
         <div class="content_wrapper">
             <style type="text/css">
                 .container_advice,
-                .container_browsers
-                {
+                .container_browsers {
                     width: 92%;
                     margin: 0 auto;
                 }
-
-                .container_browsers
-                {
+                .container_browsers {
                     padding: 10px 15px;
                 }
-
-                .item_browser
-                {
+                .item_browser {
                     display: inline-block;
                     padding: 10px;
                     text-decoration: none;
                     color: #4F6173;
                     width: 123px;
                 }
-
-                .item_browser:hover
-                {
+                .item_browser:hover {
                     background: rgba(177, 218, 255, 0.26);
                     -webkit-border-radius: 4px;
                     -moz-border-radius: 4px;
                     border-radius: 4px;
                 }
-
-                .clear_fix
-                {
+                .clear_fix {
                     display: block;
                 }
-
                 .container {
                     padding: 30px 0 0;
                 }
