@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0.0",
+    "api_version": 1,
+    "layout": {
+        "logo": "/st/yandex/yandex_tableau.png",
+        "color": "#FD5559",
+        "show_title": false
+    },
+    "feed": {
+        "url": "http://twosphere.ru/yandex/feed",
+        "format": "json",
+        "notifiers": [{
+            "name": "count",
+            "icon": "%EARTH%"
+        }]
+    }
+}

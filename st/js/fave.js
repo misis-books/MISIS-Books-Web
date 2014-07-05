@@ -1,0 +1,1 @@
+$(document).ready(function(){Page.insertData(Fave.storage,!0)});
