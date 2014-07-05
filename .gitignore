@@ -223,3 +223,4 @@ pip-log.txt
 .idea/vcs.xml
 .idea/workspace.xml
 application/config/application.config.php
+application/config/db.config.php
