@@ -256,10 +256,10 @@ class Api {
         if (!empty($access_token)) {
             $access_token = addslashes($access_token);
             return $this->db->query("SELECT *,
-				MATCH (`access_token`)
-				AGAINST ('+".$access_token."' IN BOOLEAN MODE) as REL
-				FROM `api_users`
-				WHERE MATCH (`access_token`) AGAINST ('+".$access_token."' IN BOOLEAN MODE)");
+                                    MATCH (`access_token`)
+                                    AGAINST ('+".$access_token."' IN BOOLEAN MODE) as REL
+                                    FROM `api_users`
+                                    WHERE MATCH (`access_token`) AGAINST ('+".$access_token."' IN BOOLEAN MODE)");
         }
         return !1;
     }
@@ -267,38 +267,38 @@ class Api {
     private function SearchResultCount($query, $category) {
         $category = ($category != 1) ? "`category` = $category AND" : "";
         return $this->db->simpleQuery("SELECT *
-            FROM `editions`
-            WHERE $category `name` LIKE '%$query%'");
+                                    FROM `editions`
+                                    WHERE $category `name` LIKE '%$query%'");
     }
 
     private function SearchQuery($query, $category, $offset, $count) {
         $category = ($category != 1) ? "`category` = $category AND" : "";
         return $this->db->simpleQuery("SELECT *
-            FROM `editions`
-            WHERE $category `name` LIKE '%$query%'
-            ORDER BY `dl_count` DESC
-            LIMIT $offset, $count");
+                                    FROM `editions`
+                                    WHERE $category `name` LIKE '%$query%'
+                                    ORDER BY `dl_count` DESC
+                                    LIMIT $offset, $count");
     }
 
     private function ResonableSearchCount($query, $category) {
         $category = ($category != 1) ? "`category` = $category AND" : "";
         return $this->db->simpleQuery("SELECT *,
-            MATCH (`name`, `author`)
-            AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
-            FROM `editions`
-            WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
-            ORDER BY REL DESC");
+                                    MATCH (`name`, `author`)
+                                    AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
+                                    FROM `editions`
+                                    WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+                                    ORDER BY REL DESC");
     }
 
     private function ResonableSearchQuery($query, $category, $offset, $count) {
         $category = ($category != 1) ? "`category` = $category AND" : "";
         return $this->db->simpleQuery("SELECT *,
-            MATCH (`name`, `author`)
-            AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
-            FROM `editions`
-            WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
-            ORDER BY REL DESC
-            LIMIT $offset, $count");
+                                    MATCH (`name`, `author`)
+                                    AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
+                                    FROM `editions`
+                                    WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+                                    ORDER BY REL DESC
+                                    LIMIT $offset, $count");
     }
 
     private function SpecifyCount($count) {
