@@ -4,7 +4,7 @@ namespace Qemy\Core\Router;
 
 use Qemy\Core\Application;
 
-class AbstractRoute {
+abstract class AbstractRoute {
 
     const DEFAULT_CONTROLLER = 'Index';
     const CONTROLLER_NOT_FOUND = 'Err404';
