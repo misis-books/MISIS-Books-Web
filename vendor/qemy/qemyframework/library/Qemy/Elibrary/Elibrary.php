@@ -154,11 +154,11 @@ final class Elibrary {
     public function GetFileByHash($hash) {
         if (!empty($hash)) {
             $hash = addslashes((string)$hash);
-            $res = $this->db->simpleQuery("	SELECT *,
-										MATCH (`hash`)
-										AGAINST ('+".$hash."' IN BOOLEAN MODE) as REL
-										FROM `editions`
-										WHERE MATCH (`hash`) AGAINST ('+".$hash."' IN BOOLEAN MODE)");
+            $res = $this->db->simpleQuery("SELECT *,
+                                        MATCH (`hash`)
+                                        AGAINST ('+".$hash."' IN BOOLEAN MODE) as REL
+                                        FROM `editions`
+                                        WHERE MATCH (`hash`) AGAINST ('+".$hash."' IN BOOLEAN MODE)");
             if ($res->num_rows > 0) {
                 return $res->fetch_assoc();
             } else {
@@ -190,15 +190,15 @@ final class Elibrary {
                 if ($this->success_auth) {
                     $file = $this->GetFile($this->CreateDocUrl($file_in_db['doc_id']));
                     $name = $file_in_db['name'];
-                    //header("Content-type: application/pdf");
-                    //header("Content-Disposition: attachment; filename=$name.pdf");
+                    header("Content-type: application/pdf");
+                    header("Content-Disposition: attachment; filename=$name.pdf");
                     $dir = Elibrary::CreateFileDir($name);
                     $this->SaveFile($dir, $file);
                     $edition_id = $file_in_db['id'];
                     $file_url = 'http://s.twosphere.ru/doc/'.Elibrary::NameEncoding($name).'.pdf';
                     $this->db->query("UPDATE editions SET file_url=?s WHERE `id` = ?i", $file_url, $edition_id);
-                    //echo $file;
-                    //unset($file);
+                    echo $file;
+                    unset($file);
                 } else {
                     echo '<p style="font-size: 16px; font-family: Tahoma;">На <b>elibrary.misis.ru</b> большие проблемы. Очень. Все пропало. Спасайтесь, глупцы.<br>Файл «'.$file_in_db['name'].'», возможно, никогда не увидит свет.</p>';
                     exit();

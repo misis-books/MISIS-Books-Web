@@ -5,6 +5,7 @@
             <br>
             <span class="footer_default_text" style="line-height: 160%;"><!--noindex-->MISIS Books v3.5.2<!--/noindex--></span> |
             <a href="http://mini.twosphere.ru" class="flat_link">Мобильная версия</a>
+            <a href="https://github.com/ipritoflex/twosphere" target="_blank" class="github-repository"></a>
         </div>
     </div>
 </footer>

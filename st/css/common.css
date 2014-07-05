@@ -1583,3 +1583,17 @@ top: 20px;
     position: relative;
     top: 1px;
 }
+
+.github-repository {
+    display: block;
+    width: 34px;
+    height: 34px;
+    background: url('/st/img/github-icon.png') no-repeat center center;
+    background-size: 100%;
+    margin: 3px auto;
+    opacity: 0.5;
+}
+
+.github-repository:hover {
+    opacity: 0.6;
+}
