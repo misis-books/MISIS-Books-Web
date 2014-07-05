@@ -15,11 +15,9 @@ return array(
         'yandex' => 'YandexTabloid',
         'badbrowser' => 'Badbrowser'
     ),
-
     'module_options' => array(
         'module_path' => '/module'
     ),
-
     'vendor_options' => array(
         'vendor_path' => '/vendor',
         'projects' => array(
