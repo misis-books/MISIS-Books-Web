@@ -48,7 +48,7 @@
                         <div class="notification_message" style="background: #DDEBF4; background: rgba(177, 218, 255, 0.26); padding: 20px; width: 84%; margin: 0 auto 10px;">Для работы с сайтом необходима поддержка <nobr>Local Storage</nobr>, Cookies, Javascript. Мы сожалеем, но Ваш браузер не поддерживает одну или несколько из этих технологий.</div>
                         <span class="container_advice clear_fix" style="margin-bottom: 10px; margin-top: 16px;">Воспользуйтесь одним из этих современных браузеров:</span>
                         <div class="container_browsers notification_message" style="-moz-box-shadow: 0 0 0 rgba(0,0,0,0.1);-ms-box-shadow: 0 0 0 rgba(0,0,0,0.1);-webkit-box-shadow: 0 0 0 rgba(0,0,0,0.1);box-shadow: 0 0 0 rgba(0,0,0,0.1);">
-                            <a target="_blank" href="http://browser.yandex.ru/" class="item_browser"><img width="65%" src="http://twosphere.ru/static/yandex_browser.png"><div style="padding-top: 10px;">Яндекс.Браузер</div></a>
+                            <a target="_blank" href="http://browser.yandex.ru/" class="item_browser"><img width="65%" src="http://twosphere.ru/st/img/yandex_browser.png"><div style="padding-top: 10px;">Яндекс.Браузер</div></a>
                             <a target="_blank" href="http://google.com/chrome" class="item_browser"><img src="http://vk.com/images/chrome.png?1"><div style="padding-top: 10px;">Chrome</div></a>
                             <a target="_blank" href="http://www.mozilla-europe.org/" class="item_browser"><img src="http://vk.com/images/firefox.png?1"><div style="padding-top: 10px;">Mozilla Firefox</div></a>
                         </div>
