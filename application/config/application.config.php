@@ -68,10 +68,5 @@ return array(
     'resource_options' => array(
         'path' => '/application/resources/global.php'
     ),
-    'db_options' => array(
-        'host' => 'localhost',
-        'user' => 'u5658416_omlid',
-        'password' => 'NDUwMDIyMzAyNA==',
-        'database' => 'u5658416_default'
-    )
+    'db_options' => require Q_PATH.'/application/config/db.config.php'
 );
