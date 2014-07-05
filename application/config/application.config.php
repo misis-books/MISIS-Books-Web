@@ -70,8 +70,8 @@ return array(
     ),
     'db_options' => array(
         'host' => 'localhost',
-        'user' => 'user',
-        'password' => 'password',
-        'database' => 'db_name'
+        'user' => 'u5658416_omlid',
+        'password' => 'NDUwMDIyMzAyNA==',
+        'database' => 'u5658416_default'
     )
 );
