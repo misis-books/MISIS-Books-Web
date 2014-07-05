@@ -31,7 +31,7 @@ abstract class AbstractRoute {
         return $_POST;
     }
 
-    private function createGetData() { 
+    private function createGetData() {
         $get_data = array();
         foreach ($_GET as $key => $value) {
             if ($key == 'r') continue; //route key in .htaccess
