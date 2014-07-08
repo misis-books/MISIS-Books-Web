@@ -224,3 +224,4 @@ pip-log.txt
 .idea/workspace.xml
 application/config/db.config.php
 module/Admin/
+application/config/db.config.php
