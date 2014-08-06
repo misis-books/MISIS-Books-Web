@@ -5,7 +5,7 @@ return array(
         'script' => array(
             'jquery' => array(
                 'version' => '1',
-                'file' => '//code.jquery.com/jquery-1.10.2.min.js'
+                'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             ),
             'common' => array(
                 'version' => '4',

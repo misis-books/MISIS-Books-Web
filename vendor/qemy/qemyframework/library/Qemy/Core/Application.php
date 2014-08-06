@@ -40,4 +40,12 @@ class Application {
         $controller->setParams($params);
         $controller->$action_function();
     }
+
+    public static function stop($param = null) {
+        if ($param) {
+            exit($param);
+        } else {
+            exit();
+        }
+    }
 }
