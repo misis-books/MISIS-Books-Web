@@ -13,14 +13,16 @@ class Controller extends AbstractController {
     public function getPopularAction() {
         $model = new GetPopularModel();
         $response = $model->main()->getData();
-        $callback_func = $this->getParams()['get']['callback'];
+        $data = $this->getParams();
+        $callback_func = $data['get']['callback'];
         echo $callback_func . '(' . json_encode($response) . ')';
     }
 
     public function searchAction() {
         $model = new SearchModel();
         $response = $model->main()->getData();
-        $callback_func = $this->getParams()['get']['callback'];
+        $data = $this->getParams();
+        $callback_func = $data['get']['callback'];
         echo $callback_func . '(' . json_encode($response) . ')';
     }
 }

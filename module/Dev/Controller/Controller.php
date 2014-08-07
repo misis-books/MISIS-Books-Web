@@ -91,8 +91,9 @@ class Controller extends AbstractController {
 
     public function getContentAction() {
         $view = new View('Dev');
-        echo $this->getParams()['get']['hash'].'!hash!';
-        $resource = $this->getParams()['get']['resource'];
+        $data = $this->getParams();
+        echo $data['get']['hash'].'!hash!';
+        $resource = $data['get']['resource'];
         $view->includeModuleView($resource);
     }
 }

@@ -779,4 +779,17 @@ final class Elibrary {
             echo 'success';
         }
     }
+
+    public function ShowError($message) {
+        echo '<style type="text/css">';
+        echo 'a { text-decoration: none; flex-wrap: nowrap; white-space: nowrap; padding: 8px 20px; display: inline-block; cursor: pointer; margin: 0; }
+        .default-button { font-size: 14px; background: #FD5559; background: linear-gradient(to bottom, rgba(255, 64, 65, 0.73), #FD5559); color: #FFF; outline: none; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; border: 1px solid #FD5559; }
+        .default-button:disabled { background: rgba(253, 85, 89, 0.62); border: 1px solid rgba(253, 85, 89, 0.87); } .default-button:disabled:hover { background: rgba(253, 85, 89, 0.62); } .default-button:disabled:active { background: rgba(253, 85, 89, 0.62); } .default-button:hover { background: linear-gradient(to bottom, rgba(255, 64, 65, 0.73), rgba(253, 85, 89, 0.89)); } .default-button:active { background: linear-gradient(to top, rgba(255, 64, 65, 0.76), #ff5f64); }';
+        echo '</style>';
+        echo '<div style="text-align: center; font-family: Arial; font-size: 30px; padding: 40px; 20px;">';
+        echo $message;
+        echo '<br><br><a onclick="window.close();" class="default-button" href="/">Вернуться назад</a>';
+        echo '</div>';
+        exit();
+    }
 }
