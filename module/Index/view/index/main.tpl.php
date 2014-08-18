@@ -6,7 +6,7 @@
                     <div class="search_field">
                         <div class="input_wrap">
                             <div class="input_inner">
-                                <input id="input_text" autocomplete="off" maxlength="500" class="input_text_default" type="text" value="<?=$_GET['q']?>" placeholder="Введите название, номер или автора">
+                                <input id="input_text" autocorrect="off" spellcheck="false" autocomplete="off" maxlength="500" class="input_text_default" type="text" value="<?=$_GET['q']?>" placeholder="Введите название, номер или автора">
                             </div>
                             <span id="search_loading" class="search_load_spin"></span>
                             <div title="Очистить поле" style="display: none;" id="reset_text_input" class="reset_input" onclick="Search.setSearch('', true);"></div>

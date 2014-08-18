@@ -10,8 +10,8 @@ class IndexModel extends AbstractModel {
     public function main() {
         $elib = new Elibrary($this->getQemyDb());
         $data = $this->getRequestParams();
-        $elib->ShowError('Пока тут все сломано, сбегай за пособием в МИСиС.');
-        //$elib->ShowFile($data['get']['id']);
+        //$elib->ShowError('Пока тут все сломано, сбегай за пособием в МИСиС.');
+        $elib->ShowFile($data['get']['id']);
         return $this;
     }
 }
