@@ -104,16 +104,23 @@ td{display:inline-block;}
 .flat_link_block{display:block;padding:0 0 10px;}
 .search_result_item_countdl{background:url(/st/img/dl_count.png) no-repeat;padding-left:20px;font-size:12px;height:100%;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;display:inline-block;color:rgba(79,97,115,0.53);}
 .search_result_item_buttons_btn{float:left;margin-right:7px;height:27px;margin-bottom:7px;}
-.search_result_item_button_category{box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;color:#fff;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;cursor:pointer;font-size:14px;background-color:#bfbdbf;padding:4px 6px;}
+.search_result_item_button_category{box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;color:#fff;border-bottom-left-radius: 4px;border-top-right-radius: 4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;cursor:pointer;font-size:14px;background-color:#bfbdbf;padding:3px 7px;}
 .category1{background-color:#bababa;}
-.category2{background-color:#4ABFB4;}
-.category3{background-color:#FD5559;}
-.category4{background-color:#B8914E;}
-.category5{background-color:#B3C833;}
-.category6{background-color:#9b59b6;}
-.category7{background-color:#44BDEB;}
-.category8{background-color:#2ecc71;}
-.category9{background-color:#bf6e9c;}
+.category2{background-color:rgba(74, 191, 180, 0.109804);border:1px solid #47BEC4;color:#47BEC4;}
+.category3{background-color:rgba(253, 85, 89, 0.0784314);border:1px solid #FD5559;color:#FD5559;}
+.category4{background-color:rgba(184, 145, 78, 0.109804);border:1px solid #B8914E;color:#B8914E;}
+.category5{background-color:rgba(179, 200, 51, 0.1);border:1px solid #B3C833;color:#B3C833;}
+.category6{background-color:rgba(155, 89, 182, 0.1);border:1px solid #9B59B6;color:#9B59B6;}
+.category7{background-color:rgba(255, 145, 0, 0.1);border:1px solid #FF9100;color:#FF9100;}
+.category8{background-color:rgba(46, 204, 113, 0.1);border:1px solid #2ECC71;color:#2ECC71;}
+.category1_menu{background-color:#bababa;}
+.category2_menu{background-color:#4ABFB4;}
+.category3_menu{background-color:#FD5559;}
+.category4_menu{background-color:#B8914E;}
+.category5_menu{background-color:#B3C833;}
+.category6_menu{background-color:#9b59b6;}
+.category7_menu{background-color:#FF9100;}
+.category8_menu{background-color:#2ecc71;}
 .search_result_item_button_category.category2:before{content:"Пособия";}
 .search_result_item_button_category.category3:before{content:"Дипломы";}
 .search_result_item_button_category.category4:before{content:"Сборники научных трудов";}
@@ -121,15 +128,13 @@ td{display:inline-block;}
 .search_result_item_button_category.category6:before{content:"Книги МИСиС";}
 .search_result_item_button_category.category7:before{content:"Авторефераты диссертаций";}
 .search_result_item_button_category.category8:before{content:"Разное";}
-.search_result_item_button_category.category9:before{content:"Не определено";}
-.category2:active{background-color:#41aea4;}
-.category3:active{background-color:#FF716F;}
-.category4:active{background-color:#C9A15D;}
-.category5:active{background-color:#C2DB28;}
-.category6:active{background-color:#BA71D8;}
-.category7:active{background-color:#4CCEFF;}
-.category8:active{background-color:#43E287;}
-.category9:active{background-color:#ff8786;}
+.category2:active{background-color:rgba(74, 191, 180, 0.309804);}
+.category3:active{background-color:rgba(253, 85, 89, 0.2784314);}
+.category4:active{background-color:rgba(184, 145, 78, 0.309804);}
+.category5:active{background-color:rgba(179, 200, 51, 0.3);}
+.category6:active{background-color:rgba(155, 89, 182, 0.3);}
+.category7:active{background-color:rgba(255, 145, 0, 0.3);}
+.category8:active{background-color:rgba(46, 204, 113, 0.3);}
 .search_result_item_buttons{margin-top:15px;overflow:hidden;}
 .search_result_item_button{height:100%;width:27px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;cursor:pointer;display:block;}
 .search_result_item_button.button_dl{background:url(/st/img/btn_icons.png) no-repeat -20px 3px;border:2px solid #d7d7d7;background-color:#FFF;}

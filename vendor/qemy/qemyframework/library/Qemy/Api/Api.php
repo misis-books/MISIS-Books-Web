@@ -525,7 +525,7 @@ class Api {
                     return '9B59B6';
                     break;
                 case 7:
-                    return '44BDEB';
+                    return 'FF9100';
                     break;
                 case 8:
                     return '2ECC71';

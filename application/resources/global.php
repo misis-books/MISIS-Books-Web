@@ -28,7 +28,7 @@ return array(
                 'file' => '/st/js/jquery.cookie.js'
             ),
             'jquery.formstyler' => array(
-                'version' => '7',
+                'version' => '8',
                 'file' => '/st/js/jquery.formstyler.js'
             ),
             'jquery.scrollto' => array(
@@ -56,7 +56,7 @@ return array(
                 'file' => '/st/js/objectstorage.js'
             ),
             'search' => array(
-                'version' => '31',
+                'version' => '32',
                 'file' => '/st/js/search.js'
             ),
             'spinner' => array(
@@ -70,7 +70,7 @@ return array(
         ),
         'css' => array(
             'common' => array(
-                'version' => '39',
+                'version' => '41',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(
@@ -78,7 +78,7 @@ return array(
                 'file' => '/st/css/dev.css'
             ),
             'formstyler' => array(
-                'version' => '11',
+                'version' => '12',
                 'file' => '/st/css/formstyler.css'
             )
         ),
