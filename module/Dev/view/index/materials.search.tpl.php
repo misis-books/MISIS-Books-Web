@@ -123,7 +123,7 @@
             <li class="dev_li">
                 <span class="dev_reset_color"><b>category</b> — идентификатор категории, к которой относится данный материал.</span>
                 <br>
-                <span class="dev_type_description">число от <b>1</b> от <b><?=8?></b></span>
+                <span class="dev_type_description">число от <b>1</b> до <b><?=8?></b></span>
             </li>
             <li class="dev_li">
                 <span class="dev_reset_color"><b>count_dl</b> — количество загрузок материала.</span>
