@@ -1,6 +1,6 @@
 <div class="container">
     <div class="content_layout">
-        <div class="content_wrapper">
+        <div class="content_wrapper" style="text-align: center; font-size: 22px; padding-top: 30px; font-family: 'Roboto Regular', Arial, sans-serif;">
             Страницы не существует
         </div>
     </div>

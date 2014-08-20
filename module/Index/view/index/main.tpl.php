@@ -1,5 +1,8 @@
 <div class="container">
     <div class="content_layout">
+        <div class="pdf_wrapper" id="pdf_wrapper" style="display: none; top: 1000px; padding: 0 10px; box-sizing: border-box;">
+            <div class="pdf_layer"></div>
+        </div>
         <div class="content_wrapper">
             <div class="search_wrapper" style="overflow: visible;">
                 <div class="search_layout">

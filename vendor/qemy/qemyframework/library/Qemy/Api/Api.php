@@ -9,7 +9,7 @@ class Api {
     const DEFAULT_MAX_QUERIES = 15; //count
     const DEFAULT_PERIOD = 5; //seconds
     const DEFAULT_BAN_TIME = 10; //seconds
-    const DEFAULT_BAN_TIME_TOKEN = 1; //seconds
+    const DEFAULT_BAN_TIME_TOKEN = 60; //seconds
     const CATEGORIES_COUNT = 8; //count of categories
 
     private $db;
@@ -39,7 +39,7 @@ class Api {
         if ($search_ip->num_rows) {
             return array(
                 "error" => "too_many_requests",
-                "error_description" => "Too many requests for the creation of access_token"
+                "error_description" => "Too many requests for the creation of access_token. Try after 1 minute."
             );
         }
         $access_token = $this->CreateHash();

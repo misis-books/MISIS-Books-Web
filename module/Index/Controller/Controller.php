@@ -23,6 +23,7 @@ class Controller extends AbstractController {
             Application::$router->toRoute("http://mini.twosphere.ru");
             Application::stop();
         }
+        //header("Access-Control-Allow-Origin: http://s.twosphere.ru");
         $view = new View('Index');
         $view->setContent('content');
         $view->generate();
