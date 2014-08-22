@@ -211,7 +211,7 @@ td{display:inline-block;}
 .bubble{display:inline-block;-webkit-border-radius:41px;-moz-border-radius:41px;border-radius:41px;margin-right:10px;border:2px solid #fff;position:relative;top:1px;padding:5px;}
 .github-repository{display:block;width:34px;height:34px;background:url(/st/img/github-icon.png) no-repeat center center;background-size:100%;opacity:0.5;margin:3px auto;}
 .github-repository:hover{opacity:0.6;}
-.search_result_view_pdf{position:absolute;width:60px;height:100%;box-sizing:border-box;border-radius:0;right:5px;cursor:pointer;background:url(/st/img/right_arrow.png) no-repeat center center;background-size:60%;opacity:0.8;background-color:#fefefe;-webkit-transition:all .2s ease-in;-moz-transition:all .2s ease-in;-ms-transition:all .2s ease-in;-o-transition:all .2s ease-in;transition:all .2s ease-in;}
+.search_result_view_pdf{display:block;position:absolute;width:60px;height:100%;box-sizing:border-box;border-radius:0;right:5px;cursor:pointer;background:url(/st/img/right_arrow.png) no-repeat center center;background-size:60%;opacity:0.8;background-color:#fefefe;-webkit-transition:all .2s ease-in;-moz-transition:all .2s ease-in;-ms-transition:all .2s ease-in;-o-transition:all .2s ease-in;transition:all .2s ease-in;}
 .search_result_view_pdf:hover{background-color:#f0f0f0;right:0;}
 .pdf_wrapper{position:fixed;width:950px;height:700px;background:rgba(250,250,250,1);z-index:1000;box-shadow:0 0 2px 1px rgba(0,0,0,0.08);}
 .pdf_layer{height:100%;position:relative;}
