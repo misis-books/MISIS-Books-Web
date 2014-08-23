@@ -11,6 +11,7 @@ final class CrossdomainMethods {
     private $params;
     private $db;
     private $query;
+    private $query_cl;
     private $category;
     private $count;
     private $offset;
@@ -32,7 +33,8 @@ final class CrossdomainMethods {
 
     private function SetQueryParams() {
         $this->hash = (!empty($this->params[self::$method]['hash'])) ? $this->params[self::$method]['hash'] : 0;
-        $this->query = addslashes((string)trim($this->params[self::$method]['q']));
+        $this->query = htmlspecialchars(addslashes((string)trim($this->params[self::$method]['q'])));
+        $this->query_cl = $this->invertKeyboard(htmlspecialchars(addslashes((string)trim($this->params[self::$method]['q']))));
         $this->category = (!empty($this->params[self::$method]['category'])) ? intval($this->params[self::$method]['category']) : 1;
         $this->count = (!empty($this->params[self::$method]['count'])) ? intval($this->params[self::$method]['count']) : 10;
         $this->offset = (!empty($this->params[self::$method]['offset'])) ? intval($this->params[self::$method]['offset']) : 0;
@@ -46,6 +48,35 @@ final class CrossdomainMethods {
         if ($this->offset < 0) {
             $this->offset = 0;
         }
+    }
+
+    private function invertKeyboard($text) {
+        $converter = array(
+            'q' => 'й',   ']' => 'ъ',   '\'' => 'э',
+            'w' => 'ц',   'a' => 'ф',   'z' => 'я',
+            'e' => 'у',   's' => 'ы',  'x' => 'ч',
+            'r' => 'к',   'd' => 'в',   'c' => 'с',
+            't' => 'е',   'f' => 'а',   'v' => 'м',
+            'y' => 'н',   'g' => 'п',   'b' => 'и',
+            'u' => 'г',   'h' => 'р',   'n' => 'т',
+            'i' => 'ш',   'j' => 'о',   'm' => 'ь',
+            'o' => 'щ',  'k' => 'л',  ',' => 'б',
+            'p' => 'з',  'l' => 'д',   '.' => 'ю',
+            '[' => 'х',   ';' => 'ж',  '/' => '.',
+            '`' => 'ё',
+            'й' => 'q',   'ф' => 'a',   'я' => 'z',
+            'ц' => 'w',   'ы' => 's',   'ч' => 'x',
+            'у' => 'e',   'в' => 'd',  'с' => 'c',
+            'к' => 'r',   'а' => 'f',   'м' => 'v',
+            'е' => 't',   'п' => 'g',   'и' => 'b',
+            'н' => 'y',   'р' => 'h',   'т' => 'n',
+            'г' => 'u',   'о' => 'j',   'ь' => 'm',
+            'ш' => 'i',   'л' => 'k',   'б' => ',',
+            'щ' => 'o',  'д' => 'l',  'ю' => '.',
+            'х' => '[',   'э' => '\'',  'ё' => '`',
+            'ъ' => ']',
+        );
+        return strtr($text, $converter);
     }
 
     private function CreateResultContainer()
@@ -113,6 +144,25 @@ final class CrossdomainMethods {
             $res_count = $this->SearchResultCount();
         } else {
             $res = $this->ResonableSearchQuery();
+        }
+
+        $found_count = $res_count->num_rows;
+
+        if (!$found_count) {
+            $temp = $this->query;
+            $this->query = $this->query_cl;
+            $this->query_cl = $temp;
+            $res = null; $res_count = null;
+            $res_count = $this->ResonableSearchCount();
+            if (!$res_count->num_rows) {
+                $res = $this->SearchQuery();
+                $res_count = $this->SearchResultCount();
+            } else {
+                $res = $this->ResonableSearchQuery();
+            }
+            $temp = $this->query;
+            $this->query = $this->query_cl;
+            $this->query_cl = $temp;
         }
 
         $found_count = $res_count->num_rows;

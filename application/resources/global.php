@@ -8,7 +8,7 @@ return array(
                 'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             ),
             'common' => array(
-                'version' => '5',
+                'version' => '6',
                 'file' => '/st/js/common.js'
             ),
             'admin' => array(
@@ -40,7 +40,7 @@ return array(
                 'file' => '/st/js/jquery.omodal.min.js'
             ),
             'main' => array(
-                'version' => '20',
+                'version' => '21',
                 'file' => '/st/js/main.js'
             ),
             'methods' => array(
@@ -56,7 +56,7 @@ return array(
                 'file' => '/st/js/objectstorage.js'
             ),
             'search' => array(
-                'version' => '33',
+                'version' => '34',
                 'file' => '/st/js/search.js'
             ),
             'spinner' => array(
