@@ -56,7 +56,7 @@ return array(
                 'file' => '/st/js/objectstorage.js'
             ),
             'search' => array(
-                'version' => '34',
+                'version' => '35',
                 'file' => '/st/js/search.js'
             ),
             'spinner' => array(
@@ -70,7 +70,7 @@ return array(
         ),
         'css' => array(
             'common' => array(
-                'version' => '42',
+                'version' => '43',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(
