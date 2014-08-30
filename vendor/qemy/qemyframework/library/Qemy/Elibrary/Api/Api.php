@@ -1,8 +1,9 @@
 <?php
 
-namespace Qemy\Api;
+namespace Qemy\Elibrary\Api;
 
 use Qemy\Db\QemyDb;
+use Qemy\Elibrary\Methods\Methods;
 
 class Api {
 
@@ -127,78 +128,11 @@ class Api {
                         //успех
                         $this->db->query("UPDATE `api_users` SET `count_queries_search` = `count_queries_search` + 1 WHERE `id` = ?i", $id);
 
-                        $query = addslashes((string)trim($this->params['request']['q']));
-                        $category = (!empty($this->params['request']['category'])) ? intval($this->params['request']['category']) : 1;
-                        $count = (!empty($this->params['request']['count'])) ? intval($this->params['request']['count']) : 10;
-                        $offset = (!empty($this->params['request']['offset'])) ? intval($this->params['request']['offset']) : 0;
-
-                        if ($category < 1 || $category > 8) {
-                            $this->category = 1;
-                        }
-                        if ($count < 1 || $count > 200) {
-                            $count = 10;
-                        }
-                        if ($offset < 0) {
-                            $offset = 0;
-                        }
-
+                        $params = $this->params['request'];
+                        $methods = new Methods($this->db);
                         $response = array(
-                            "response" => array(
-                                "emptyQuery" => strlen($query) == 0,
-                                "items" => array(),
-                                "category" => array(
-                                    "key" => $category,
-                                    "value" => $this->GetCategoryName($category)
-                                )
-                            )
+                            "response" => $methods->getSearchResult($params, 1)
                         );
-
-                        if ($response['response']['emptyQuery']) {
-                            return $response;
-                        }
-
-                        $res = null; $res_count = null;
-                        $res_count = $this->ResonableSearchCount($query, $category);
-                        if (!$res_count->num_rows) {
-                            $res = $this->SearchQuery($query, $category, $offset, $count);
-                            $res_count = $this->SearchResultCount($query, $category);
-                        } else {
-                            $res = $this->ResonableSearchQuery($query, $category, $offset, $count);
-                        }
-
-                        $found_count = $res_count->num_rows;
-                        if (!$found_count) {
-                            $response['response']['found'] = false;
-                            $response['response']['text'] = 'По запросу «'.str_replace(array('\\'), array(''), $query).'» ничего не найдено.';
-                            $response['response']['items_count'] = 0;
-                            $response['response']['all_items_count'] = 0;
-                            $response['response']['query'] = $query;
-                            return $response;
-                        } else {
-                            $this->AddToStats($query, $time, $_SERVER['REMOTE_ADDR']);
-                            $offset_found_count = ($found_count - $offset < $count) ? $found_count - $offset : $count;
-                            $response['response']['found'] = true;
-                            $response['response']['text'] = $this->SpecifyCount($found_count);
-                            $response['response']['items_count'] = ($offset_found_count < 0) ? 0 : $offset_found_count;
-                            $response['response']['all_items_count'] = $found_count;
-                            $response['response']['query'] = $query;
-                            $index = 1;
-                            while($row = $res->fetch_assoc()) {
-                                $response['response']['items'][] = array(
-                                    "index" => $index++,
-                                    "id" => intval($row['id']),
-                                    "name" => $this->ToUtf(strip_tags($row['name'])),
-                                    "download_url" => $row['dl_url'],
-                                    "file_url" => $row['file_url'],
-                                    "file_size" => $row['file_size'],
-                                    "photo_big" => $row['photo_big'],
-                                    "photo_small" => $row['photo_small'],
-                                    "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
-                                    "category" => intval($row['category']),
-                                    "count_dl" => intval($row['dl_count'])
-                                );
-                            }
-                        }
                         return $response;
                     } else {
                         $response = array(
@@ -262,67 +196,6 @@ class Api {
                                     WHERE MATCH (`access_token`) AGAINST ('+".$access_token."' IN BOOLEAN MODE)");
         }
         return !1;
-    }
-
-    private function SearchResultCount($query, $category) {
-        $category = ($category != 1) ? "`category` = $category AND" : "";
-        return $this->db->simpleQuery("SELECT *
-                                    FROM `editions`
-                                    WHERE $category `name` LIKE '%$query%'");
-    }
-
-    private function SearchQuery($query, $category, $offset, $count) {
-        $category = ($category != 1) ? "`category` = $category AND" : "";
-        return $this->db->simpleQuery("SELECT *
-                                    FROM `editions`
-                                    WHERE $category `name` LIKE '%$query%'
-                                    ORDER BY `dl_count` DESC
-                                    LIMIT $offset, $count");
-    }
-
-    private function ResonableSearchCount($query, $category) {
-        $category = ($category != 1) ? "`category` = $category AND" : "";
-        return $this->db->simpleQuery("SELECT *,
-                                    MATCH (`name`, `author`)
-                                    AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
-                                    FROM `editions`
-                                    WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
-                                    ORDER BY REL DESC");
-    }
-
-    private function ResonableSearchQuery($query, $category, $offset, $count) {
-        $category = ($category != 1) ? "`category` = $category AND" : "";
-        return $this->db->simpleQuery("SELECT *,
-                                    MATCH (`name`, `author`)
-                                    AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
-                                    FROM `editions`
-                                    WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
-                                    ORDER BY REL DESC
-                                    LIMIT $offset, $count");
-    }
-
-    private function SpecifyCount($count) {
-        $ret_val = "";
-        if ($count < 21) {
-            if ($count == 0) {
-                $ret_val = "Элементов не найдено";
-            } else if ($count == 1) {
-                $ret_val = "Найден " . $count . " элемент";
-            } else if ($count > 1 && $count < 5) {
-                $ret_val = "Найдено " . $count . " элемента";
-            } else if ($count > 4 && $count < 21) {
-                $ret_val = "Найдено " . $count . " элементов";
-            }
-        } else {
-            if ($count % 10 == 1) {
-                $ret_val = "Найден " . $count . " элемент";
-            } else if ($count % 10 > 1 && $count % 10 < 5) {
-                $ret_val = "Найдено " . $count . " элемента";
-            } else {
-                $ret_val = "Найдено " . $count . " элементов";
-            }
-        }
-        return $ret_val;
     }
 
     public function GetPopular() {
@@ -390,46 +263,11 @@ class Api {
                         //успех
                         $this->db->query("UPDATE `api_users` SET `count_queries_getpopular` = `count_queries_getpopular` + 1 WHERE `id` = ?i", $id);
 
-                        if (is_numeric($category) && $category < 1 || $category > 8) {
-                            $this->category = 1;
-                        }
-                        if ($count < 1 || $count > 200) {
-                            $count = 10;
-                        }
-
+                        $params = $this->params['request'];
+                        $methods = new Methods($this->db);
                         $response = array(
-                            "response" => array(
-                                "items" => array()
-                            )
+                            "response" => $methods->getPopular($params)
                         );
-
-                        if ($category == 1)
-                            $res = $this->db->query("SELECT * FROM `editions` ORDER BY `dl_count` DESC LIMIT 0, ?i", $count);
-                        else
-                            $res = $this->db->query("SELECT * FROM `editions` WHERE `category` = ?i ORDER BY `dl_count` DESC LIMIT 0, ?i", $category, $count);
-
-                        $found_count = $res->num_rows;
-                        $response['response']['items_count'] = $found_count;
-                        $response['response']['category'] = array(
-                            "key" => $category,
-                            "value" => $this->GetCategoryName($category)
-                        );
-                        $index = 1;
-                        while($row = $res->fetch_assoc()) {
-                            $response['response']['items'][] = array(
-                                "index" => $index++,
-                                "id" => intval($row['id']),
-                                "name" => $this->ToUtf(strip_tags($row['name'])),
-                                "download_url" => $row['dl_url'],
-                                "file_url" => $row['file_url'],
-                                "file_size" => $row['file_size'],
-                                "photo_big" => $row['photo_big'],
-                                "photo_small" => $row['photo_small'],
-                                "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
-                                "category" => intval($row['category']),
-                                "count_dl" => intval($row['dl_count'])
-                            );
-                        }
                         return $response;
                     } else {
                         $response = array(
@@ -488,7 +326,7 @@ class Api {
                     return 'Сборники научных трудов';
                     break;
                 case 5:
-                    return 'Монографии, научные издания';
+                    return 'Монографии';
                     break;
                 case 6:
                     return 'Книги МИСиС';
@@ -590,14 +428,10 @@ class Api {
 
                     if (!$ban) {
                         //успех
-                        $response['response']['items_count'] = self::CATEGORIES_COUNT;
-                        for ($i = 1; $i <= self::CATEGORIES_COUNT; ++$i) {
-                            $response['response']['categories'][] = array(
-                                "key" => $i,
-                                "category_name" => $this->GetCategoryName($i),
-                                "color_hex" => $this->GetCategoryColor($i)
-                            );
-                        }
+                        $methods = new Methods($this->db);
+                        $response = array(
+                            "response" => $methods->getCategories()
+                        );
                         return $response;
                     } else {
                         $response = array(
@@ -638,9 +472,5 @@ class Api {
             );
         }
         return $response;
-    }
-
-    private function AddToStats($query, $time, $ip, $api = 1) {
-        $this->db->query("INSERT INTO `queries_stats` (`query`, `time`, `ip`, `api`) VALUES(?s, ?i, ?s, ?i)", (string)$query, intval($time), (string)$ip, $api);
     }
 }

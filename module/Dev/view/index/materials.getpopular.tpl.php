@@ -23,6 +23,11 @@
                 <br>
                 <span class="dev_type_description">число от <b>1</b> до <b>8</b></span>
             </li>
+            <li class="dev_li">
+                <span class="dev_reset_color"><b>offset</b> — смещение относительно первого материала для выборки определенного подмножества.</span>
+                <br>
+                <span class="dev_type_description">неотрицательное число, по умолчанию <b>0</b></span>
+            </li>
         </ul>
     </div>
 </div>

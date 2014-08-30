@@ -7,11 +7,15 @@ use Methods\Model\AddEditionModel;
 use Methods\Model\GetPopularModel;
 use Methods\Model\NewTicketModel;
 use Methods\Model\SearchModel;
+use Qemy\Core\Application;
 use Qemy\Core\Controller\AbstractController;
 
 class Controller extends AbstractController {
 
-    function __construct() {}
+    function __construct() {
+        Application::disableRequestCache();
+        Application::setContentType('json');
+    }
 
     public function addAuthorAction() {
         $model = new AddAuthorModel();
@@ -61,7 +65,7 @@ class Controller extends AbstractController {
                 break;
         }
 
-        $message = '<br>http://twosphere.ru/admin<br>';
+        $message = 'http://twosphere.ru/admin';
         $headers = 'From: admin@twosphere.ru' . "\r\n" .
             'X-Mailer: PHP/' . phpversion();
 

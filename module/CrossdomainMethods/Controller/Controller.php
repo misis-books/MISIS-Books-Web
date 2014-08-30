@@ -4,11 +4,15 @@ namespace CrossdomainMethods\Controller;
 
 use CrossdomainMethods\Model\GetPopularModel;
 use CrossdomainMethods\Model\SearchModel;
+use Qemy\Core\Application;
 use Qemy\Core\Controller\AbstractController;
 
 class Controller extends AbstractController {
 
-    function __construct() {}
+    function __construct() {
+        Application::disableRequestCache();
+        Application::setContentType('json');
+    }
 
     public function getPopularAction() {
         $model = new GetPopularModel();

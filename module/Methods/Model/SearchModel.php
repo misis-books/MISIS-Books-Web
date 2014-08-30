@@ -3,13 +3,17 @@
 namespace Methods\Model;
 
 use Qemy\Core\Model\AbstractModel;
-use Qemy\Methods\Methods;
+use Qemy\Elibrary\AjaxRequestHandler;
 
 class SearchModel extends AbstractModel {
 
     public function main() {
-        $methods = new Methods($this->getRequestParams(), $this->getQemyDb());
-        $this->setData($methods->Search());
+        $methods = new AjaxRequestHandler($this->getQemyDb());
+        $this->setData(
+            $methods->search(
+                $this->getRequestParams()
+            )
+        );
         return $this;
     }
 }

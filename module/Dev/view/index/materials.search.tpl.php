@@ -52,6 +52,7 @@
     <div id="test" class="dev_blockquote">
         <pre style="margin: 0; padding: 0;">
 {<span class="json_key">"response"</span>: {
+    <span class="json_key">"status"</span>: <span class="json_value">"OK"</span>,
     <span class="json_key">"emptyQuery"</span>: false,
     <span class="json_key">"items"</span>: [ {
             <span class="json_key">"index"</span>: <span class="json_value">1</span>,
@@ -89,6 +90,7 @@
         <span class="json_key">"value"</span>: <span class="json_value">"Все"</span>
     },
     <span class="json_key">"found"</span>: <span class="json_value">true</span>,
+    <span class="json_key">"lang_cl"</span>: <span class="json_value">false</span>,
     <span class="json_key">"text"</span>: <span class="json_value">"Найдено 10 элементов"</span>,
     <span class="json_key">"items_count"</span>: <span class="json_value">2</span>,
     <span class="json_key">"all_items_count"</span>: <span class="json_value">10</span>,
@@ -136,6 +138,11 @@
                 <span class="dev_type_description">bool</span>
             </li>
             <li class="dev_li">
+                <span class="dev_reset_color"><b>lang_cl</b> — флаг, указывающий на восстановленную раскладку клавиатуры для данного поискового запроса.</span>
+                <br>
+                <span class="dev_type_description">bool</span>
+            </li>
+            <li class="dev_li">
                 <span class="dev_reset_color"><b>items_count</b> — длина массива <b>items</b>.</span>
                 <br>
                 <span class="dev_type_description">неотрицательное число</span>
@@ -157,7 +164,7 @@
             </li>
             <li class="dev_li">
                 <span class="dev_reset_color">
-                    <b>file_url</b> — прямая ссылка на материал.
+                    <b>download_url</b> — ссылка на скачивание материала.
                 </span>
                 <br>
                 <span class="dev_type_description">строка</span>

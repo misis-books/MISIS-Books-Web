@@ -2,9 +2,9 @@
 
 namespace Api\Model;
 
-use Qemy\Api\Api;
 use Qemy\Core\Application;
 use Qemy\Core\Model\AbstractModel;
+use Qemy\Elibrary\Api\Api;
 
 class RegisterModel extends AbstractModel {
 

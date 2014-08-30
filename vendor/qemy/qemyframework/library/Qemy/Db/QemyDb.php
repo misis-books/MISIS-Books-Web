@@ -24,6 +24,10 @@ class QemyDb {
         return !1;
     }
 
+    public function real_escape_string($text) {
+        return $this->db->getConnection()->getDriver()->real_escape_string($text);
+    }
+
     public function simpleQuery($string) {
         if ($this->db->getConnection()->isConnected()) {
             return $this->db->getConnection()->getDriver()->query($string);

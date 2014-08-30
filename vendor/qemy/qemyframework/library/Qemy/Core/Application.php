@@ -41,6 +41,27 @@ class Application {
         $controller->$action_function();
     }
 
+    public static function disableRequestCache() {
+        header("Cache-Control: Cache-Control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+    }
+
+    public static function setContentType($type) {
+        switch($type) {
+            case 'xml':
+                header("Content-Type: text/xml; charset=utf-8");
+                break;
+            case 'json':
+                header("Content-Type: application/json; charset=utf-8");
+                break;
+            case 'html':
+                header("Content-Type: text/html; charset=utf-8");
+                break;
+            default:
+                header("Content-Type: text/plain; charset=utf-8");
+                break;
+        }
+    }
+
     public static function stop($param = null) {
         if ($param) {
             exit($param);
