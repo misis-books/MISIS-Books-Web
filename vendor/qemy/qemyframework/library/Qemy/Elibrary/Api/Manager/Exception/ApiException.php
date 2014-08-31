@@ -6,7 +6,7 @@ abstract class ApiException extends \Exception {
 
     private $params, $extend_error;
 
-    function __construct($params = array(), $error_code = -1, $error_message = "", $extend_error = array()) {
+    function __construct($params = array(), $error_code = -1, $error_message = "Unknown error", $extend_error = array()) {
         $this->params = $params;
         $this->extend_error = $extend_error;
         parent::__construct($error_message, $error_code);
