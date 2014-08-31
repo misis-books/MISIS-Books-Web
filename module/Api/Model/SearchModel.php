@@ -9,8 +9,12 @@ use Qemy\Elibrary\Api\Api;
 class SearchModel extends AbstractModel {
 
     public function main() {
-        $api = new Api(Application::$request_variables, $this->getQemyDb());
-        $this->setData($api->Search());
+        $api = new Api($this->getQemyDb());
+        $this->setData(
+            $api->search(
+                Application::$request_variables['request']
+            )
+        );
         return $this;
     }
 }

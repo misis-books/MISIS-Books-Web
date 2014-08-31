@@ -55,10 +55,16 @@
 <div class="dev_p">
     <ul>
         <li class="dev_li">
+            <span class="dev_reset_color"><b>1 Missing access token</b> — Пустой или пропущенный параметр access_token.Слишком много запросов за единицу времени. После получения такой ошибки access_token будет заблокирован на короткий промежуток времени, по истечении которого, вернется в свое рабочее состояние.</span>
+        </li>
+        <li class="dev_li">
+            <span class="dev_reset_color"><b>2 Invalid access token</b> — Передан недействительный или заблокированный access_token.</span>
+        </li>
+        <li class="dev_li">
             <span class="dev_reset_color"><b>3 Too many requests</b> — Слишком много запросов за единицу времени. После получения такой ошибки access_token будет заблокирован на короткий промежуток времени, по истечении которого, вернется в свое рабочее состояние.</span>
         </li>
         <li class="dev_li">
-            <span class="dev_reset_color"><b>17 Invalid access token</b> — Передан недействительный или заблокированный access_token. После получения этой ошибки создайте новый ключ.</span>
+            <span class="dev_reset_color"><b>4 Too many created access token</b> — Слишком много запросов на создание ключа доступа. Подождите 1 минуту.</span>
         </li>
     </ul>
 </div>

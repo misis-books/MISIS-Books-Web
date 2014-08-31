@@ -9,8 +9,12 @@ use Qemy\Elibrary\Api\Api;
 class GetPopularModel extends AbstractModel {
 
     public function main() {
-        $api = new Api(Application::$request_variables, $this->getQemyDb());
-        $this->setData($api->GetPopular());
+        $api = new Api($this->getQemyDb());
+        $this->setData(
+            $api->getPopular(
+                Application::$request_variables['request']
+            )
+        );
         return $this;
     }
 }

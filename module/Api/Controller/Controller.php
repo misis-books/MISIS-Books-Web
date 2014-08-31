@@ -38,7 +38,9 @@ class Controller extends AbstractController {
     }
 
     public function outputResponse($type, $response) {
+        Application::disableRequestCache();
         if ($type == 'xml') {
+            Application::setContentType('xml');
             $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><response></response>');
             if (!empty($response['response'])) {
                 $this->ArrayToXml($response['response'], $xml);
@@ -47,6 +49,7 @@ class Controller extends AbstractController {
             }
             echo $xml->asXML();
         } else {
+            Application::setContentType('json');
             echo json_encode($response);
         }
     }

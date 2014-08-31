@@ -67,18 +67,20 @@ abstract class AbstractMethods {
             );
             $index = $params['offset'] + 1;
             while($row = $res->fetch_assoc()) {
+                $size_in_bytes = $this->getSizeInBytes($row['file_size']);
                 $result['items'][] = array(
                     "index" => $index++,
-                    "id" => $row['id'],
+                    "id" => intval($row['id']),
                     "name" => $this->toUtf(strip_tags($row['name'])),
                     "download_url" => $row['dl_url'],
                     "authors" => ((!empty($row['author'])) ? explode(',', $row['author']) : array()),
                     "photo_big" => $row['photo_big'],
                     "photo_small" => $row['photo_small'],
-                    "category" => $row['category'],
-                    "count_dl" => $row['dl_count'],
+                    "category" => intval($row['category']),
+                    "count_dl" => intval($row['dl_count']),
                     "file_url" => $row['file_url'],
-                    "file_size" => $row['file_size']
+                    "file_size" => $row['file_size'],
+                    "file_size_in_bytes" => $size_in_bytes ? $size_in_bytes : 0
                 );
             }
             $this->addStats($params['query'], time(), $_SERVER['REMOTE_ADDR'], $api);
@@ -205,7 +207,7 @@ abstract class AbstractMethods {
 
     private function getCategoryName($key) {
         if (!empty($key) && preg_match("/^[0-9]$/i", $key)) {
-            $categories = array('Все', 'Пособия', 'Дипломы', 'Сборники научных трудов', 'Монографии, научные издания', 'Книги МИСиС', 'Авторефераты диссертаций', 'Разное');
+            $categories = array('Все', 'Пособия', 'Дипломы', 'Сборники научных трудов', 'Монографии', 'Книги МИСиС', 'Авторефераты диссертаций', 'Разное');
             return $categories[($key - 1) % 8];
         }
         return 'Не определено';
@@ -248,24 +250,26 @@ abstract class AbstractMethods {
             LIMIT ?i, ?i", $params['offset'], $params['count']);
 
         $result['category'] = array(
-            'key' => $params['category'],
+            'key' => intval($params['category']),
             'value' => $this->getCategoryName($params['category'])
         );
         $result['items_count'] = $res->num_rows;
         $index = $params['offset'] + 1;
         while ($row = $res->fetch_assoc()) {
+            $size_in_bytes = $this->getSizeInBytes($row['file_size']);
             $result['items'][] = array(
                 "index" => $index++,
-                "id" => $row['id'],
+                "id" => intval($row['id']),
                 "name" => $this->toUtf(strip_tags($row['name'])),
                 "download_url" => $row['dl_url'],
                 "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
                 "photo_big" => $row['photo_big'],
                 "photo_small" => $row['photo_small'],
-                "category" => $row['category'],
-                "count_dl" => $row['dl_count'],
+                "category" => intval($row['category']),
+                "count_dl" => intval($row['dl_count']),
                 "file_url" => $row['file_url'],
-                "file_size" => $row['file_size']
+                "file_size" => $row['file_size'],
+                "file_size_in_bytes" => $size_in_bytes ? $size_in_bytes : 0
             );
         }
         return $result;
@@ -331,5 +335,17 @@ abstract class AbstractMethods {
             return array("status" => "Error");
         }
         return array("status" => "OK");
+    }
+
+    protected function getSizeInBytes($size_string) {
+        if (preg_match("/^\d+(mb|kb)/i", $size_string)) {
+            preg_match("/^(\d+)/i", $size_string, $size);
+            $size[0] *= (1 << 10);
+            if (preg_match("/^\d+mb/i", $size_string)) {
+                $size[0] *= (1 << 10);
+            }
+            return $size[0];
+        }
+        return !1;
     }
 }

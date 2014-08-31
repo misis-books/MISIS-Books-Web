@@ -20,7 +20,7 @@ abstract class RequestHandler {
     public function search($params) {
         $methods = new Methods($this->db);
         $params = $params[$this->request_type];
-        $result = $methods->getSearchResult($params);
+        $result = $methods->search($params);
         $result['hash'] = $params['hash'];
         return $result;
     }

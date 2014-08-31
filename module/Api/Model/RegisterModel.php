@@ -9,8 +9,10 @@ use Qemy\Elibrary\Api\Api;
 class RegisterModel extends AbstractModel {
 
     public function main() {
-        $api = new Api(Application::$request_variables, $this->getQemyDb());
-        $this->setData($api->RegisterDevice());
+        $api = new Api($this->getQemyDb());
+        $this->setData(
+            $api->createAccessToken()
+        );
         return $this;
     }
 }

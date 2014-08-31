@@ -8,7 +8,7 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         parent::__construct($db);
     }
 
-    public function getSearchResult($params, $api = 0) {
+    public function search($params = [], $api = 0) {
         $query = $this->realEscapeString(htmlspecialchars((string)trim($params['q'])));
         $params = array(
             'hash' => (!empty($params['hash'])) ? $params['hash'] : 0,
@@ -21,7 +21,7 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         return $this->searchMethod($params, $api);
     }
 
-    public function getPopular($params) {
+    public function getPopular($params = [], $api = 0) {
         $params = array(
             'category' => (!empty($params['category'])) ? intval($params['category']) : 1,
             'count' => (!empty($params['count'])) ? intval($params['count']) : 30,
@@ -30,7 +30,11 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         return $this->getPopularMethod($params);
     }
 
-    public function addEdition($params) {
+    public function getCategories($params = [], $api = 0) {
+        return $this->getCategoriesMethod();
+    }
+
+    public function addEdition($params = []) {
         $params = array(
             'link' => (!empty($params['link'])) ? intval($params['link']) : null,
             'hash' => (!empty($params['hash'])) ? $params['hash'] : null,
@@ -40,7 +44,7 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         return $this->addEditionMethod($params);
     }
 
-    public function addAuthor($params) {
+    public function addAuthor($params = []) {
         $params = array(
             'id_edition' => (!empty($params['id'])) ? intval($params['id']) : 0,
             'author' => (!empty($params['author'])) ? $params['author'] : null,
@@ -49,16 +53,12 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         return $this->addAuthorMethod($params);
     }
 
-    public function addTicket($params) {
+    public function addTicket($params = []) {
         $params = array(
             'email' => (!empty($params['email'])) ? intval($params['email']) : "Не указан",
             'message' => (!empty($params['ticket_message'])) ? $params['ticket_message'] : null,
             'time' => time()
         );
         return $this->addTicketMethod($params);
-    }
-
-    public function getCategories() {
-        return $this->getCategoriesMethod();
     }
 }

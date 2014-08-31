@@ -9,8 +9,12 @@ use Qemy\Elibrary\Api\Api;
 class GetCategoriesModel extends AbstractModel {
 
     public function main() {
-        $api = new Api(Application::$request_variables, $this->getQemyDb());
-        $this->setData($api->GetCategories());
+        $api = new Api($this->getQemyDb());
+        $this->setData(
+            $api->getCategories(
+                Application::$request_variables['request']
+            )
+        );
         return $this;
     }
 }

@@ -61,6 +61,7 @@
             <span class="json_key">"download_url"</span>: <span class="json_value">"http://twospher..."</span>,
             <span class="json_key">"file_url"</span>: <span class="json_value">"http://s.twosphere.ru/..."</span>,
             <span class="json_key">"file_size"</span>: <span class="json_value">"1Mb"</span>,
+            <span class="json_key">"file_size_in_bytes"</span>: <span class="json_value">1048576</span>,
             <span class="json_key">"photo_big"</span>: <span class="json_value">"http://s.twosphere..."</span>,
             <span class="json_key">"photo_small"</span>: <span class="json_value">"http://s.twosphere..."</span>,
             <span class="json_key">"authors"</span>: [
@@ -76,6 +77,7 @@
             <span class="json_key">"download_url"</span>: <span class="json_value">"http://twospher..."</span>,
             <span class="json_key">"file_url"</span>: <span class="json_value">"http://s.twospher..."</span>,
             <span class="json_key">"file_size"</span>: <span class="json_value">"3Mb"</span>,
+            <span class="json_key">"file_size_in_bytes"</span>: <span class="json_value">3145728</span>,
             <span class="json_key">"photo_big"</span>: <span class="json_value">"http://s.twosphere..."</span>,
             <span class="json_key">"photo_small"</span>: <span class="json_value">"http://s.twosphere..."</span>,
             <span class="json_key">"authors"</span>: [
@@ -171,10 +173,17 @@
             </li>
             <li class="dev_li">
                 <span class="dev_reset_color">
-                    <b>file_size</b> — размер материала.
+                    <b>file_size</b> — размер материала в отформатированном виде.
                 </span>
                 <br>
                 <span class="dev_type_description">строка</span>
+            </li>
+            <li class="dev_li">
+                <span class="dev_reset_color">
+                    <b>file_size_in_bytes</b> — размер материала в байтах.
+                </span>
+                <br>
+                <span class="dev_type_description">положительное число</span>
             </li>
             <li class="dev_li">
                 <span class="dev_reset_color">
