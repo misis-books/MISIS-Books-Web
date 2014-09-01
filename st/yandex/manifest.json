@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "api_version": 1,
     "layout": {
         "logo": "/st/yandex/yandex_tableau.png",
@@ -7,7 +7,7 @@
         "show_title": false
     },
     "feed": {
-        "url": "http://twosphere.ru/yandex/feed",
+        "url": "http://twosphere.ru/yandex/feed?1",
         "format": "json",
         "notifiers": [{
             "name": "count",
