@@ -7,7 +7,7 @@
         "show_title": false
     },
     "feed": {
-        "url": "http://twosphere.ru/yandex/feed?1",
+        "url": "http://twosphere.ru/yandex/feed?preventDefault",
         "format": "json",
         "notifiers": [{
             "name": "count",
