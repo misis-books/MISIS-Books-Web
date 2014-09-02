@@ -4,7 +4,6 @@ namespace CrossdomainMethods\Model;
 
 use Qemy\Core\Model\AbstractModel;
 use Qemy\Elibrary\JsonpRequestHandler;
-use Qemy\Methods\CrossdomainMethods;
 
 class GetPopularModel extends AbstractModel {
 
