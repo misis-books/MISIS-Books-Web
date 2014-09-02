@@ -4,7 +4,6 @@ namespace Methods\Model;
 
 use Qemy\Core\Model\AbstractModel;
 use Qemy\Elibrary\AjaxRequestHandler;
-use Qemy\Methods\Methods;
 
 class NewTicketModel extends AbstractModel {
 
