@@ -178,19 +178,17 @@ abstract class AbstractMethods {
     }
 
     private function searchSpecifyCount($count) {
-        $ret_val = "";
         $word = "документ";
         $array_of_suf_unique = ['', 'a', 'ов'];
         $array_of_suf_dozen = ['ов', '', 'а', 'а', 'а', 'ов', 'ов', 'ов', 'ов', 'ов'];
         $array_of_suf_find = ['', 'о'];
         $mod = $count % 100;
         if ($mod >= 11 && $mod <= 14) {
-            $ret_val = 'Найден'.$array_of_suf_find[1].' '.$count.' '.$word.$array_of_suf_unique[2];
+            return 'Найден'.$array_of_suf_find[1].' '.$count.' '.$word.$array_of_suf_unique[2];
         } else {
             $mod %= 10;
-            $ret_val = 'Найден'.$array_of_suf_find[(($mod == 1) ? 0 : 1)].' '.$count.' '.$word.$array_of_suf_dozen[$mod];
+            return 'Найден'.$array_of_suf_find[(($mod == 1) ? 0 : 1)].' '.$count.' '.$word.$array_of_suf_dozen[$mod];
         }
-        return $ret_val;
     }
 
     private function toUtf($str) {
