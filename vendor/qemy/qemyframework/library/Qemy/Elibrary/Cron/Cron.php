@@ -9,7 +9,7 @@ class Cron {
 
     private $db;
 
-    const KEY = 'a4b0aece8c8f41b09dc444ae77a7b56a';
+    const KEY = 'ключ скрыт в целях безопасности';
 
     function __construct(QemyDb &$db) {
         $this->db = $db;
