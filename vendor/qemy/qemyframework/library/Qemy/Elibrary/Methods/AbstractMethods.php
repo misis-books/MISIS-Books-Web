@@ -233,15 +233,42 @@ abstract class AbstractMethods {
 
         $where_category = $params['category'] != 1 ? ("WHERE `category` = ".$params['category']) : '';
         $res = $this->db->query(
+            "SELECT `static_popular`.*, `editions`.*
+            FROM `static_popular`
+            LEFT JOIN `editions`
+            ON `static_popular`.id_edition = `editions`.id
+            ".$where_category."
+            ORDER BY `static_popular`.week_dl_count DESC
+            LIMIT 0, 10"
+        );
+        $index = 1;
+        $result['last_week'] = array();
+        while ($row = $res->fetch_assoc()) {
+            $size_in_bytes = $this->getSizeInBytes($row['file_size']);
+            $result['last_week'][] = array(
+                "index" => $index++,
+                "id" => intval($row['id']),
+                "name" => $this->toUtf(strip_tags($row['name'])),
+                "download_url" => $row['dl_url'],
+                "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
+                "photo_big" => $row['photo_big'],
+                "photo_small" => $row['photo_small'],
+                "category" => intval($row['category']),
+                "count_dl" => intval($row['dl_count']),
+                "count_dl_week" => intval($row['week_dl_count']),
+                "file_url" => $row['file_url'],
+                "file_size" => $row['file_size'],
+                "file_size_in_bytes" => $size_in_bytes ? $size_in_bytes : 0
+            );
+        }
+
+        $res = $this->db->query(
             "SELECT *
             FROM `editions`
             ".$where_category."
             ORDER BY `dl_count` DESC
-            LIMIT ?i, ?i", $params['offset'], $params['count']);
-
-        $result['category'] = array(
-            'key' => intval($params['category']),
-            'value' => $this->getCategoryName($params['category'])
+            LIMIT ?i, ?i",
+            $params['offset'], $params['count']
         );
         $result['items_count'] = $res->num_rows;
         $index = $params['offset'] + 1;
@@ -257,11 +284,18 @@ abstract class AbstractMethods {
                 "photo_small" => $row['photo_small'],
                 "category" => intval($row['category']),
                 "count_dl" => intval($row['dl_count']),
+                "count_dl_week" => intval($row['week_dl_count']),
                 "file_url" => $row['file_url'],
                 "file_size" => $row['file_size'],
                 "file_size_in_bytes" => $size_in_bytes ? $size_in_bytes : 0
             );
         }
+
+        $result['category'] = array(
+            'key' => intval($params['category']),
+            'value' => $this->getCategoryName($params['category'])
+        );
+
         return $result;
     }
 

@@ -255,6 +255,16 @@ final class Elibrary {
     }
 
     private function RefreshStats($edition) {
+        $this->db->query(
+            "INSERT INTO dynamic_popular
+            (id_edition, week_dl_count)
+            VALUES (?i, 1)
+            ON DUPLICATE KEY
+            UPDATE week_dl_count = week_dl_count + 1",
+            $edition['id']
+        );
+        $this->db->simpleQuery("COMMIT");
+
         $this->db->query("UPDATE `editions` SET dl_count = dl_count + 1 WHERE `id` = ?i", $edition['id']);
         $time = time();
         $query = $edition['name']." | IP: ".$_SERVER['REMOTE_ADDR'];

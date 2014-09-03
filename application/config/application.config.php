@@ -13,7 +13,8 @@ return array(
         'doc' => 'Doc',
         'admin' => 'Admin',
         'yandex' => 'YandexTabloid',
-        'badbrowser' => 'Badbrowser'
+        'badbrowser' => 'Badbrowser',
+        'cron_create_popular' => 'Cron'
     ),
     'module_options' => array(
         'module_path' => '/module'
