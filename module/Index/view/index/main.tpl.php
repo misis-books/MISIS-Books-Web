@@ -3,6 +3,7 @@
         <div class="pdf_wrapper" id="pdf_wrapper" style="display: none; top: 1000px; padding: 0 10px; box-sizing: border-box;">
             <div class="pdf_layer"></div>
         </div>
+        <img src="/st/img/android_misis_book.png" style="display: none;"/>
         <div class="content_wrapper">
             <div class="search_wrapper" style="overflow: visible;">
                 <div class="search_layout">

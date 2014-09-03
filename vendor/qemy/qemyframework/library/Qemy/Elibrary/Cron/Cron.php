@@ -9,7 +9,7 @@ class Cron {
 
     private $db;
 
-    const KEY = 'ключ скрыт в целях безопасности';
+    const KEY = 'e615df4824bc18ee2a4897bcfecc5b1f';
 
     function __construct(QemyDb &$db) {
         $this->db = $db;
@@ -17,7 +17,7 @@ class Cron {
 
     public function createPopularSnapshot($params) {
         $key = $params['key'];
-        if ($key == self::KEY) {
+        if (md5($key) == self::KEY) {
             try {
                 $dynamic = $this->db->simpleQuery("SELECT * FROM `dynamic_popular`");
                 if ($dynamic->num_rows >= 20) {
