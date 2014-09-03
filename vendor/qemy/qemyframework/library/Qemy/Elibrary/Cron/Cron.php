@@ -9,7 +9,7 @@ class Cron {
 
     private $db;
 
-    const KEY = '8897fb14d0b939c6b7abc3abc4aafe43';
+    const KEY = 'a4b0aece8c8f41b09dc444ae77a7b56a';
 
     function __construct(QemyDb &$db) {
         $this->db = $db;
@@ -20,7 +20,7 @@ class Cron {
         if ($key == self::KEY) {
             try {
                 $dynamic = $this->db->simpleQuery("SELECT * FROM `dynamic_popular`");
-                if ($dynamic->num_rows > 1) {
+                if ($dynamic->num_rows >= 20) {
                     $this->db->simpleQuery("DELETE FROM `static_popular`"); /* truncate issues some errors */
                     while ($row = $dynamic->fetch_array()) {
                         $this->db->query(
@@ -36,7 +36,7 @@ class Cron {
                     $this->db->simpleQuery("COMMIT");
                     echo 'Success commit';
                 } else {
-                    echo 'Rows < 10';
+                    echo 'Rows < 20';
                 }
             } catch (\Exception $err) {
                 $this->db->simpleQuery("ROLLBACK");
