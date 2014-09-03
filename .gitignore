@@ -224,3 +224,4 @@ pip-log.txt
 .idea/workspace.xml
 application/config/db.config.php
 module/Admin/
+vendor/qemy/qemyframework/library/Qemy/Elibrary/Cron/Cron.php
