@@ -55,7 +55,7 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
 
     public function addTicket($params = []) {
         $params = array(
-            'email' => (!empty($params['email'])) ? intval($params['email']) : "Не указан",
+            'email' => (!empty($params['email'])) ? $params['email'] : "Не указан",
             'message' => (!empty($params['ticket_message'])) ? $params['ticket_message'] : null,
             'time' => time()
         );

@@ -327,6 +327,7 @@ abstract class AbstractMethods {
                 VALUES(?i, ?s, ?i)",
                 $params['id_edition'], $params['author'], $params['time']
             );
+            $this->sendNotification("Добавлен новый автор");
         } else {
             return array("status" => "Error");
         }
@@ -341,6 +342,7 @@ abstract class AbstractMethods {
                 VALUES(?s, ?s, ?i, ?s)",
                 $params['link'], $params['hash'], $params['time'], $params['ip']
             );
+            $this->sendNotification("Добавлен новый документ");
         } else {
             return array("status" => "Error");
         }
@@ -355,6 +357,7 @@ abstract class AbstractMethods {
                 VALUES(?s, ?s, ?i)",
                 $params['email'], $params['message'], $params['time']
             );
+            $this->sendNotification("Добавлен новый тикет: ".$params['message']);
         } else {
             return array("status" => "Error");
         }
@@ -371,5 +374,14 @@ abstract class AbstractMethods {
             return $size[0];
         }
         return !1;
+    }
+
+    private function sendNotification($message) {
+        $to      = 'ipritoflex@yandex.ru';
+        $subject = $message;
+        $headers = 'From: admin@twosphere.ru' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        mail($to, $subject, $message, $headers);
     }
 }

@@ -4,6 +4,7 @@ namespace Qemy\Elibrary\Cron;
 
 use Qemy\Core\Application;
 use Qemy\Db\QemyDb;
+use Qemy\Elibrary\Methods\Methods;
 
 class Cron {
 
@@ -35,6 +36,11 @@ class Cron {
                     $this->db->simpleQuery("DELETE FROM `dynamic_popular`");
                     $this->db->simpleQuery("COMMIT");
                     echo 'Success commit';
+                    $methods = new Methods($this->db);
+                    $methods->addTicket(array(
+                        'email' => 'admin@twosphere.ru',
+                        'message' => 'Обновление популярного: '.date("H:i:s d.m.Y")
+                    ));
                 } else {
                     echo 'Rows < 20';
                 }
