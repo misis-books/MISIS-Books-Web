@@ -22,8 +22,8 @@ abstract class AbstractMethods {
             "emptyQuery" => ((strlen($params['query']) == 0)),
             "items" => array()
         );
-        if ($params['category'] < 1 || $params['category'] > 8) {
-            $this->category = 1;
+        if ($params['category'] < 1 || $params['category'] > 8 || $params['category'] == 3) {
+            $params['category'] = 1;
         }
         if ($params['count'] < 1) {
             $params['count'] = 10;
@@ -95,7 +95,7 @@ abstract class AbstractMethods {
             MATCH (`name`, `author`)
             AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
             FROM `editions`
-            WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+            WHERE category <> 3 AND $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
             ORDER BY REL DESC"
         );
     }
@@ -105,7 +105,7 @@ abstract class AbstractMethods {
         return $this->db->simpleQuery(
             "SELECT *
             FROM `editions`
-            WHERE $category `name` LIKE '%$query%'
+            WHERE category <> 3 AND $category `name` LIKE '%$query%'
             ORDER BY `dl_count` DESC
             LIMIT $offset, $count"
         );
@@ -116,7 +116,7 @@ abstract class AbstractMethods {
         return $this->db->simpleQuery(
             "SELECT *
             FROM `editions`
-            WHERE $category `name` LIKE '%$query%'"
+            WHERE category <> 3 AND $category `name` LIKE '%$query%'"
         );
     }
 
@@ -127,7 +127,7 @@ abstract class AbstractMethods {
             MATCH (`name`, `author`)
             AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
             FROM `editions`
-            WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+            WHERE `category` <> 3 AND $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
             ORDER BY REL DESC
             LIMIT $offset, $count"
         );
@@ -218,8 +218,8 @@ abstract class AbstractMethods {
             "status" => "OK",
             "items" => array()
         );
-        if ($params['category'] < 1 || $params['category'] > 8) {
-            $this->category = 1;
+        if ($params['category'] < 1 || $params['category'] > 8 || $params['category'] == 3) {
+            $params['category'] = 1;
         }
         if ($params['count'] < 1) {
             $params['count'] = 30;
@@ -231,13 +231,13 @@ abstract class AbstractMethods {
             $params['count'] = 200;
         }
 
-        $where_category = $params['category'] != 1 ? ("WHERE `category` = ".$params['category']) : '';
+        $where_category = $params['category'] != 1 ? ("AND `editions`.`category` = ".$params['category']) : '';
         $res = $this->db->query(
             "SELECT `static_popular`.*, `editions`.*
             FROM `static_popular`
             LEFT JOIN `editions`
             ON `static_popular`.id_edition = `editions`.id
-            ".$where_category."
+            WHERE `editions`.category <> 3 ".$where_category."
             ORDER BY `static_popular`.week_dl_count DESC
             LIMIT 0, 10"
         );
@@ -265,7 +265,7 @@ abstract class AbstractMethods {
         $res = $this->db->query(
             "SELECT *
             FROM `editions`
-            ".$where_category."
+            WHERE category <> 3 ".$where_category."
             ORDER BY `dl_count` DESC
             LIMIT ?i, ?i",
             $params['offset'], $params['count']
@@ -302,6 +302,7 @@ abstract class AbstractMethods {
     protected function getCategoriesMethod() {
         $response['response']['items_count'] = 8;
         for ($i = 1; $i <= 8; ++$i) {
+            if ($i == 3) continue;
             $response['response']['categories'][] = array(
                 "key" => $i,
                 "category_name" => $this->getCategoryName($i),

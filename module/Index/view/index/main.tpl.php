@@ -33,6 +33,10 @@
                                 <select id="sp_select_category" style="width: 250px; display: none;">
                                     <?php
                                     for ($i = 1; $i <= count($select); $i++) {
+                                        if ($i == 3) {
+                                            echo "<option disabled value=".$i.">".$select[$i - 1]."</option>";
+                                            continue;
+                                        }
                                         echo "<option".(($i==$selected)?" selected='selected'":"")." value=".$i.">".$select[$i - 1]."</option>";
                                     }
                                     ?>
