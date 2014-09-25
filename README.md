@@ -1,4 +1,4 @@
-Twosphere | http://twosphere.ru
+MISIS Books Source | http://twosphere.ru
 =========
 
-MISIS Books Source
+Qemy Framework :fish_cake: Aleksandr Belov
