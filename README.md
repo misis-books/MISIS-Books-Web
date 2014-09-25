@@ -2,4 +2,4 @@ MISIS Books Source | http://twosphere.ru
 =========
 
 QemyFramework
-(c) Aleksandr Belov
+(c) 2014 Aleksandr Belov
