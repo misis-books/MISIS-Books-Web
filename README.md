@@ -1,4 +1,5 @@
-Twosphere | http://twosphere.ru
+MISIS Books Source | http://twosphere.ru
 =========
 
-MISIS Books Source
+QemyFramework
+(c) 2014 Aleksandr Belov
