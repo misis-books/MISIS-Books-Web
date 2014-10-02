@@ -93,7 +93,7 @@ td{display:inline-block;}
 .fave_add_toggle{width:50px;height:50px;}
 .fave_add_circle{-webkit-border-radius:50px;-moz-border-radius:50px;border-radius:50px;border:3px solid #b3bbcb;height:100%;width:100%;cursor:pointer;transition:background-color .05s ease-in;-moz-transition:background-color .05s ease-in;-webkit-transition:background-color .05s ease-in;-o-transition:background-color .05s ease-in;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;border-width:3px;}
 .fave_add_circle_p{-webkit-border-radius:50px;-moz-border-radius:50px;border-radius:50px;border:3px solid #b3bbcb;height:100%;width:100%;cursor:pointer;transition:background-color .05s ease-in;-moz-transition:background-color .05s ease-in;-webkit-transition:background-color .05s ease-in;-o-transition:background-color .05s ease-in;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;border-width:3px;}
-.fave_add_none{background:url(/st/img/fave_imgs.png) no-repeat -126px 10px;background-color:#FFF;}
+.fave_add_none{background:url(/st/img/fave_imgs.png) no-repeat -126px 10px;background-color:rgba(245, 238, 19, 0.05);}
 .fave_add{background:url(/st/img/fave_imgs.png) no-repeat 11px 10px;background-color:#409fde;border-color:#409fde;}
 .fave_add:active{background-color:#4c99d9;cursor:default;border-color:#4c99d9;}
 .fave_added{background:url(/st/img/fave_imgs.png) no-repeat -33px 10px;background-color:#FFF;border-color:#4abfb4;}

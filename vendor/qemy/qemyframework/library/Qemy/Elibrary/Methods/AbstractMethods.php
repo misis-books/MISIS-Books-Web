@@ -239,7 +239,7 @@ abstract class AbstractMethods {
             ON `static_popular`.id_edition = `editions`.id
             WHERE `editions`.category <> 3 ".$where_category."
             ORDER BY `static_popular`.week_dl_count DESC
-            LIMIT 0, 10"
+            LIMIT 0, 20"
         );
         $index = 1;
         $result['last_week'] = array();
