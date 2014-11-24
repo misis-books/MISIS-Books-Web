@@ -69,8 +69,8 @@ var Ya = {
         },
         requestHandler: function(res) {
             var row = '<a href="/?q={1}" id="predictor_{4}" class="b-predictor" onmousedown="return false;" onclick="Ya.Predictor.setSearch(\'{2}\', !1, !0); return false;">\
-            <span class="b-predictor__advice b-predictor__font-regular">{3}</span>\
-            </a>';
+                <span class="b-predictor__advice b-predictor__font-regular">{3}</span>\
+                </a>';
 
             var input = document.getElementById('input_text'),
                 predictor_layer = document.getElementById('predictor-layer');
@@ -151,7 +151,7 @@ $(document).ready(function() {
         }
     });
 
-    addEvent(input,  'keydown', function(e) {
+    addEvent(input, 'keydown', function(e) {
         if (e.keyCode == 39 || e.keyCode == 13) {
             $('#predictor_1').click();
             input.focus();
