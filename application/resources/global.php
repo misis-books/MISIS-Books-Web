@@ -40,7 +40,7 @@ return array(
                 'file' => '/st/js/jquery.omodal.min.js'
             ),
             'main' => array(
-                'version' => '22',
+                'version' => '21',
                 'file' => '/st/js/main.js'
             ),
             'methods' => array(
@@ -56,7 +56,7 @@ return array(
                 'file' => '/st/js/objectstorage.js'
             ),
             'search' => array(
-                'version' => '39',
+                'version' => '38',
                 'file' => '/st/js/search.js'
             ),
             'spinner' => array(
@@ -66,15 +66,11 @@ return array(
             'support' => array(
                 'version' => '4',
                 'file' => '/st/js/support.js'
-            ),
-            'predictor' => array(
-                'version' => 3,
-                'file' => '/st/js/predictor.js'
             )
         ),
         'css' => array(
             'common' => array(
-                'version' => '45',
+                'version' => '44',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(

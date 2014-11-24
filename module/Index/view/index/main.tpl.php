@@ -11,7 +11,6 @@
                         <div class="input_wrap">
                             <div class="input_inner">
                                 <input id="input_text" autocorrect="off" spellcheck="false" autocomplete="off" maxlength="500" class="input_text_default" type="text" value="<?=htmlspecialchars($_GET['q'])?>" placeholder="Введите название, номер или автора">
-                                <div class="b-predictor__layer" id="predictor-layer" style="display: none;"></div>
                             </div>
                             <span id="search_loading" class="search_load_spin"></span>
                             <div title="Очистить поле" style="display: none;" id="reset_text_input" class="reset_input" onclick="Search.setSearch('', true);"></div>
@@ -34,6 +33,10 @@
                                 <select id="sp_select_category" style="width: 250px; display: none;">
                                     <?php
                                     for ($i = 1; $i <= count($select); $i++) {
+                                        if ($i == 3) {
+                                            echo "<option disabled value=".$i.">".$select[$i - 1]."</option>";
+                                            continue;
+                                        }
                                         echo "<option".(($i==$selected)?" selected='selected'":"")." value=".$i.">".$select[$i - 1]."</option>";
                                     }
                                     ?>
@@ -41,6 +44,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="search_advice"><div class="block_triangle"></div>После ввода нажмите Enter, чтобы перейти на первый материал из результата.</div>
                 </div>
             </div>
             <div class="search_result_wrap" style="margin-bottom: 0; overflow: visible;">
