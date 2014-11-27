@@ -68,7 +68,7 @@ var Ya = {
             }, Ya.Predictor.requestHandler);
         },
         requestHandler: function(res) {
-            var row = '<a href="/?q={1}" id="predictor_{4}" class="b-predictor" onmousedown="return false;" onclick="Ya.Predictor.setSearch(\'{2}\', !1, !0); return false;">\
+            var row = '<a href="/?q={1}" id="predictor_{4}" class="b-predictor" onmouseover="Ya.Predictor.select(this)" onmousedown="return false;" onclick="Ya.Predictor.setSearch(\'{2}\', !1, !0); return false;">\
                 <span class="b-predictor__advice b-predictor__font-regular">{3}</span>\
                 </a>';
 
@@ -77,17 +77,19 @@ var Ya = {
 
             var ins;
             var max_str_length = 50;
+            var input_text = strip_tags(input.value.trim());
+
             if (res.text && res.text.length > 0 && res.pos < 0) {
                 $(predictor_layer).show(0);
                 $(predictor_layer).empty();
                 for (var el in res.text) {
                     var res_text = strip_tags(input.value.trim());
                     res_text = res_text.slice(0, res.pos) + res.text[el];
-
                     var res_text_ins = res_text;
                     if (res_text.length > max_str_length) {
                         res_text_ins = '...' + res_text.substring(res_text.length - max_str_length, res_text.length);
                     }
+                    res_text_ins = res_text_ins.replace(input_text, '<b>'+ input_text +'</b>');
                     ins = row
                         .replace('{1}', encodeURIComponent(res_text))
                         .replace('{2}', encodeURIComponent(res_text))
@@ -101,12 +103,60 @@ var Ya = {
                 if (text.length > max_str_length) {
                     res_text_ins = '...' + text.substring(text.length - max_str_length, text.length);
                 }
+                res_text_ins = res_text_ins.replace(input_text, '<b>'+ input_text +'</b>');
                 ins = row
                     .replace('{1}', encodeURIComponent(text))
                     .replace('{2}', encodeURIComponent(text))
                     .replace('{3}', res_text_ins)
                     .replace('{4}', 1);
                 $(predictor_layer).empty().append(ins);
+            }
+        },
+        select: function(element) {
+            var cur_element = $('.b-predictor__select');
+            if (cur_element) {
+                cur_element.removeClass('b-predictor__select');
+            }
+            cur_element = $(element).addClass('b-predictor__select');
+        },
+        selectNext: function() {
+            var input = $('#input_text')[0];
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+
+            var layer = $('.b-predictor__layer:hidden');
+            if (!layer.length) {
+                var cur_element = $('.b-predictor__select');
+                var flag = !1;
+                if (!cur_element.length) {
+                    cur_element = $('#predictor_1');
+                    flag = !0;
+                }
+                var count = $('.b-predictor').length;
+                var id_element = parseInt(cur_element[0].id.match(/\d+$/)[0]);
+                id_element = count > id_element && !flag ? ++id_element : 1;
+                cur_element = $('#predictor_' + id_element);
+                this.select(cur_element[0]);
+            }
+        },
+        selectPrev: function() {
+            var input = $('#input_text')[0];
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+
+            var layer = $('.b-predictor__layer:hidden');
+            if (!layer.length) {
+                var cur_element = $('.b-predictor__select');
+                var flag = !1;
+                var count = $('.b-predictor').length;
+                if (!cur_element.length) {
+                    cur_element = $('#predictor_' + count);
+                    flag = !0;
+                }
+                var id_element = parseInt(cur_element[0].id.match(/\d+$/)[0]);
+                id_element = id_element > 1 && !flag ? --id_element : count;
+                cur_element = $('#predictor_' + id_element);
+                this.select(cur_element[0]);
             }
         }
     }
@@ -143,6 +193,9 @@ $(document).ready(function() {
     });
 
     addEvent(input, 'keyup', function(e) {
+        if (e.keyCode == 40 || e.keyCode == 38) {
+            return false;
+        }
         if (strip_tags(e.target.value.trim()).length > 0) {
             $(predictor_layer).show(0);
             Ya.Predictor.createRequest(strip_tags(e.target.value.trim()));
@@ -152,9 +205,23 @@ $(document).ready(function() {
     });
 
     addEvent(input, 'keydown', function(e) {
+        if (e.keyCode == 27) {
+            input.blur();
+            return;
+        }
         if (e.keyCode == 39 || e.keyCode == 13) {
-            $('#predictor_1').click();
+            var cur_element = $('.b-predictor__select');
+            if (!cur_element.length) {
+                cur_element = $('#predictor_1');
+            }
+            cur_element.click();
             input.focus();
+        }
+        e.keyCode == 40 && Ya.Predictor.selectNext();
+        e.keyCode == 38 && Ya.Predictor.selectPrev();
+        if (e.keyCode == 38 || e.keyCode == 40) {
+            e.preventDefault();
+            return false;
         }
     });
 });
