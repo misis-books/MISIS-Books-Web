@@ -4,6 +4,7 @@ namespace Methods\Controller;
 
 use Methods\Model\AddAuthorModel;
 use Methods\Model\AddEditionModel;
+use Methods\Model\GetMaterialsModel;
 use Methods\Model\GetPopularModel;
 use Methods\Model\NewTicketModel;
 use Methods\Model\SearchModel;
@@ -46,6 +47,15 @@ class Controller extends AbstractController {
 
     public function searchAction() {
         $model = new SearchModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
+    }
+
+    public function getAction() {
+        header("Cache-control: public");
+        header("Cache-control: max-age=1800");
+
+        $model = new GetMaterialsModel();
         $response = $model->main()->getData();
         echo json_encode($response);
     }

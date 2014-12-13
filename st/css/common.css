@@ -1,7 +1,7 @@
 ﻿@charset "utf-8";
 /* CSS Document */
-@font-face{font-family:Roboto Regular;src:local("Roboto Regular"), url(../fonts/reg_2.woff);}
-@font-face{font-family:Roboto Bold;src:local("Roboto Bold"), url(../fonts/reg_3.woff);}
+@font-face {font-family: 'Roboto Regular'; font-style: normal; font-weight: 400; src: local('Roboto Regular'), local('Roboto-Regular'), url(/st/fonts/reg_2.woff) format('woff');}
+@font-face {font-family: 'Roboto Bold'; font-style: normal; src: local('Roboto Bold'), local('Roboto-Bold'), url(/st/fonts/reg_3.woff) format('woff');}
 html{height:100%;}
 body{background-color:#f6f7f8;min-width:1024px;font-family:"Roboto Bold", Arial, sans-serif;height:100%;color:#4F6173;overflow-y:scroll;transition:background-image .07s ease-in;-moz-transition:background-image .07s ease-in;-webkit-transition:background-image .07s ease-in;-o-transition:background-image .07s ease-in;margin:0;padding:0;}
 img{border:0;}
@@ -221,6 +221,9 @@ td{display:inline-block;}
 .pdf_view_back{line-height:60px;font-family:"Roboto Regular", Arial, sans-serif;color:#7D7D7D;position:relative;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;text-overflow: ellipsis; max-width: 288px; overflow: hidden;}
 .pdf_view_back_icon{display:inline-block;width:30px;height:30px;top:9px;position:relative;background:url(/st/img/left_arrow.png) no-repeat center center;background-size:95%;opacity:0.7;}
 
+b {
+    font-family:"Roboto Bold", Arial, sans-serif;
+}
 .b-predictor__layer {
     width: 100%;
     background-color: #fff;
@@ -258,4 +261,131 @@ td{display:inline-block;}
     text-overflow: ellipsis;
     display: inline-block;
     vertical-align: top;
+}
+
+.b-container {
+    margin: 70px 0;
+}
+.b-container__layer {
+    margin: 0 auto;
+    width: 800px;
+    position: relative;
+}
+.b-wrapper {
+    border-radius: 4px;
+    background-color: #FFF;
+    padding: 40px;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.06);
+}
+.b-content__text {
+    white-space: pre-line;
+    text-align: justify;
+    text-indent: 1.5em;
+    line-height: 1.6;
+}
+.b-content__header {
+    padding: 14px 0 0;
+    text-align: center;
+}
+.b-content__header-text {
+    font-size: 40px;
+}
+
+.b-content__back-layer {
+    padding: 20px 0;
+    text-align: center;
+}
+.b-content__link-button {
+    text-decoration: none;
+    color: #000;
+    padding: 8px 15px;
+    border-radius: 3px;
+}
+.b-button__red {
+    color: #fff;
+    background: #ff5f64;
+    border: 1px solid #f05b60
+}
+.b-overlay__image {
+    background-image: url(/st/img/misis_books_logo.png);
+    width: 133px;
+    height: 133px;
+    background-size: 100%;
+    display: inline-block;
+}
+.b-overlay {
+    margin: 0 auto;
+    text-align: center;
+}
+.b-share {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+}
+.b-right-overlay {
+    width: 26px;
+    height: 26px;
+    background: #D5D5D5;
+    transform: rotate(45deg);
+    top: -13px;
+    right: -716px;
+    z-index: -1;
+    position: relative;
+    display: inline-block;
+}
+.b-left-overlay {
+    width: 26px;
+    height: 26px;
+    background: #D5D5D5;
+    transform: rotate(45deg);
+    top: -13px;
+    left: -53px;
+    z-index: -1;
+    position: relative;
+    display: inline-block;
+}
+.b-backlayer {
+    padding: 40px 0;
+    width: 116%;
+    margin-left: -58px;
+    margin-top: -58px;
+    box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.b-content__progress-layer {
+    margin: 10px 0 0;
+    text-align: center;
+}
+.b-progress-wrapper {
+    padding: 15px;
+    background: #f9f9f9;
+}
+.b-progress {
+    height: 40px;
+    background: rgba(124, 124, 124, 0.05);
+    border: 1px solid rgba(0,0,0,0.07);
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.b-progress__value {
+    height: 100%;
+    background: rgb(255,102,107); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,102,107,1) 0%, rgba(255,76,82,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,102,107,1)), color-stop(100%,rgba(255,76,82,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,102,107,1) 0%,rgba(255,76,82,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,102,107,1) 0%,rgba(255,76,82,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,102,107,1) 0%,rgba(255,76,82,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,102,107,1) 0%,rgba(255,76,82,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff666b', endColorstr='#ff4c52',GradientType=0 ); /* IE6-9 */
+    box-shadow: inset 0 0 1px 0px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.b-progress__text {
+    display: inline-block;
+    height: 100%;
+    line-height: 2.5;
+    color: #fff;
 }

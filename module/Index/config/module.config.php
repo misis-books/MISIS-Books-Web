@@ -15,7 +15,8 @@ return array(
                 'spinner',
                 'jquery.cookie',
                 'jquery.formstyler',
-                'predictor'
+                'predictor',
+                'belovTrie'
             ),
             'css' => array(
                 'style',

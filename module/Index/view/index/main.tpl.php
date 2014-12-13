@@ -6,6 +6,31 @@
         <img src="/st/img/android_misis_book.png" style="display: none;"/>
         <div class="content_wrapper">
             <div class="search_wrapper" style="overflow: visible;">
+                <a href="http://twosphere.ru/help" style="
+                    display: block;
+                    height: 100%;
+                    position: absolute;
+                    width: 100%;
+                    z-index: 400;
+                "></a>
+                <div class="search_layout">
+                    <div class="search_field">
+                        <div><div class="b-overlay__image" style="
+                            vertical-align: middle;  display: inline-block;
+                            width: 50px;
+                            height: 50px;
+                        "></div>
+                            <span class="b-predictor__font-regular" style="
+                                vertical-align: middle;
+                                display: inline-block;
+                                font-size: 24px;
+                                margin-left: 20px;
+                            ">Помочь проекту »</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search_wrapper" style="overflow: visible;">
                 <div class="search_layout">
                     <div class="search_field">
                         <div class="input_wrap">

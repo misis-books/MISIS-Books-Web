@@ -6,6 +6,7 @@ return array(
         'materials.add_edition' => 'addEdition',
         'materials.getpopular' => 'getPopular',
         'materials.new_ticket' => 'newTicket',
-        'materials.search' => 'search'
+        'materials.search' => 'search',
+        'materials.get' => 'get'
     )
 );

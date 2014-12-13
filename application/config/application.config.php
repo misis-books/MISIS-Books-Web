@@ -14,7 +14,8 @@ return array(
         'admin' => 'Admin',
         'yandex' => 'YandexTabloid',
         'badbrowser' => 'Badbrowser',
-        'cron_create_popular' => 'Cron'
+        'cron_create_popular' => 'Cron',
+        'help' => 'Donate'
     ),
     'module_options' => array(
         'module_path' => '/module'

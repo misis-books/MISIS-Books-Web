@@ -11,7 +11,7 @@ abstract class AbstractManager {
 
     private $db;
 
-    const DEFAULT_MAX_QUERIES = 15; //count
+    const DEFAULT_MAX_QUERIES = 50; //count
     const DEFAULT_PERIOD = 5; //seconds
     const DEFAULT_BAN_TIME = 10; //seconds
     const DEFAULT_BAN_TIME_TOKEN = 60; //seconds

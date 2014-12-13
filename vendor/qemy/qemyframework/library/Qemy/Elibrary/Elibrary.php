@@ -189,6 +189,7 @@ final class Elibrary {
                 $this->Auth();
                 if ($this->success_auth) {
                     $file = $this->GetFile($this->CreateDocUrl($file_in_db['doc_id']));
+                    $this->SavePreviewByDocId($file_in_db['doc_id']);
                     $name = $file_in_db['name'];
                     header("Content-type: application/pdf");
                     header("Content-Disposition: attachment; filename=$name.pdf");
@@ -230,29 +231,84 @@ final class Elibrary {
     public function Parse() {
         $this->Auth();
         $url = "";
-        $html = $this->GetPage("http://elibrary.misis.ru/browse.php?fFolderId=61");
 
+        $html = $this->GetPage("http://elibrary.misis.ru/browse.php?fFolderId=61&page_size=350");
+
+        //?fFolderId=566">1995</a>
         $pattern = "/(\d+)..(\d+)\-(\d+)/";
         $matches = array();
         preg_match_all($pattern, $html, $matches);
-
-        for ($i = 0; $i < count($matches[1]); ++$i) {
-            echo $matches[1][$i];
-            $url = "http://elibrary.misis.ru/browse.php?fFolderId=".$matches[1][$i]."&page_size=150";
+        $folders = $matches[1];
+        for ($i = 0; $i < count($folders); ++$i) {
+            echo $folders[$i] . "<br>";
+            $url = "http://elibrary.misis.ru/browse.php?fFolderId=" . $folders[$i] . "&page_size=350";
             $html = $this->GetPage($url);
             $matches_2 = array();
-            $pattern = "/(\d+)\"\stitle[=]\"\d+\.pdf\".(..*)/";
+            $pattern = "/<td\sclass[=]\"browse_column\s*\">(\D*)\</";
+            preg_match_all($pattern, $html, $matches_2);
+            $array = array();
+            $k = 2;
+            foreach ($matches_2 as $key => $value) {
+                if ($key != 1) continue;
+                for ($j = 0; $j < count($value); ++$j) {
+                    $temp = trim(str_replace(array('</td>', ','), array('', ''), $value[$j]));
+                    if ($j == $k) {
+                        $array[] = $temp;
+                        $k += 3;
+                    } else {
+                        continue;
+                    }
+                }
+            }
+
+            $doc_id_array = array();
+            $names = array();
+
+            $matches_2 = array();
+            $pattern = "/(\d+)\"\stitle[=]\".*\".(..*)/";
             preg_match_all($pattern, $html, $matches_2);
             for ($j = 0; $j < count($matches_2[1]); ++$j) {
-                $doc_id = $matches_2[1][$j];
-                $name = str_replace(array('</a>','</div>', '&nbsp;'), array('','', ' '), $matches_2[2][$j]);
-                $hash = $this->CreateHash(32);
-                $dl_url = "http://twosphere.ru/doc/?id=".$hash;
-                //$this->db->simpleQuery("INSERT INTO `editions` (doc_id, name, hash, dl_url, category) VALUES ($doc_id, '$name', '$hash', '$dl_url', 2)");
+                $doc_id_array[] = $matches_2[1][$j];
+                $names[] = $matches_2[2][$j];
             }
-            echo " - Success.<br>";
+
+            $struct_id_author = array(
+                "doc_id" => array(),
+                "author" => array(),
+                "name" => array()
+            );
+            foreach ($array as $key => $value) {
+                //echo $key . " => " . $value . " -> doc_id = " . $doc_id_array[$key] . " -> name = " . $names[$key] . "<br>";
+                $struct_id_author['author'][$key] = $array[$key];
+                $struct_id_author['doc_id'][$key] = $doc_id_array[$key];
+                $struct_id_author['name'][$key] = $names[$key];
+            }
+
+            for ($j = 0; $j < count($struct_id_author['doc_id']); ++$j) {
+                $doc_id = intval($struct_id_author['doc_id'][$j]);
+                $author = $struct_id_author['author'][$j];
+
+                $name = trim(str_replace(array('</a>', '</div>', '&nbsp;', '&laquo;', '&raquo;', '&lt;', '&gt;', '&ldquo;', '&rdquo;', '&times;', '&Agrave;'), array('', '', ' ', '«', '»', '<', '>', '“', '”', '×', 'A'), $struct_id_author['name'][$j]));
+                preg_match_all("/\((\d+(Mb|Kb))\)$/i", $name, $file_size_matches);
+                $file_size = $file_size_matches[1][0];
+                $name = trim(preg_replace("/(\s*\(\d+(Mb|Kb)\))$/i", '', $name));
+
+                $hash = $this->CreateHash(32);
+                $dl_url = "http://twosphere.ru/doc/?id=" . $hash;
+
+                if (!empty($author) && !empty($doc_id)) {
+                    $res = $this->db->query("SELECT * FROM `editions` WHERE `doc_id` = ?i", $doc_id);
+                    if ($res->num_rows == 0) {
+                        $this->db->simpleQuery("INSERT INTO `editions` (doc_id, name, hash, dl_url, author, category, file_size) VALUES ($doc_id, '$name', '$hash', '$dl_url', '$author', 2, '$file_size')");
+                    }
+                }
+
+                echo $file_size . ' | ' . $doc_id . ' | ' . htmlspecialchars($name) . ' | ' . $author . '<br>';
+            }
+            echo " - Success.<br><br><br>";
         }
     }
+
 
     private function RefreshStats($edition) {
         $this->db->query(
@@ -760,7 +816,6 @@ final class Elibrary {
         if ($this->success_auth) {
             $res = $this->db->query("SELECT * FROM `editions` WHERE doc_id = ?i", $doc_id);
             if (!$res->num_rows) {
-                echo 'err';
                 return;
             }
             while ($row = $res->fetch_array()) {
@@ -783,10 +838,8 @@ final class Elibrary {
                 //$url_large = "http://s.twosphere.ru/previews/large/".$name.".jpg";
                 $url_large = "http://s.twosphere.ru/previews/small/".$name.".jpg";
 
-                var_dump($url_small, $url_large, $id);
                 $this->db->query("UPDATE `editions` SET `photo_small` = ?s, `photo_big` = ?s WHERE `id` = ?i", $url_small, $url_large, $id);
             }
-            echo 'success';
         }
     }
 

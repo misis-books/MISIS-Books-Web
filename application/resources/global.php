@@ -70,11 +70,19 @@ return array(
             'predictor' => array(
                 'version' => 3,
                 'file' => '/st/js/predictor.js'
+            ),
+            'belovTrie' => array(
+                'version' => 1,
+                'file' => '/st/js/belovTrie.js'
+            ),
+            'help' => array(
+                'version' => 1,
+                'file' => '/st/js/help.js'
             )
         ),
         'css' => array(
             'common' => array(
-                'version' => '45',
+                'version' => '49',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(

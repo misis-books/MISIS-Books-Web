@@ -384,4 +384,29 @@ abstract class AbstractMethods {
 
         mail($to, $subject, $message, $headers);
     }
+
+    protected function getMaterialsMethod($params) {
+        $result = array(
+            "status" => "OK",
+            "items" => array()
+        );
+
+        $res = $this->db->query("SELECT * FROM `editions`");
+
+        $found_count = $res->num_rows;
+        $result['items_count'] = $found_count;
+        while($row = $res->fetch_assoc()) {
+            $result['items'][] = array(
+                "id" => intval($row['id']),
+                "name" => $this->toUtf(strip_tags($row['name'])),
+                "download_url" => $row['dl_url'],
+                "authors" => ((!empty($row['author'])) ? explode(',', $row['author']) : array()),
+                "photo_big" => $row['photo_big'],
+                "category" => intval($row['category']),
+                "count_dl" => intval($row['dl_count']),
+                "file_size" => $row['file_size']
+            );
+        }
+        return $result;
+    }
 }

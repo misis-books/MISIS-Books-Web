@@ -48,4 +48,10 @@ abstract class RequestHandler {
         $params = $params[$this->request_type];
         return $methods->addTicket($params);
     }
+
+    public function getMaterials($params) {
+        $methods = new Methods($this->db);
+        $params = $params[$this->request_type];
+        return $methods->getMaterials($params);
+    }
 }

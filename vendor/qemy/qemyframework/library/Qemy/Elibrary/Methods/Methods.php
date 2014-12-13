@@ -61,4 +61,8 @@ final class Methods extends AbstractMethods implements InterfaceMethods {
         );
         return $this->addTicketMethod($params);
     }
+
+    public function getMaterials($params = []) {
+        return $this->getMaterialsMethod($params);
+    }
 }
