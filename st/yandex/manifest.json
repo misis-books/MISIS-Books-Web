@@ -1,10 +1,10 @@
 {
-    "version": "1.0.0.0",
-    "api_version": 1,
+    "version": "1.0.0.1",
+    "api_version": 3,
     "layout": {
         "logo": "/st/yandex/yandex_tableau.png",
         "color": "#FD5559",
-        "show_title": false
+        "show_title": "none"
     },
     "feed": {
         "url": "http://twosphere.ru/yandex/feed",

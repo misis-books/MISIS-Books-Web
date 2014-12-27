@@ -184,6 +184,10 @@ final class Elibrary {
             $this->RefreshStats($file_in_db);
             if ($this->CheckFileExist($file_in_db)) {
                 $url = $file_in_db['file_url'];
+
+                preg_match("/s.twosphere.ru\/(.*)/i", $url, $matches);
+                $filename = Q_PATH."/../s.twosphere.ru/".$matches[1];
+
                 header("Location: $url");
             } else {
                 $this->Auth();

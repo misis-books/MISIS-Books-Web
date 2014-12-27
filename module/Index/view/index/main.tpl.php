@@ -3,7 +3,7 @@
         <div class="pdf_wrapper" id="pdf_wrapper" style="display: none; top: 1000px; padding: 0 10px; box-sizing: border-box;">
             <div class="pdf_layer"></div>
         </div>
-        <img src="/st/img/android_misis_book.png" style="display: none;"/>
+        <img src="/st/img/misis_books_logo.png" style="display: none;"/>
         <div class="content_wrapper">
             <div class="search_wrapper" style="overflow: visible;">
                 <a href="http://twosphere.ru/help" style="
@@ -13,7 +13,7 @@
                     width: 100%;
                     z-index: 400;
                 "></a>
-                <div class="search_layout">
+                <div class="search_layout" style="padding: 16px 25px 16px;">
                     <div class="search_field">
                         <div><div class="b-overlay__image" style="
                             vertical-align: middle;  display: inline-block;
@@ -23,7 +23,7 @@
                             <span class="b-predictor__font-regular" style="
                                 vertical-align: middle;
                                 display: inline-block;
-                                font-size: 24px;
+                                font-size: 22px;
                                 margin-left: 20px;
                             ">Помочь проекту »</span>
                         </div>
@@ -85,4 +85,5 @@
     $this->includeModuleView('copy_link');
     $this->includeModuleView('add_edition');
     $this->includeModuleView('preview');
+    $this->includeModuleView('donate');
 ?>

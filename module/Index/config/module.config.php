@@ -46,6 +46,10 @@ return array(
                 'preview' => array(
                     'authorized_mode' => false,
                     'path' => 'popups/preview'
+                ),
+                'donate' => array(
+                    'authorized_mode' => false,
+                    'path' => 'popups/donate'
                 )
             )
         ),

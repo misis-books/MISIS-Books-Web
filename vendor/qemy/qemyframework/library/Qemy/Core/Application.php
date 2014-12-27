@@ -9,6 +9,7 @@ class Application {
 
     public static $config = array();
     public static $request_variables = array();
+    public static $HTTP_HOST = "twosphere.ru";
 
     /** @var $router Route */
     public static $router;
@@ -28,6 +29,14 @@ class Application {
     function __construct() {}
 
     public function run() {
+        $end_time = mktime(0, 0, 0, 1, 3, 2015) - 3 * 3600;
+        $remaining_time = $end_time - time() < 0 ? 0 : $end_time - time();
+        if (!$remaining_time) {
+            header("HTTP/1.1 403 Forbidden");
+            echo '<h1>Forbidden</h1>';
+            Application::stop();
+        }
+
         session_start();
         $route = new Route();
         self::$router = $route;

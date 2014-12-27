@@ -76,13 +76,17 @@ return array(
                 'file' => '/st/js/belovTrie.js'
             ),
             'help' => array(
-                'version' => 1,
+                'version' => 3,
                 'file' => '/st/js/help.js'
+            ),
+            'raphael' => array(
+                'version' => '1',
+                'file' => '/st/js/raphael.min.js'
             )
         ),
         'css' => array(
             'common' => array(
-                'version' => '49',
+                'version' => '50',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(

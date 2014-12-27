@@ -11,3 +11,7 @@ $(document).ready(function(){var b=$(".pdf_wrapper"),c=$("html,body").innerHeigh
 b=decodeURIComponent(window.location).replace(/(%3A)/g,":").replace(/(%2F)/g,"/").replace(/(%3F)/g,"?").replace(/(%3D)/g,"="),/(open)/i.test(window.location)&&/^http:\/\/twosphere\.ru\/\?open\=[a-zA-Z0-9]{16,}/i.test(b)&&(b=window.location.toString().match(/open\=(.*)[&]*/i)[1],PdfViewer.open(decodeURIComponent(b))))});
 var PdfViewer={open:function(b){$(".pdf_view_back_layer").css({top:"0px",opacity:1});var c=$(".pdf_layer")[0].childNodes[0];c&&c.remove();c=document.createElement("iframe");c.src="http://twosphere.ru/doc/?id=" + decodeURIComponent(b);c.height="100%";c.width="100%";c.style.border="0";setTimeout(function(){$(".pdf_layer").append(c)},200);var a=document.getElementById("pdf_wrapper");$(a).css({display:"block"}).animate({top:"60px"},200);window.history.pushState&&window.history.pushState(null,null,"?open="+encodeURIComponent(b))},close:function(){var b=
 $(".pdf_layer")[0].childNodes[0];b&&b.remove();b=document.getElementById("pdf_wrapper");$(b).animate({top:$("html,body").innerHeight()+100+"px"},200,function(){$(this).css({display:"none"})});$(".pdf_view_back_layer").css({top:"-100px",opacity:0});window.history.pushState&&window.history.pushState(null,null,"/")}};
+
+$(document).ready(function() {
+    $("#donate").css({width:1100}).oModal({top:50,marginBottom:50,closeButton:".popup_close,.popup_cancel"});
+});

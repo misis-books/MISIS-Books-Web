@@ -1,7 +1,7 @@
 ﻿@charset "utf-8";
 /* CSS Document */
 @font-face {font-family: 'Roboto Regular'; font-style: normal; font-weight: 400; src: local('Roboto Regular'), local('Roboto-Regular'), url(/st/fonts/reg_2.woff) format('woff');}
-@font-face {font-family: 'Roboto Bold'; font-style: normal; src: local('Roboto Bold'), local('Roboto-Bold'), url(/st/fonts/reg_3.woff) format('woff');}
+@font-face {font-family: 'Roboto Bold'; font-style: normal; font-weight: 700; src: local('Roboto Bold'), local('Roboto-Bold'), url(/st/fonts/reg_3.woff) format('woff');}
 html{height:100%;}
 body{background-color:#f6f7f8;min-width:1024px;font-family:"Roboto Bold", Arial, sans-serif;height:100%;color:#4F6173;overflow-y:scroll;transition:background-image .07s ease-in;-moz-transition:background-image .07s ease-in;-webkit-transition:background-image .07s ease-in;-o-transition:background-image .07s ease-in;margin:0;padding:0;}
 img{border:0;}
@@ -222,7 +222,7 @@ td{display:inline-block;}
 .pdf_view_back_icon{display:inline-block;width:30px;height:30px;top:9px;position:relative;background:url(/st/img/left_arrow.png) no-repeat center center;background-size:95%;opacity:0.7;}
 
 b {
-    font-family:"Roboto Bold", Arial, sans-serif;
+    font-family: "Roboto Bold", Arial, sans-serif;
 }
 .b-predictor__layer {
     width: 100%;
@@ -280,7 +280,6 @@ b {
 .b-content__text {
     white-space: pre-line;
     text-align: justify;
-    text-indent: 1.5em;
     line-height: 1.6;
 }
 .b-content__header {
@@ -327,6 +326,7 @@ b {
     height: 26px;
     background: #D5D5D5;
     transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
     top: -13px;
     right: -716px;
     z-index: -1;
@@ -338,6 +338,7 @@ b {
     height: 26px;
     background: #D5D5D5;
     transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
     top: -13px;
     left: -53px;
     z-index: -1;
@@ -382,10 +383,24 @@ b {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff666b', endColorstr='#ff4c52',GradientType=0 ); /* IE6-9 */
     box-shadow: inset 0 0 1px 0px rgba(0,0,0,0.1);
     text-align: center;
+    transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    overflow: hidden;
 }
 .b-progress__text {
     display: inline-block;
     height: 100%;
     line-height: 2.5;
     color: #fff;
+}
+.b-timer__wrapper {
+    text-align: center;
+    padding: 10px 0;
+}
+.b-timer__value {
+    font-size: 30px;
+    padding: 10px 0;
+    display: inline-block;
 }

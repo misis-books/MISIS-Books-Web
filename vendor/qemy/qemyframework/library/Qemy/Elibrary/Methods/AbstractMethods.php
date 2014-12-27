@@ -2,6 +2,7 @@
 
 namespace Qemy\Elibrary\Methods;
 
+use Qemy\Core\Application;
 use Qemy\Db\QemyDb;
 
 abstract class AbstractMethods {
@@ -10,6 +11,8 @@ abstract class AbstractMethods {
     private $db;
 
     private $cl_flag = false;
+
+    public static $EMPTY_PHOTO_URL = 'http://twosphere.ru/st/img/not-found-image.png';
 
     function __construct(&$db) {
         $this->db = $db;
@@ -53,6 +56,7 @@ abstract class AbstractMethods {
             $result['text'] = 'По запросу «'.$params['query'].'» ничего не найдено.';
             $result['items_count'] = 0;
             $result['all_items_count'] = 0;
+            $this->addStats($params['query'], time(), $_SERVER['REMOTE_ADDR'], $api);
             return $result;
         } else {
             $offset_found_count = $res->num_rows;
@@ -74,8 +78,8 @@ abstract class AbstractMethods {
                     "name" => $this->toUtf(strip_tags($row['name'])),
                     "download_url" => $row['dl_url'],
                     "authors" => ((!empty($row['author'])) ? explode(',', $row['author']) : array()),
-                    "photo_big" => $row['photo_big'],
-                    "photo_small" => $row['photo_small'],
+                    "photo_big" => $this->getPhotoWithCheck($row['photo_big']),
+                    "photo_small" => $this->getPhotoWithCheck($row['photo_small']),
                     "category" => intval($row['category']),
                     "count_dl" => intval($row['dl_count']),
                     "file_url" => $row['file_url'],
@@ -251,8 +255,8 @@ abstract class AbstractMethods {
                 "name" => $this->toUtf(strip_tags($row['name'])),
                 "download_url" => $row['dl_url'],
                 "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
-                "photo_big" => $row['photo_big'],
-                "photo_small" => $row['photo_small'],
+                "photo_big" => $this->getPhotoWithCheck($row['photo_big']),
+                "photo_small" => $this->getPhotoWithCheck($row['photo_small']),
                 "category" => intval($row['category']),
                 "count_dl" => intval($row['dl_count']),
                 "count_dl_week" => intval($row['week_dl_count']),
@@ -280,8 +284,8 @@ abstract class AbstractMethods {
                 "name" => $this->toUtf(strip_tags($row['name'])),
                 "download_url" => $row['dl_url'],
                 "authors" => ((!empty($row['author']))?explode(',', $row['author']):array()),
-                "photo_big" => $row['photo_big'],
-                "photo_small" => $row['photo_small'],
+                "photo_big" => $this->getPhotoWithCheck($row['photo_big']),
+                "photo_small" => $this->getPhotoWithCheck($row['photo_small']),
                 "category" => intval($row['category']),
                 "count_dl" => intval($row['dl_count']),
                 "count_dl_week" => intval($row['week_dl_count']),
@@ -401,12 +405,16 @@ abstract class AbstractMethods {
                 "name" => $this->toUtf(strip_tags($row['name'])),
                 "download_url" => $row['dl_url'],
                 "authors" => ((!empty($row['author'])) ? explode(',', $row['author']) : array()),
-                "photo_big" => $row['photo_big'],
+                "photo_big" => $this->getPhotoWithCheck($row['photo_big']),
                 "category" => intval($row['category']),
                 "count_dl" => intval($row['dl_count']),
                 "file_size" => $row['file_size']
             );
         }
         return $result;
+    }
+
+    private function getPhotoWithCheck($photo_url) {
+        return empty($photo_url) ? self::$EMPTY_PHOTO_URL : $photo_url;
     }
 }
