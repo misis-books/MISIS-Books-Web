@@ -224,8 +224,10 @@ pip-log.txt
 .idea/workspace.xml
 application/config/db.config.php
 module/Admin/
+<<<<<<< HEAD
 vendor/qemy/qemyframework/library/Qemy/Elibrary/Cron/
 application/config/db.config.php
 application/config/db.config.php
 vendor/qemy/qemyframework/library/Qemy/Payment/Payment.php
 vendor/qemy/qemyframework/library/Qemy/User/Authorization/Model/AbstractAuthorizationModel.php
+=======

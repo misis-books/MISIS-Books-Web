@@ -7,54 +7,44 @@ return array(
     'module_includes' => array(
         'merge' => array(
             'meta' => array(
-                'keywords' => '<meta name="keywords" content="Мисис, библиотека, скачать, пособия, электронная библиотека, онлайн">',
-                'description' => '<meta name="description" content="Онлайн версия скачивателя материалов из электронной библиотеки НИТУ МИСиС. Никаких авторизаций. Быстрый доступ к материалам в любое время суток. Вы можете скачать в любой момент материалы библиотеки прямо с Ваших мобильных устройств и пользоваться ими на своих парах.">'
+                'keywords' => '<meta name="keywords" content="онлайн,библиотека,мисис,misis,books,misis books,скачать пособие мисис,онлайн скачиватель,скачать методичку ниту мисис,методички мисис">',
+                'description' => '<meta name="description" content="Комфортный доступ ко всем материалам электронной библиотеки НИТУ МИСиС с любых устройств. Синхронизация Избранного между всеми Вашими устройствами.">'
             ),
             'script' => array(
-                'main',
-                'spinner',
-                'jquery.cookie',
-                'jquery.formstyler',
-                'predictor',
-                'belovTrie'
+                'payment'
             ),
-            'css' => array(
-                'style',
-                'formstyler'
-            ),
+            'css' => array(),
             'module_views' => array(
+                'main' => array(
+                    'authorized_mode' => false,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'index/main/main'
+                        )
+                    )
+                ),
                 'content' => array(
-                    'authorized_mode' => false,
-                    'path' => 'index/main'
-                ),
-                'badbrowser' => array(
-                    'authorized_mode' => false,
-                    'path' => 'index/badbrowser'
-                ),
-                'add_author' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/add_author'
-                ),
-                'add_edition' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/add_edition'
-                ),
-                'copy_link' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/copy_link'
-                ),
-                'preview' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/preview'
-                ),
-                'donate' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/donate'
+                    'authorized_mode' => true,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => array(4, 4),
+                            'value' => 'index/content/content.auth.hasnt_sub'
+                        ),
+                        array(
+                            'range' => array(5, 5),
+                            'value' => 'index/content/content.auth.has_sub'
+                        ),
+                        array(
+                            'range' => 'default',
+                            'value' => 'index/content/content.not_auth'
+                        )
+                    )
                 )
             )
         ),
         'replace' => array(
-            'title' => 'Быстрый доступ к материалам электронной библиотеки НИТУ МИСиС'
+            'title' => 'MISIS Books — Быстрый доступ к материалам электронной библиотеки НИТУ «МИСиС»'
         )
     )
 );

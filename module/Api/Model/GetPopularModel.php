@@ -2,19 +2,18 @@
 
 namespace Api\Model;
 
-use Qemy\Core\Application;
 use Qemy\Core\Model\AbstractModel;
-use Qemy\Elibrary\Api\Api;
+use Qemy\Elibrary\Api\ApiManager;
 
 class GetPopularModel extends AbstractModel {
 
     public function main() {
-        $api = new Api($this->getQemyDb());
+        $api = new ApiManager($this->getQemyDb());
+
         $this->setData(
-            $api->getPopular(
-                Application::$request_variables['request']
-            )
+            $api->create('getPopular', $this->getRequestParams())
         );
+
         return $this;
     }
 }

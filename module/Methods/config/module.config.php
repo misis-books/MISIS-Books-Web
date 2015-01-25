@@ -2,11 +2,13 @@
 
 return array(
     'actions' => array(
-        'materials.add_author' => 'addAuthor',
-        'materials.add_edition' => 'addEdition',
-        'materials.getpopular' => 'getPopular',
-        'materials.new_ticket' => 'newTicket',
         'materials.search' => 'search',
-        'materials.get' => 'get'
+        'materials.getPopular' => 'getPopular',
+        'materials.getPopularForWeek' => 'getPopularForWeek',
+        'materials.getCategories' => 'getCategories',
+        'fave.getDocuments' => 'getFaves',
+        'fave.addDocument' => 'addFave',
+        'fave.deleteDocument' => 'deleteFave',
+        'fave.deleteAllDocuments' => 'deleteAllFaves'
     )
 );

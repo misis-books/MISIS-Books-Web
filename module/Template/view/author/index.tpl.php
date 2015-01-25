@@ -1,0 +1,1 @@
+<div class="search-result__author" onclick="Page.setSearch(\'{{ author }}\', true, true); return cancelEvent(event);">{{ author }}</div>
