@@ -743,12 +743,14 @@ var Page = {
             $('.expand-layer__search').remove();
             var layer = $('.search-items');
             layer.empty();
+            var lang_cl_label = ge('lang_cl');
+            lang_cl_label.style.display = res.lang_cl ? 'block' : 'none';
             var items = res.items, el;
             for (el in items) {
                 if (!items.hasOwnProperty(el)) continue;
                 layer.append(
                     Page.dataBindTemplate('material', {
-                        name: items[el].name,
+                        name: Page.resultHighLight(items[el].name, ge('search_input').value, res.lang_cl),
                         category_id: items[el].category.id,
                         category_name: items[el].category.name,
                         fave_added: items[el].fave ? 'red' : '',
@@ -802,7 +804,7 @@ var Page = {
                 if (!items.hasOwnProperty(el)) continue;
                 layer.append(
                     Page.dataBindTemplate('material', {
-                        name: items[el].name,
+                        name: Page.resultHighLight(items[el].name, ge('search_input').value, res.lang_cl),
                         category_id: items[el].category.id,
                         category_name: items[el].category.name,
                         fave_added: items[el].fave ? 'red' : '',
@@ -1252,6 +1254,31 @@ var Page = {
                 });
             }
         }
+    },
+    resultHighLight: function(e, a, b, c) {
+        c = c || "rgba(251, 91, 94, 0.15)";
+        b && (a = Page.invertLanguage(a));
+        a = a.replace(/[^A-Za-z\u0410-\u042f\u0430-\u044f0-9 ]/gi, " ").trim().replace(/\s+/g, " ").split(" ");
+        var d = "";
+        for (b in a) {
+            a.hasOwnProperty(b) && (3 > a.length || 1 != a[b].length) && (d += a[b] + "|");
+        }
+        pattern = "(" + d.replace(/\|$/i, "") + ")";
+        console.log(pattern);
+        try {
+            return e.replace(new RegExp(pattern, "gi"), '<span class="rounded" style="background-color: ' + c + ';">$1</span>');
+        } catch (f) {
+            return e;
+        }
+    },
+    invertLanguage: function(a) {
+        return function(a) {
+            var b = {q:"\u0439", "]":"\u044a", "'":"\u044d", w:"\u0446", a:"\u0444", z:"\u044f", e:"\u0443", s:"\u044b", x:"\u0447", r:"\u043a", d:"\u0432", c:"\u0441", t:"\u0435", f:"\u0430", v:"\u043c", y:"\u043d", g:"\u043f", b:"\u0438", u:"\u0433", h:"\u0440", n:"\u0442", i:"\u0448", j:"\u043e", m:"\u044c", o:"\u0449", k:"\u043b", ",":"\u0431", p:"\u0437", l:"\u0434", ".":"\u044e", "[":"\u0445", ";":"\u0436", "/":".", "`":"\u0451", "\u0439":"q", "\u0444":"a", "\u044f":"z", "\u0446":"w", "\u044b":"s",
+                "\u0447":"x", "\u0443":"e", "\u0432":"d", "\u0441":"c", "\u043a":"r", "\u0430":"f", "\u043c":"v", "\u0435":"t", "\u043f":"g", "\u0438":"b", "\u043d":"y", "\u0440":"h", "\u0442":"n", "\u0433":"u", "\u043e":"j", "\u044c":"m", "\u0448":"i", "\u043b":"k", "\u0431":",", "\u0449":"o", "\u0434":"l", "\u044e":".", "\u0445":"[", "\u044d":"'", "\u0451":"`", "\u044a":"]"};
+            return a.replace(/(.)/g, function(a) {
+                return b[a] || a;
+            });
+        }(a);
     }
 };
 

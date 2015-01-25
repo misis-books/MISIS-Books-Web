@@ -19,7 +19,7 @@ class ApiManager extends RequestHandler {
     private $request_type = 'request';
     private $params;
 
-    const DEFAULT_MAX_QUERIES = 5; //count
+    const DEFAULT_MAX_QUERIES = 30; //count
     const DEFAULT_PERIOD = 5; //seconds
     const DEFAULT_BAN_TIME = 10; //seconds
     const DEFAULT_BAN_TIME_TOKEN = 300; //seconds
@@ -103,7 +103,7 @@ class ApiManager extends RequestHandler {
         }
     }
 
-    protected function getApiUser($params) {
+    public function getApiUser($params) {
         $access_token = $params['access_token'];
         if (!empty($access_token)) {
             $access_token = $this->db->real_escape_string($access_token);

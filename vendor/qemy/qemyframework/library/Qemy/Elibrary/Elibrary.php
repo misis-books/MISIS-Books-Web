@@ -14,6 +14,8 @@ final class Elibrary {
     private $db;
     private $user;
 
+    private $api_flag = false;
+
     /**
      * @param $db QemyDatabase
      * @param $user User
@@ -21,6 +23,10 @@ final class Elibrary {
     function __construct($db, $user) {
         $this->db = $db;
         $this->user = $user;
+    }
+
+    public function toggleApi() {
+        $this->api_flag = !$this->api_flag;
     }
 
     public function Auth() {
@@ -163,11 +169,11 @@ final class Elibrary {
     }
 
     public function ShowFile($hash) {
-        if (!empty($hash) && $this->user->isAuth() && $this->user->hasSubscription()) {
+        if (!empty($hash) && ($this->user->isAuth() || $this->api_flag) && $this->user->hasSubscription()) {
             $file_in_db = $this->GetFileByHash($hash);
             $this->RefreshStats($file_in_db, $this->user);
             if ($this->CheckFileExist($file_in_db)) {
-                $url = $file_in_db['file_url'].'?hash=ef3f91ff4';
+                $url = $file_in_db['file_url'].'?hash=f53aaff0b';
 
                 preg_match("/s.twosphere.ru\/(.*)/i", $url, $matches);
                 $filename = Q_PATH."/../s.twosphere.ru/".$matches[1];

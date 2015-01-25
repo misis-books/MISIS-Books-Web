@@ -17,6 +17,7 @@
     <div class="content-search__items search-layer">
         <div class="search-title__layer">
             <div class="search-title">Результаты поиска</div>
+            <div id="lang_cl" class="search-title" style="display: none;">Выданы результаты с исправленной раскладкой клавиатуры</div>
         </div>
         <div class="search-items"></div>
     </div>

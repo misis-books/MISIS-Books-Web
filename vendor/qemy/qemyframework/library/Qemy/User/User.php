@@ -451,22 +451,22 @@ class User implements UserInterface {
     public function getFullInfo() {
         return array(
             'user' => array(
-                'id' => $this->getId(),
+                'id' => intval($this->getId()),
                 'first_name' => $this->getFirstName(),
                 'last_name' => $this->getLastName(),
                 'view_name' => $this->getViewName(),
-                'vk_id' => $this->getVkId(),
+                'vk_id' => intval($this->getVkId()),
                 'vk_profile' => $this->getVkProfileReference(),
                 'photo' => $this->getPhoto(),
                 'register_date' => $this->getRegisterDate(),
-                'count_dl' => $this->getDownloadCount(),
-                'count_queries' => $this->getQueriesCount(),
+                'count_dl' => intval($this->getDownloadCount()),
+                'count_queries' => intval($this->getQueriesCount()),
                 'subscription' => array(
                     'enabled' => $this->hasSubscription(),
-                    'end_time' => $this->getSubscriptionEndTime(),
+                    'end_time' => intval($this->getSubscriptionEndTime()),
                     'remaining' => array(
-                        'days' => $this->getRemainingSubscriptionDays(),
-                        'seconds' => $this->getRemainingSubscriptionTime(),
+                        'days' => intval($this->getRemainingSubscriptionDays()),
+                        'seconds' => intval($this->getRemainingSubscriptionTime()),
                         'view_days' => $this->getRemainingSubscriptionViewDays(),
                         'formatted' => $this->getRemainingSubcriptionViewF()
                     )
