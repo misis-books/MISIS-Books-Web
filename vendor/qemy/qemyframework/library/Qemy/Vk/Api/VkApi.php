@@ -240,7 +240,7 @@ class VkApi {
      */
     private function request($url, $method = 'GET', $postfields = array()) {
         curl_setopt_array($this->ch, array(
-            CURLOPT_USERAGENT       => 'MISIS Books/4.0 (+https://github.com/IPRIT/twosphere))',
+            CURLOPT_USERAGENT       => 'MISIS Books/4.0 (+https://github.com/IPRIT/MISIS-Books))',
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_SSL_VERIFYPEER  => false,
             CURLOPT_POST            => $method == 'POST',
