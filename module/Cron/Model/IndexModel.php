@@ -3,7 +3,7 @@
 namespace Cron\Model;
 
 use Qemy\Core\Model\AbstractModel;
-use Qemy\Elibrary\Cron\Cron;
+use Qemy\Cron\Cron;
 
 class IndexModel extends AbstractModel {
 
@@ -11,6 +11,7 @@ class IndexModel extends AbstractModel {
         $cron = new Cron($this->getQemyDb());
         $data = $this->getRequestParams();
         $cron->createPopularSnapshot($data['get']);
+
         return $this;
     }
 }

@@ -2,9 +2,15 @@
 
 return array(
     'actions' => array(
-        'auth.register' => 'register',
-        'materials.getCategories' => 'getCategories',
-        'materials.getPopular' => 'getPopular',
-        'materials.search' => 'search'
+        'materials.search'              => 'search',
+        'materials.getPopular'          => 'getPopular',
+        'materials.getPopularForWeek'   => 'getPopularForWeek',
+        'materials.getCategories'       => 'getCategories',
+        'fave.getDocuments'             => 'getFaves',
+        'fave.addDocument'              => 'addFave',
+        'fave.deleteDocument'           => 'deleteFave',
+        'fave.deleteAllDocuments'       => 'deleteAllFaves',
+        'account.getInfo'               => 'accountGetInfo',
+        'auth.signin'                   => 'authSignIn'
     )
 );

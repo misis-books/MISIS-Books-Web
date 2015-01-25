@@ -225,4 +225,3 @@ pip-log.txt
 application/config/db.config.php
 module/Admin/
 vendor/qemy/qemyframework/library/Qemy/Elibrary/Cron/
-application/config/db.config.php

@@ -52,27 +52,75 @@ abstract class AbstractView {
         $this->view = $view;
     }
 
-    //подключение разметки из модуля. Название передается как параметр.
+    //подключение представления из модуля. Название передается как параметр.
     public function includeModuleView($view) {
-        $view = isset($this->general_includes['module_views'][$view])
-            ? $this->general_includes['module_views'][$view] : !1;
-        $user_authorized = false;
+        $view = isset($this->general_includes['module_views'][$view]) ? $this->general_includes['module_views'][$view] : !1;
+        /** @var \Qemy\User\User $user */
+        $user = $this->getData()['user'];
+        $user_authorized = !empty($user) ? $user->isAuth() : false;
+        $user_level = !empty($user) ? $user->getAccessLevel() : 0;
+        $mode = $view['authorized_mode'];
 
         if ($view) {
-            $prefix = $user_authorized && $view['authorized_mode'] ? '_authorized' : '';
-            $this->includeFile($this->module_path.'/view/'.$view['path'].$prefix.'.tpl.php');
+            $current_path = "default";
+            if ($mode && $user_authorized) {
+                foreach ($view['allocated_paths'] as $path_set) {
+                    list($range, $path) = array($path_set['range'], $path_set['value']);
+                    if ($range == 'default') {
+                        $current_path = $path;
+                        continue;
+                    }
+                    if ($range[0] <= $user_level && $user_level <= $range[1]) {
+                        $current_path = $path;
+                        break;
+                    }
+                }
+            } else {
+                foreach ($view['allocated_paths'] as $path_set) {
+                    list($range, $path) = array($path_set['range'], $path_set['value']);
+                    if ($range == 'default') {
+                        $current_path = $path;
+                        break;
+                    }
+                }
+            }
+            $this->includeFile($this->module_path.'/view/'.$current_path.'.tpl.php');
         }
     }
 
-    //подключение разметки из общей разметки. Передается название в качестве параметра.
+    //подключение представления из общей настройки. Передается название в качестве параметра.
     public function includeView($view) {
-        $view = isset($this->general_includes['views'][$view])
-                ? $this->general_includes['views'][$view] : !1;
-        $user_authorized = false;
+        $view = isset($this->general_includes['views'][$view]) ? $this->general_includes['views'][$view] : !1;
+        /** @var \Qemy\User\User $user */
+        $user = $this->getData()['user'];
+        $user_authorized = !empty($user) ? $user->isAuth() : false;
+        $user_level = !empty($user) ? $user->getAccessLevel() : 0;
+        $mode = $view['authorized_mode'];
 
         if ($view) {
-            $prefix = $user_authorized && $view['authorized_mode'] ? '_authorized' : '';
-            $this->includeFile($this->common_view_path.'/'.$view['path'].$prefix.'.tpl.php');
+            $current_path = "default";
+            if ($mode && $user_authorized) {
+                foreach ($view['allocated_paths'] as $path_set) {
+                    list($range, $path) = array($path_set['range'], $path_set['value']);
+                    if ($range == 'default') {
+                        $current_path = $path;
+                        continue;
+                    }
+                    if ($range[0] <= $user_level && $user_level <= $range[1]) {
+                        $current_path = $path;
+                        break;
+                    }
+                }
+            } else {
+                foreach ($view['allocated_paths'] as $path_set) {
+                    list($range, $path) = array($path_set['range'], $path_set['value']);
+                    if ($range == 'default') {
+                        $current_path = $path;
+                        break;
+                    }
+                }
+            }
+            $this->includeFile($this->common_view_path.'/'.$current_path.'.tpl.php');
         }
     }
 
@@ -109,7 +157,7 @@ abstract class AbstractView {
             }
         }
         if (isset($this->general_includes['icon'])) {
-            $key = $this->general_includes['icon'];
+            $key = $this->general_includes['icon'][0];
             $version = $this->resources['static']['img'][$key]['version'];
             echo str_replace(array('{0}'), array($this->resources['static']['img'][$key]['file'].'?'.$version), '<link rel="shortcut icon" type="image/png" href="{0}">');
         }
@@ -133,14 +181,27 @@ abstract class AbstractView {
         return $this->data;
     }
 
+    public function resetView($name_view, $data) {
+        $this->general_includes['views'][$name_view] = $data;
+    }
+
     private function mergeSettings($global_config, $module_config) {
         $general_includes = $global_config['views_options']['common_includes'];
         /* replace settings */
         if (isset($module_config['module_includes']['replace']) && !empty($module_config['module_includes']['replace'])) {
             foreach ($module_config['module_includes']['replace'] as $key => $value) {
+                if ($key == 'common_views') {
+                    foreach ($value as $view_name => $view) {
+                        if (array_key_exists($view_name, $general_includes['views'])) {
+                            $general_includes['views'][$view_name] = $view;
+                        }
+                    }
+                    continue;
+                }
                 $general_includes[$key] = $value;
             }
         }
+
         /* merge settings */
         if (isset($module_config['module_includes']['merge']) && !empty($module_config['module_includes']['merge'])) {
             foreach ($module_config['module_includes']['merge'] as $key => $value) {

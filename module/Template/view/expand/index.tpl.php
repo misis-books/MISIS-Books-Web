@@ -1,0 +1,1 @@
+<div class="content-search__result-item expand-layer__{{ method }}" onclick=\'Page.expandResults(this, \"\{\{ method \}\}\", \{\{ offset \}\})\'><div class="expand-layer__inner">Еще {{ count }} из {{ remain_count }}</div></div>

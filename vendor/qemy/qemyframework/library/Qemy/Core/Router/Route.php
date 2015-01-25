@@ -2,6 +2,8 @@
 
 namespace Qemy\Core\Router;
 
+use Qemy\Core\Application;
+
 class Route extends AbstractRoute {
 
     function __construct() {
@@ -38,10 +40,7 @@ class Route extends AbstractRoute {
     }
 
     public function getParams() {
-        return array(
-            'post' => $this->getPostData(),
-            'get' => $this->getGetData()
-        );
+        return Application::$request_variables;
     }
 
     public function toRoute($route) {
@@ -53,14 +52,14 @@ class Route extends AbstractRoute {
         $user_agent = strtolower(getenv('HTTP_USER_AGENT'));
         $accept = strtolower(getenv('HTTP_ACCEPT'));
 
-        if ((strpos($accept,'text/vnd.wap.wml')!==false) ||
-            (strpos($accept,'application/vnd.wap.xhtml+xml')!==false)) {
-            return 1; // Мобильный браузер обнаружен по HTTP-заголовкам
+        if ((strpos($accept,'text/vnd.wap.wml')!==false)
+            || (strpos($accept,'application/vnd.wap.xhtml+xml') !== false)) {
+            return 1;
         }
 
         if (isset($_SERVER['HTTP_X_WAP_PROFILE']) ||
             isset($_SERVER['HTTP_PROFILE'])) {
-            return 2; // Мобильный браузер обнаружен по установкам сервера
+            return 2;
         }
 
         if (preg_match('/(mini 9.5|vx1000|lge |m800|e860|u940|ux840|compal|'.
@@ -80,7 +79,7 @@ class Route extends AbstractRoute {
             'up.browser|up.link|mmp|symbian|smartphone|midp|wap|vodafone|o2|'.
             'pocket|kindle|mobile|psp|treo|android|iphone|ipod|webos|wp7|wp8|'.
             'fennec|blackberry|htc_|opera m|windowsphone)/', $user_agent)) {
-            return 3; // Мобильный браузер обнаружен по сигнатуре User Agent
+            return 3;
         }
 
         if (in_array(
@@ -130,7 +129,7 @@ class Route extends AbstractRoute {
                 "waps", "wapt", "wapu", "wapv", "wapy", "webc", "whit", "wig ", "winc",
                 "winw", "wmlb", "wonu", "x700", "xda-", "xda2", "xdag", "yas-", "your",
                 "zeto", "zte-"))) {
-            return 4; // Мобильный браузер обнаружен по сигнатуре User Agent
+            return 4;
         }
 
         return 200; // Desktop version
