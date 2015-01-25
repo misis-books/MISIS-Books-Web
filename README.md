@@ -1,5 +1,5 @@
 MISIS Books Source
 =========
 
-QemyFramework \n
+QemyFramework
 2014 Aleksandr Belov
