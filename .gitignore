@@ -226,3 +226,6 @@ application/config/db.config.php
 module/Admin/
 vendor/qemy/qemyframework/library/Qemy/Elibrary/Cron/
 application/config/db.config.php
+application/config/db.config.php
+vendor/qemy/qemyframework/library/Qemy/Payment/Payment.php
+vendor/qemy/qemyframework/library/Qemy/User/Authorization/Model/AbstractAuthorizationModel.php
