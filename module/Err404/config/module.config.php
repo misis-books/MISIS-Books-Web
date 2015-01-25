@@ -13,28 +13,28 @@ return array(
             'module_views' => array(
                 'content' => array(
                     'authorized_mode' => false,
-                    'path' => 'index/404'
-                ),
-                'add_author' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/add_author'
-                ),
-                'add_edition' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/add_edition'
-                ),
-                'copy_link' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/copy_link'
-                ),
-                'preview' => array(
-                    'authorized_mode' => false,
-                    'path' => 'popups/preview'
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'index/main/main'
+                        )
+                    )
                 )
             )
         ),
         'replace' => array(
-            'title' => 'Страницы не существует'
+            'title' => 'Страницы не существует',
+            'common_views' => array(
+                'head' => array(
+                    'authorized_mode' => true,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'payment/head/head.test'
+                        )
+                    )
+                )
+            )
         )
     )
 );

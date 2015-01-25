@@ -2,11 +2,13 @@
 
 namespace Methods\Controller;
 
-use Methods\Model\AddAuthorModel;
-use Methods\Model\AddEditionModel;
-use Methods\Model\GetMaterialsModel;
+use Methods\Model\AddFaveModel;
+use Methods\Model\DeleteAllFavesModel;
+use Methods\Model\DeleteFaveModel;
+use Methods\Model\GetCategoriesModel;
+use Methods\Model\GetFavesModel;
+use Methods\Model\GetPopularForWeekModel;
 use Methods\Model\GetPopularModel;
-use Methods\Model\NewTicketModel;
 use Methods\Model\SearchModel;
 use Qemy\Core\Application;
 use Qemy\Core\Controller\AbstractController;
@@ -18,31 +20,16 @@ class Controller extends AbstractController {
         Application::setContentType('json');
     }
 
-    public function addAuthorAction() {
-        $model = new AddAuthorModel();
-        $response = $model->main()->getData();
-        echo json_encode($response);
-        $this->sendEmail(1);
-    }
-
-    public function addEditionAction() {
-        $model = new AddEditionModel();
-        $response = $model->main()->getData();
-        echo json_encode($response);
-        $this->sendEmail(2);
-    }
-
     public function getPopularAction() {
         $model = new GetPopularModel();
         $response = $model->main()->getData();
         echo json_encode($response);
     }
 
-    public function newTicketAction() {
-        $model = new NewTicketModel();
+    public function getPopularForWeekAction() {
+        $model = new GetPopularForWeekModel();
         $response = $model->main()->getData();
         echo json_encode($response);
-        $this->sendEmail(4);
     }
 
     public function searchAction() {
@@ -51,34 +38,33 @@ class Controller extends AbstractController {
         echo json_encode($response);
     }
 
-    public function getAction() {
-        header("Cache-control: public");
-        header("Cache-control: max-age=1800");
-
-        $model = new GetMaterialsModel();
+    public function getCategoriesAction() {
+        $model = new GetCategoriesModel();
         $response = $model->main()->getData();
         echo json_encode($response);
     }
 
-    private function sendEmail($type) {
-        $to = 'ipritoflex@yandex.ru';
-        $subject = "No subject";
-        switch($type) {
-            case 1:
-                $subject = '1. [MISIS Books Support] Добавлен новый автор';
-                break;
-            case 2:
-                $subject = '2. [MISIS Books Support] Добавлен новый материал';
-                break;
-            case 4:
-                $subject = '4. [MISIS Books Support] Добавлен новый тикет';
-                break;
-        }
+    public function getFavesAction() {
+        $model = new GetFavesModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
+    }
 
-        $message = 'http://twosphere.ru/admin';
-        $headers = 'From: admin@twosphere.ru' . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
+    public function addFaveAction() {
+        $model = new AddFaveModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
+    }
 
-        mail($to, $subject, $message, $headers);
+    public function deleteFaveAction() {
+        $model = new DeleteFaveModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
+    }
+
+    public function deleteAllFavesAction() {
+        $model = new DeleteAllFavesModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
     }
 }

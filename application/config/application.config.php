@@ -4,18 +4,14 @@ return array(
     'modules' => array(
         '404' => 'Err404',
         'index' => 'Index',
-        'fave' => 'Fave',
-        'support' => 'Support',
+        'auth' => 'Auth',
         'methods' => 'Methods',
-        'jsonp_methods' => 'CrossdomainMethods',
-        'api' => 'Api',
-        'dev' => 'Dev',
+        'payment' => 'Payment',
+        'static' => 'Template',
         'doc' => 'Doc',
-        'admin' => 'Admin',
         'yandex' => 'YandexTabloid',
-        'badbrowser' => 'Badbrowser',
         'cron_create_popular' => 'Cron',
-        'help' => 'Donate'
+        'api' => 'Api'
     ),
     'module_options' => array(
         'module_path' => '/module'
@@ -36,32 +32,61 @@ return array(
             'meta' => array(
                 'charset' => '<meta http-equiv="content-type" content="text/html; charset=utf-8">',
                 'ie' => '<meta http-equiv="X-UA-Compatible" content="IE=edge">',
+                'mobile-web-app-capable' => '<meta name="mobile-web-app-capable" content="yes">',
+                'viewport' => '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">',
+                'apple-touch-icon' => '<link rel="apple-touch-icon-precomposed" href="/st/img/preview-misis-books-4_0.png">',
+                'apple-capable' => '<meta name="apple-mobile-web-app-capable" content="yes" />',
+                'apple-status-bar' => '<meta name="apple-mobile-web-app-status-bar-style" content="black" />',
                 'yandex_tabloid' => '<link rel="yandex-tableau-widget" href="/st/yandex/manifest.json">',
-                'noscript' => '<noscript><meta http-equiv="refresh" content="0; URL=/badbrowser"></noscript>',
-                'yandex.metrika' => '<script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter5843680 = new Ya.Metrika({id:5843680, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/5843680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>'
+                'metrika' => '<script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter5843680 = new Ya.Metrika({ id:5843680, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="//mc.yandex.ru/watch/5843680" style="position:absolute; left:-9999px;" alt="" /></div></noscript>'
             ),
             'script' => array(
                 'jquery',
-                'common',
-                'methods',
-                'objectstorage',
-                'jquery.omodal',
-                'jquery.scrollto',
                 'modernizr',
-                'search'
+                'scrollTo',
+                'app'
             ),
             'css' => array(
-                'common'
+                'desktop'
             ),
-            'icon' => 'favicon',
+            'icon' => array(
+                'favicon'
+            ),
             'views' => array(
                 'head' => array(
-                    'authorized_mode' => false,
-                    'path' => 'common/head/head'
+                    'authorized_mode' => true,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => array(4, 4),
+                            'value' => 'common/head/head.auth.hasnt_sub'
+                        ),
+                        array(
+                            'range' => array(5, 5),
+                            'value' => 'common/head/head.auth'
+                        ),
+                        array(
+                            'range' => 'default',
+                            'value' => 'common/head/head'
+                        )
+                    )
+                ),
+                'head.profile' => array(
+                    'authorized_mode' => true,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'common/head/profile/profile'
+                        )
+                    )
                 ),
                 'footer' => array(
-                    'authorized_mode' => false,
-                    'path' => 'common/footer/footer'
+                    'authorized_mode' => true,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'common/footer/footer'
+                        )
+                    )
                 )
             )
         )

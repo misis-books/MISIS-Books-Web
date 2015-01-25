@@ -3,7 +3,7 @@
 namespace Qemy\Core\Model;
 
 use Qemy\Core\Application;
-use Qemy\Db\QemyDb;
+use Qemy\Db\QemyDatabase;
 
 abstract class AbstractModel implements ModelInterface {
 
@@ -12,7 +12,7 @@ abstract class AbstractModel implements ModelInterface {
     private $request_params;
 
     function __construct() {
-        $this->qemy_db = new QemyDb(Application::$config['db_options']);
+        $this->qemy_db = new QemyDatabase(Application::$config['db_options']);
         $this->request_params = Application::$router->getParams();
     }
 

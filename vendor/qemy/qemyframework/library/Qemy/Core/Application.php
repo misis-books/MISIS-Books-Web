@@ -9,7 +9,6 @@ class Application {
 
     public static $config = array();
     public static $request_variables = array();
-    public static $HTTP_HOST = "twosphere.ru";
 
     /** @var $router Route */
     public static $router;
@@ -20,8 +19,7 @@ class Application {
             'request' => $_REQUEST,
             'get' => $_GET,
             'post' => $_POST,
-            'cookie' => $_COOKIE,
-            'session' => $_SESSION
+            'cookie' => $_COOKIE
         );
         return new self();
     }
@@ -29,23 +27,18 @@ class Application {
     function __construct() {}
 
     public function run() {
-        $end_time = mktime(0, 0, 0, 1, 3, 2015) - 3 * 3600;
-        $remaining_time = $end_time - time() < 0 ? 0 : $end_time - time();
-        if (!$remaining_time) {
-            header("HTTP/1.1 403 Forbidden");
-            echo '<h1>Forbidden</h1>';
-            Application::stop();
-        }
-
         session_start();
+        self::disableRequestCache();
+        header("X-Powered-By: PHP/6.0.12");
+
         $route = new Route();
         self::$router = $route;
 
-        $controller_class = $route->getControllerName().'\\Controller\\Controller';
-        $action_function = $route->getActionName().'Action';
+        $controller_class = $route->getControllerName() . '\\Controller\\Controller';
+        $action_function = $route->getActionName() . 'Action';
         $params = $route->getParams();
 
-        /** @var $controller AbstractController*/
+        /** @var $controller AbstractController */
         $controller = new $controller_class;
         $controller->setParams($params);
         $controller->$action_function();
@@ -78,5 +71,19 @@ class Application {
         } else {
             exit();
         }
+    }
+
+    public static function debug($object) {
+        echo '<hr><pre>';
+        if (is_array($object)) {
+            print_r($object);
+        } else {
+            var_dump($object);
+        }
+        echo '</pre><hr>';
+    }
+
+    public static function toRoute($route) {
+        header("Location: $route");
     }
 }

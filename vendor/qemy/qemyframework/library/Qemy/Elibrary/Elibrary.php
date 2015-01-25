@@ -2,7 +2,8 @@
 
 namespace Qemy\Elibrary;
 
-use Qemy\Db\QemyDb;
+use Qemy\Db\QemyDatabase;
+use Qemy\User\User;
 
 final class Elibrary {
 
@@ -11,10 +12,15 @@ final class Elibrary {
 
     public $redirect_url;
     private $db;
+    private $user;
 
-    function __construct($db) {
-        /** @var $db QemyDb */
+    /**
+     * @param $db QemyDatabase
+     * @param $user User
+     */
+    function __construct($db, $user) {
         $this->db = $db;
+        $this->user = $user;
     }
 
     public function Auth() {
@@ -94,49 +100,27 @@ final class Elibrary {
     private static function ToTranslit($string) {
         $converter = array(
             'а' => 'a',   'б' => 'b',   'в' => 'v',
-
             'г' => 'g',   'д' => 'd',   'е' => 'e',
-
             'ё' => 'e',   'ж' => 'zh',  'з' => 'z',
-
             'и' => 'i',   'й' => 'y',   'к' => 'k',
-
             'л' => 'l',   'м' => 'm',   'н' => 'n',
-
             'о' => 'o',   'п' => 'p',   'р' => 'r',
-
             'с' => 's',   'т' => 't',   'у' => 'u',
-
             'ф' => 'f',   'х' => 'h',   'ц' => 'c',
-
             'ч' => 'ch',  'ш' => 'sh',  'щ' => 'sch',
-
             'ь' => '\'',  'ы' => 'y',   'ъ' => '\'',
-
             'э' => 'e',   'ю' => 'yu',  'я' => 'ya',
 
-
-
             'А' => 'A',   'Б' => 'B',   'В' => 'V',
-
             'Г' => 'G',   'Д' => 'D',   'Е' => 'E',
-
             'Ё' => 'E',   'Ж' => 'Zh',  'З' => 'Z',
-
             'И' => 'I',   'Й' => 'Y',   'К' => 'K',
-
             'Л' => 'L',   'М' => 'M',   'Н' => 'N',
-
             'О' => 'O',   'П' => 'P',   'Р' => 'R',
-
             'С' => 'S',   'Т' => 'T',   'У' => 'U',
-
             'Ф' => 'F',   'Х' => 'H',   'Ц' => 'C',
-
             'Ч' => 'Ch',  'Ш' => 'Sh',  'Щ' => 'Sch',
-
             'Ь' => '\'',  'Ы' => 'Y',   'Ъ' => '\'',
-
             'Э' => 'E',   'Ю' => 'Yu',  'Я' => 'Ya',
         );
         return strtr($string, $converter);
@@ -179,11 +163,11 @@ final class Elibrary {
     }
 
     public function ShowFile($hash) {
-        if (!empty($hash)) {
+        if (!empty($hash) && $this->user->isAuth() && $this->user->hasSubscription()) {
             $file_in_db = $this->GetFileByHash($hash);
-            $this->RefreshStats($file_in_db);
+            $this->RefreshStats($file_in_db, $this->user);
             if ($this->CheckFileExist($file_in_db)) {
-                $url = $file_in_db['file_url'];
+                $url = $file_in_db['file_url'].'?hash=ef3f91ff4';
 
                 preg_match("/s.twosphere.ru\/(.*)/i", $url, $matches);
                 $filename = Q_PATH."/../s.twosphere.ru/".$matches[1];
@@ -314,7 +298,12 @@ final class Elibrary {
     }
 
 
-    private function RefreshStats($edition) {
+    /**
+     * @param $edition
+     * @param $user User
+     */
+    private function RefreshStats($edition, $user) {
+        $user->incrementDownloadCount();
         $this->db->query(
             "INSERT INTO dynamic_popular
             (id_edition, week_dl_count)
@@ -329,10 +318,10 @@ final class Elibrary {
         $time = time();
         $query = $edition['name']." | IP: ".$_SERVER['REMOTE_ADDR'];
         $uid = -1;
-        $num_book = "-1";
+        $num_book = $edition['id'];
         $this->db->simpleQuery('SET CHARACTER SET latin1');
         $this->db->simpleQuery('SET NAMES latin1');
-        $this->db->query("INSERT INTO `elib_dl_list` (uid, query, num_book, time) VALUES(?i, ?s, ?i, ?i)", $uid, $query, $num_book, $time);
+        $this->db->query("INSERT INTO `elib_dl_list` (uid, query, num_book, time, user_id) VALUES(?i, ?s, ?i, ?i, ?i)", $uid, $query, $num_book, $time, $user->getId());
         $this->db->simpleQuery('SET CHARACTER SET utf8');
         $this->db->simpleQuery('SET NAMES utf8');
     }
@@ -411,7 +400,7 @@ final class Elibrary {
                     echo " - Success.<br><br><br>";
                 }
             }
-        } catch(Exception $err) {
+        } catch(\Exception $err) {
             echo $err->getMessage();
         }
     }
@@ -479,7 +468,7 @@ final class Elibrary {
                 }
             }
             echo " - Success.<br><br><br>";
-        } catch(Exception $err) {
+        } catch(\Exception $err) {
             echo $err->getMessage();
         }
     }
@@ -547,7 +536,7 @@ final class Elibrary {
                 }
             }
             echo " - Success.<br><br><br>";
-        } catch(Exception $err) {
+        } catch(\Exception $err) {
             echo $err->getMessage();
         }
     }
@@ -615,7 +604,7 @@ final class Elibrary {
                 }
             }
             echo " - Success.<br><br><br>";
-        } catch(Exception $err) {
+        } catch(\Exception $err) {
             echo $err->getMessage();
         }
     }
@@ -683,7 +672,7 @@ final class Elibrary {
                 }
             }
             echo " - Success.<br><br><br>";
-        } catch(Exception $err) {
+        } catch(\Exception $err) {
             echo $err->getMessage();
         }
     }

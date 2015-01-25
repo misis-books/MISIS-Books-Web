@@ -7,86 +7,49 @@ return array(
                 'version' => '1',
                 'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             ),
-            'common' => array(
-                'version' => '6',
-                'file' => '/st/js/common.js'
-            ),
-            'admin' => array(
-                'version' => '2',
-                'file' => '/st/js/admin.js'
-            ),
-            'dev' => array(
-                'version' => '3',
-                'file' => '/st/js/dev.js'
-            ),
-            'fave' => array(
-                'version' => '3',
-                'file' => '/st/js/fave.js'
-            ),
-            'jquery.cookie' => array(
-                'version' => '4',
-                'file' => '/st/js/jquery.cookie.js'
-            ),
-            'jquery.formstyler' => array(
-                'version' => '8',
-                'file' => '/st/js/jquery.formstyler.js'
-            ),
-            'jquery.scrollto' => array(
-                'version' => '4',
-                'file' => '/st/js/jquery.scrollTo-1.4.3.1-min.js'
-            ),
-            'jquery.omodal' => array(
-                'version' => '6',
-                'file' => '/st/js/jquery.omodal.min.js'
-            ),
-            'main' => array(
-                'version' => '22',
-                'file' => '/st/js/main.js'
-            ),
-            'methods' => array(
-                'version' => '9',
-                'file' => '/st/js/methods.js'
+            'app' => array(
+                'version' => '13',
+                'file' => '/st/js/app.js'
             ),
             'modernizr' => array(
-                'version' => '3',
-                'file' => '/st/js/modernizr.min.js'
-            ),
-            'objectstorage' => array(
-                'version' => '6',
-                'file' => '/st/js/objectstorage.js'
-            ),
-            'search' => array(
-                'version' => '39',
-                'file' => '/st/js/search.js'
-            ),
-            'spinner' => array(
-                'version' => '4',
-                'file' => '/st/js/spin.min.js'
-            ),
-            'support' => array(
-                'version' => '4',
-                'file' => '/st/js/support.js'
-            ),
-            'predictor' => array(
-                'version' => 3,
-                'file' => '/st/js/predictor.js'
-            ),
-            'belovTrie' => array(
-                'version' => 1,
-                'file' => '/st/js/belovTrie.js'
-            ),
-            'help' => array(
-                'version' => 3,
-                'file' => '/st/js/help.js'
-            ),
-            'raphael' => array(
                 'version' => '1',
-                'file' => '/st/js/raphael.min.js'
+                'file' => '/st/js/modernizr.custom.51329.js'
+            ),
+            'scrollTo' => array(
+                'version' => '1',
+                'file' => '/st/js/jquery.scrollTo-1.4.3.1-min.js'
+            ),
+            'payment' => array(
+                'version' => '1',
+                'file' => '/st/js/payment.js'
+            )
+        ),
+        'css' => array(
+            'desktop' => array(
+                'version' => '26',
+                'file' => '/st/css/desktop.css'
+            )
+        ),
+        'img' => array(
+            'favicon' => array(
+                'version' => '4',
+                'file' => '/st/img/favicon.png'
+            )
+        )
+    )
+);
+
+/*
+'static' => array(
+        'script' => array(
+            'jquery' => array(
+                'version' => '1',
+                'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             )
         ),
         'css' => array(
             'common' => array(
-                'version' => '50',
+                'version' => '44',
                 'file' => '/st/css/common.css'
             ),
             'dev' => array(
@@ -105,4 +68,4 @@ return array(
             )
         )
     )
-);
+ */

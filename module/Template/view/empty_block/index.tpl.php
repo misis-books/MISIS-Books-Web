@@ -1,0 +1,1 @@
+<div class="content-search__result-item not_found-layer__search"><div class="not_found-layer__inner">{{ text }}</div></div>
