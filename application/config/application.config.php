@@ -11,7 +11,8 @@ return array(
         'doc' => 'Doc',
         'yandex' => 'YandexTabloid',
         'cron_create_popular' => 'Cron',
-        'api' => 'Api'
+        'api' => 'Api',
+        'stats' => 'Stats'
     ),
     'module_options' => array(
         'module_path' => '/module'

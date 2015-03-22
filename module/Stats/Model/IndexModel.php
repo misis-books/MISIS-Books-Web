@@ -1,6 +1,6 @@
 <?php
 
-namespace Index\Model;
+namespace Stats\Model;
 
 use Qemy\Core\Application;
 use Qemy\Core\Model\AbstractModel;
@@ -17,21 +17,20 @@ class IndexModel extends AbstractModel {
         $user = new User($this->getQemyDb(), $check_auth->getUserRow());
         $user->setCheckAuthorization($check_auth);
 
-        $users_list = array();
-        if (!$user->hasSubscription()) {
-            $users = new Users($this->getQemyDb());
-            $users_list = $users->getUsersWithSubscription();
-
-            $pashk = $users_list['20'];
-            unset($users_list['20']);
-            shuffle($users_list);
-            $users_list = array_merge($users_list, $users_list);
-            array_push($users_list, $pashk);
+        if ($user->getId() != 1 && $user->getId() != 15) {
+            Application::toRoute("/");
+            Application::stop();
         }
+
+        $sort = Application::$request_variables['get']['sort'];
+        $sort_type = Application::$request_variables['get']['sort_type'];
+
+        $users = new Users($this->getQemyDb());
+        $sub_users = $users->getUsersWithSubscriptionNormal($sort, $sort_type);
 
         $this->setData(array(
             'user' => $user,
-            'users' => $users_list
+            'sub_users' => $sub_users
         ));
 
         return $this;

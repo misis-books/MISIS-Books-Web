@@ -3,6 +3,7 @@
 namespace Qemy\User\Authorization\Model;
 
 use Qemy\Db\QemyDatabase;
+use Qemy\Elibrary\Api\Exception\TooManyCreaturesTokenException;
 use Qemy\User\User;
 use Qemy\User\Users;
 use Qemy\Vk\Api\VkApi;
@@ -72,9 +73,16 @@ class AuthorizationModel extends AbstractAuthorizationModel implements Authoriza
                 }
                 $user_object = $vk_api->api('users.get', array(
                     'fields' => 'domain,photo_200,photo_max'
-                ))['response'][0];
+                ));
+                if (isset($user_object['error'])) {
+                    throw new TooManyCreaturesTokenException(array(
+                        $access_token
+                    ));
+                }
+                $user_object = $user_object['response'][0];
                 $user_object['id'] = $user_object['uid'];
-                $user_object['photo'] = isset($user_object['photo_200']) ? $user_object['photo_200'] : $user_object['photo_max'];
+                $user_object['photo'] = isset($user_object['photo_200'])
+                    ? $user_object['photo_200'] : $user_object['photo_max'];
 
                 if (empty($user_object)) {
                     return;

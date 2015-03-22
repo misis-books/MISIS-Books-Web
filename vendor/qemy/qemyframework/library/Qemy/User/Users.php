@@ -2,6 +2,8 @@
 
 namespace Qemy\User;
 
+use Qemy\Core\Application;
+
 class Users {
 
     private $db;
@@ -54,6 +56,40 @@ class Users {
                 continue;
             }
             $list[$row['id']] = new User($this->db, $row);
+        }
+        return $list;
+    }
+
+    public function getUsersWithSubscriptionNormal($sort, $sort_type) {
+        $sort_kind = array(
+            'id' => 'id',
+            'recent' => 'recent_activity_time',
+            'sub' => 'end_subscription_time',
+            'q' => 'count_queries',
+            'dl' => 'dl_count',
+            'default' => 'end_subscription_time'
+        );
+        $sort_types = array(
+            'asc' => 'ASC',
+            'desc' => 'DESC',
+            'default' => 'ASC'
+        );
+
+        $sort_kind_cur = isset($sort_kind[$sort]) ? $sort_kind[$sort] : $sort_kind['default'];
+        $sort_type_cur = isset($sort_types[$sort_type]) ? $sort_types[$sort_type] : $sort_types['default'];
+
+        $show = Application::$request_variables['get']['show'];
+
+        $result = $this->db->query(
+            "SELECT users.*
+            FROM `users`
+            WHERE users.end_subscription_time > ?i
+            ORDER BY users.$sort_kind_cur $sort_type_cur",
+            $show == 'all' ? 0 : time()
+        );
+        $list = array();
+        while ($row = $result->fetch_array(MYSQL_ASSOC)) {
+            $list[] = new User($this->db, $row);
         }
         return $list;
     }

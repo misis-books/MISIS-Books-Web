@@ -58,6 +58,14 @@ $user = $this->getData()['user'];
                                                 </div>
                                             </div>
                                         <?php endif; ?>
+                                        <?php if ($user->getId() == 1 || $user->getId() == 15): ?>
+                                            <div class="header-profile__subscription-needed__wrapper" style="margin-top: 20px;">
+                                                <div class="header-profile__subscription-needed__layer">
+                                                    <div class="header-profile__subscription-needed__text">Панель управления</div>
+                                                    <a href="/stats" class="button-block button-color-red" style="overflow: hidden;margin-bottom: -3px;">Статистика</a>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

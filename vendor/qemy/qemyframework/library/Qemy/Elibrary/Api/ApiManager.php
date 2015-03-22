@@ -22,10 +22,18 @@ class ApiManager extends RequestHandler {
     const DEFAULT_MAX_QUERIES = 30; //count
     const DEFAULT_PERIOD = 5; //seconds
     const DEFAULT_BAN_TIME = 10; //seconds
-    const DEFAULT_BAN_TIME_TOKEN = 300; //seconds
+    const DEFAULT_BAN_TIME_TOKEN = 0; //seconds
 
     public static $methods_without_sub = array(
-        'accountGetInfo'
+        'accountGetInfo',
+        'search',
+        'getPopular',
+        'getPopularForWeek',
+        'getCategories',
+        'getFaves',
+        'addFave',
+        'deleteFave',
+        'deleteAllFaves'
     );
 
     /**

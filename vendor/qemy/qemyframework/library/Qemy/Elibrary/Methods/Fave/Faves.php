@@ -87,27 +87,39 @@ class Faves extends AbstractDocuments implements FavesInterface {
             "status" => "OK",
             "result" => false
         );
-        if (!is_numeric($edition_id)) {
+        $edition_ids = array_values(array_unique(explode(',', $edition_id)));
+        $edition_ids_whitelist = array();
+        $ids_num = 0;
+        foreach ($edition_ids as $edition_id_val) {
+            if (is_numeric($edition_id_val) && $ids_num <= 200) {
+                array_push($edition_ids_whitelist, intval($edition_id_val));
+                $ids_num++;
+            }
+        }
+        if (!count($edition_ids_whitelist)) {
             return $result;
         }
-        $edition_id = intval($edition_id);
-        $exists_check = $this->db->query(
-            "SELECT *
-            FROM `faves`
-            WHERE user_id = ?i AND edition_id = ?i",
-            $this->user->getId(),
-            $edition_id
-        );
-        if (!$exists_check->num_rows) {
-            $this->db->query(
-                "INSERT INTO `faves` (user_id, edition_id, creation_time)
-                VALUES(?i, ?i, ?i)",
+        $result['inserted_ids'] = array();
+        foreach ($edition_ids_whitelist as $edition_id) {
+            $exists_check = $this->db->query(
+                "SELECT *
+                FROM `faves`
+                WHERE user_id = ?i AND edition_id = ?i",
                 $this->user->getId(),
-                $edition_id,
-                time()
+                $edition_id
             );
-            $this->db->query("COMMIT");
+            if (!$exists_check->num_rows) {
+                array_push($result['inserted_ids'], $edition_id);
+                $this->db->query(
+                    "INSERT INTO `faves` (user_id, edition_id, creation_time)
+                    VALUES(?i, ?i, ?i)",
+                    $this->user->getId(),
+                    $edition_id,
+                    time()
+                );
+            }
         }
+        $this->db->query("COMMIT");
         $result['result'] = true;
         return $result;
     }
@@ -117,16 +129,28 @@ class Faves extends AbstractDocuments implements FavesInterface {
             "status" => "OK",
             "result" => false
         );
-        if (!is_numeric($edition_id)) {
+        $edition_ids = array_values(array_unique(explode(',', $edition_id)));
+        $edition_ids_whitelist = array();
+        $ids_num = 0;
+        foreach ($edition_ids as $edition_id_val) {
+            if (is_numeric($edition_id_val) && $ids_num <= 200) {
+                array_push($edition_ids_whitelist, intval($edition_id_val));
+                $ids_num++;
+            }
+        }
+        if (!count($edition_ids_whitelist)) {
             return $result;
         }
-        $edition_id = intval($edition_id);
-        $this->db->query(
-            "DELETE FROM `faves`
-            WHERE `user_id` = ?i AND `edition_id` = ?i",
-            $this->user->getId(),
-            $edition_id
-        );
+        $result['deleted_ids'] = array();
+        foreach ($edition_ids_whitelist as $edition_id) {
+            array_push($result['deleted_ids'], $edition_id);
+            $this->db->query(
+                "DELETE FROM `faves`
+                WHERE `user_id` = ?i AND `edition_id` = ?i",
+                $this->user->getId(),
+                $edition_id
+            );
+        }
         $this->db->query("COMMIT");
         $result['result'] = true;
         return $result;

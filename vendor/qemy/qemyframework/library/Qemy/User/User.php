@@ -308,7 +308,7 @@ class User implements UserInterface {
         $cur_time = time();
         $diff = $cur_time - $time;
         if ($diff <= 0) {
-            return '1 минуту назад';
+            return '1 секунду назад';
         }
         $seconds = $diff;
         $minutes = intval($seconds / 60);
@@ -319,7 +319,7 @@ class User implements UserInterface {
         if ($minutes < 60) {
             return $minutes.' '.$this->wordMinutes($minutes).' назад';
         }
-        if ($hours < 12) {
+        if ($hours < 120) {
             return $hours.' '.$this->wordHours($hours).' назад';
         }
         return date("d.m.Y в H:i", $time);
@@ -473,5 +473,12 @@ class User implements UserInterface {
                 )
             )
         );
+    }
+
+    public function getSumSub() {
+        $user_id = $this->getId();
+        $result = $this->db->query("SELECT SUM(amount) FROM payments WHERE user_id = ?i", $user_id);
+        $sum = $result->fetch_array()[0];
+        return $sum != null ? $sum : 0;
     }
 }

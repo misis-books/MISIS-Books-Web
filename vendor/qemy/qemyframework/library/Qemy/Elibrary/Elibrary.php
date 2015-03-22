@@ -169,11 +169,11 @@ final class Elibrary {
     }
 
     public function ShowFile($hash) {
-        if (!empty($hash) && ($this->user->isAuth() || $this->api_flag) && $this->user->hasSubscription()) {
+        if (!empty($hash) && ($this->user->isAuth() && $this->user->hasSubscription() || $this->api_flag)) {
             $file_in_db = $this->GetFileByHash($hash);
             $this->RefreshStats($file_in_db, $this->user);
-            if ($this->CheckFileExist($file_in_db)) {
-                $url = $file_in_db['file_url'].'?hash=f53aaff0b';
+            if ($this->CheckFileExist($file_in_db)) { 
+                $url = $file_in_db['file_url'].'?ssid=0fd23ae1cffa3adedd3298fc67fda390cf'; //0fd23ae1cffa3adedd3298fc67fda390cf
 
                 preg_match("/s.twosphere.ru\/(.*)/i", $url, $matches);
                 $filename = Q_PATH."/../s.twosphere.ru/".$matches[1];
@@ -209,7 +209,7 @@ final class Elibrary {
         if (!empty($doc_id)) {
             return "http://elibrary.misis.ru/plugins/SecView/getDoc.php?doc=".$doc_id;
         } else {
-            echo 'Произошла неизвестная ошибка, обратитесь к Администратору. <a href="http://twosphere.ru/support">Он здесь.</a>';
+            echo 'Произошла неизвестная ошибка, обратитесь к Администратору. <a href="mailto:admin@twosphere.ru">Он здесь.</a>';
             exit();
         }
     }

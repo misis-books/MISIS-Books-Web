@@ -1,3 +1,10 @@
+/*!
+ * MISIS Books 4.0.3
+ * https://github.com/IPRIT/MISIS-Books
+ * Copyright (C) 2014-2015 Aleksandr Belov <ipritoflex7@gmail.com>
+ * https://github.com/IPRIT/MISIS-Books/blob/master/LICENSE
+ */
+
 //DOM
 function ge(el) {
     return (typeof el == 'string' || typeof el == 'number') ? document.getElementById(el) : el;
@@ -79,7 +86,10 @@ window.refresh = function(location) {
 
 $(document).ready(function() {
     if (!Modernizr.flexbox || !Modernizr.rgba) {
-        alert("Ваш браузер не поддерживается");
+        var answer = prompt("Ваш браузер не поддерживается. Возможны ошибки на странице. Вы действительно хотите продолжить?");
+        if (!answer) {
+            window.close();
+        }
     }
 
     User.data = $.parseJSON(_User_json);
@@ -102,6 +112,7 @@ $(document).ready(function() {
             input[0].blur();
             $('#title_icon_fave').hide(0);
             $('#title_icon_search').hide(0);
+
             $('.header-search__category-dropdown__layer').hide(0);
             Page.controller.switcher($('.header-fave__toggle').hasClass('header-fave__toggled') ? 'fave' : 'popular');
             if ($('.header-fave__toggle').hasClass('header-fave__toggled')) {
@@ -111,7 +122,7 @@ $(document).ready(function() {
                 $('#title_icon_fave').hide(0);
                 $('#title_icon_search').show(0);
             }
-
+            $('.content-layer').off('click.input_unfocus');
             $('#title_icon_back').hide(0).off('click');
             $('.header-layout').removeClass('header-active').addClass('header-inactive');
         });
@@ -231,6 +242,8 @@ $(document).ready(function() {
             App.searchListener(20);
             App.insertPopular();
             App.actionListener();
+            Ya.Predictor.init();
+            Page.initPreloader({min_height: 150});
         });
     }
     Page.updateTapEvent();
@@ -256,10 +269,26 @@ var Ajax = {_init:function() {
     b || "undefined" != typeof XMLHttpRequest && (b = new XMLHttpRequest);
     b || (location.href = "http://" + App.host + "/badbrowser");
     return b;
+}, simple_post:function(b, c) {
+    var self = this;
+    var a = Ajax._init();
+    a && (a.open("POST", b.url, !0),
+        a.setRequestHeader("X-Requested-With", "XMLHttpRequest"),
+        a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"),
+        a.send(Ajax.dataEncode(b.data)),
+        a.onreadystatechange = function() {
+            if (4 == a.readyState && 200 == a.status) {
+                c.call(self, a.responseText);
+            }
+        });
 }, post:function(b, c) {
     var self = this;
     var a = Ajax._init();
-    a && (a.open("POST", b.url, !0), a.setRequestHeader("X-Requested-With", "XMLHttpRequest"), a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), a.send(Ajax.dataEncode(b.data)), a.onreadystatechange = function() {
+    a && (a.open("POST", b.url, !0),
+        a.setRequestHeader("X-Requested-With", "XMLHttpRequest"),
+        a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"),
+        a.send(Ajax.dataEncode(b.data)),
+        a.onreadystatechange = function() {
         if (4 == a.readyState && 200 == a.status) {
             var b = $.parseJSON(a.responseText);
             c.call(self, b);
@@ -268,13 +297,21 @@ var Ajax = {_init:function() {
 }, simple_get:function(b, c) {
     var self = this;
     var a = Ajax._init();
-    a && (a.open("GET", b.url + "?" + Ajax.dataEncode(b.data), !0), a.setRequestHeader("X-Requested-With", "XMLHttpRequest"), a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), a.send(), a.onreadystatechange = function() {
+    a && (a.open("GET", b.url + "?" + Ajax.dataEncode(b.data), !0),
+        a.setRequestHeader("X-Requested-With", "XMLHttpRequest"),
+        a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"),
+        a.send(),
+        a.onreadystatechange = function() {
         4 == a.readyState && 200 == a.status && c.call(self, a.responseText);
     });
 }, get:function(b, c) {
     var self = this;
     var a = Ajax._init();
-    a && (a.open("GET", b.url + "?" + Ajax.dataEncode(b.data), !0), a.setRequestHeader("X-Requested-With", "XMLHttpRequest"), a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"), a.send(null), a.onreadystatechange = function() {
+    a && (a.open("GET", b.url + "?" + Ajax.dataEncode(b.data), !0),
+        a.setRequestHeader("X-Requested-With", "XMLHttpRequest"),
+        a.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"),
+        a.send(null),
+        a.onreadystatechange = function() {
         if (4 == a.readyState && 200 == a.status) {
             var b = $.parseJSON(a.responseText);
             c.call(self, b);
@@ -1127,11 +1164,27 @@ var Page = {
             }
         }
     },
+    initPreloader: function(opts) {
+        opts.min_height = opts.min_height || 100;
+        function getDocumentHeight() {
+            return (document.body.scrollHeight > document.body.offsetHeight) ? document.body.scrollHeight:document.body.offsetHeight;
+        }
+        $(document).on("scroll", function(){
+            var cur_scroll = $(window).scrollTop() + $("body").innerHeight();
+            if (cur_scroll > getDocumentHeight() - opts.min_height) {
+                var cur_state = Page.controller.cur_state,
+                    expand_layer = $('.expand-layer__' + cur_state);
+                if (expand_layer.length) {
+                    expand_layer.click();
+                }
+            }
+        });
+    },
     expandResults: function(target, method, offset) {
         if ($(target).hasClass('expanded')) {
             return;
         }
-        $(target).addClass('expanded');
+        $(target).addClass('expanded').children('.expand-layer__inner').text("Загрузка...");
         switch (method) {
             case 'search':
                 Materials.search.searchController.offsetInvoke(offset);
@@ -1163,7 +1216,7 @@ var Page = {
                 $(this).off('click.header');
                 cancelEvent(e);
             });
-            $.scrollTo(target, 200, {offset: {top:-100} });
+            setTimeout(function() {$.scrollTo(target, 200, {offset: {top:-100} });}, 150);
         },
         stopEvent: function(target) {
             $('.content-layer').on('click.body_focus', function(e) {
@@ -1198,23 +1251,7 @@ var Page = {
         }
     },
     updateTapEvent: function(elements) {
-        elements = elements || [{
-            el: '.button-block,.payment-button__text,.payment-button__subtext,.payment-selection__yd,.payment-selection__bc,.payment-selection__payeer',
-            size: '_x1',
-            hidden: true
-        }, {
-            el: '.ic-search__white',
-            size: '_x1',
-            hidden: true
-        }, {
-            el: '.expand-layer__popular,.expand-layer__search,.expand-layer__fave',
-            size: '_x2',
-            hidden: true
-        }, {
-            el: '.header-search__category__name',
-            size: '_x1',
-            hidden: true
-        }];
+        elements = elements || [];
         for (var el in elements) {
             if (!elements.hasOwnProperty(el)) continue;
             if (elements[el].size == '_x1') {
@@ -1316,5 +1353,190 @@ var SpinLoader = {
                 clearTimeout(SpinLoader.timeout);
             }
         }, 150);
+    }
+};
+
+function strip_tags(str){ return str.replace(/<\/?[^>]+>/gi, ''); }
+
+var _jsonp = function(a) {
+    var b = 0, c = a.document, e = c.documentElement;
+    return function(g, h) {
+        var d = 'frame_' + b++, f = c.createElement("script");
+        a[d] = function() {
+            try {
+                delete a[d];
+            } catch (b) {
+                a[d] = null;
+            }
+            e.removeChild(f);
+            h.apply(this, arguments);
+        };
+        e.insertBefore(f, e.lastChild).src = g + "=" + d;
+    };
+}(this);
+
+JSONP = {
+    _jsonp:_jsonp,
+    query:function(a, b) {
+        this._jsonp(a.url + "?" + JSONP.dataEncode(a.data), b);
+    },
+    dataEncode:function(a) {
+        var b = "";
+        if (a) {
+            for (var c in a) {
+                a.hasOwnProperty(c) && (b += "&" + c.toString() + "=" + encodeURIComponent(a[c]));
+            }
+            if ("&" == b.charAt(0)) {
+                return b.substring(1, b.length);
+            }
+        }
+        return b;
+    }
+};
+
+var Ya = {
+    Predictor: {
+        focus: false,
+        url: 'http://predictor.yandex.net/suggest.json/complete',
+        data: {
+            lang: 'ru',
+            sid: '3b61d69f',
+            q: '',
+            limit: 1,
+            callback: 'invoke'
+        },
+        setSearch: function(text, focus, scroll) {
+            Search.setSearch(text, focus, scroll);
+            var input = document.getElementById('search_input');
+            input.blur();
+        },
+        createRequest: function(text) {
+            this.data.q = text.trim();
+            JSONP.query({
+                url:    this.url,
+                data:   this.data
+            }, Ya.Predictor.requestHandler);
+        },
+        requestHandler: function(res) {
+            var input = document.getElementById('search_input');
+            var search_input_overlay = document.getElementById('search_input_overlay');
+
+            if (res.text && res.text.length > 0 && res.pos < 0) {
+                for (var el in res.text) {
+                    if (!res.text.hasOwnProperty(el)) continue;
+                    var res_text = strip_tags(input.value.trim());
+                    res_text = res_text.slice(0, res.pos) + res.text[el];
+                    try {
+                        if (!res_text.match(new RegExp("^" + input.value.replace(/[\/\\]/i, ''), "i"))) {
+                            search_input_overlay.value = "";
+                            break;
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    search_input_overlay.value = res_text;
+                    break;
+                }
+            } else {
+                search_input_overlay.value = "";
+            }
+        },
+        select: function(element) {
+            var cur_element = $('.b-predictor__select');
+            if (cur_element) {
+                cur_element.removeClass('b-predictor__select');
+            }
+            cur_element = $(element).addClass('b-predictor__select');
+        },
+        selectNext: function() {
+            var input = $('#input_text')[0];
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+
+            var layer = $('.b-predictor__layer:hidden');
+            if (!layer.length) {
+                var cur_element = $('.b-predictor__select');
+                var flag = !1;
+                if (!cur_element.length) {
+                    cur_element = $('#predictor_1');
+                    flag = !0;
+                }
+                var count = $('.b-predictor').length;
+                var id_element = parseInt(cur_element[0].id.match(/\d+$/)[0]);
+                id_element = count > id_element && !flag ? ++id_element : 1;
+                cur_element = $('#predictor_' + id_element);
+                this.select(cur_element[0]);
+            }
+        },
+        selectPrev: function() {
+            var input = $('#input_text')[0];
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+
+            var layer = $('.b-predictor__layer:hidden');
+            if (!layer.length) {
+                var cur_element = $('.b-predictor__select');
+                var flag = !1;
+                var count = $('.b-predictor').length;
+                if (!cur_element.length) {
+                    cur_element = $('#predictor_' + count);
+                    flag = !0;
+                }
+                var id_element = parseInt(cur_element[0].id.match(/\d+$/)[0]);
+                id_element = id_element > 1 && !flag ? --id_element : count;
+                cur_element = $('#predictor_' + id_element);
+                this.select(cur_element[0]);
+            }
+        },
+        init: function() {
+            var input = document.getElementById('search_input');
+            var overlay_input = document.getElementById('search_input_overlay');
+
+            addEvent(input, 'focus', function(e) {
+                if (strip_tags(e.target.value.trim()).length > 0) {
+                    Ya.Predictor.focus = true;
+                    Ya.Predictor.createRequest(strip_tags(e.target.value.trim()));
+                }
+            });
+
+            addEvent(input, 'click', function(e) {
+                if (strip_tags(e.target.value.trim()).length > 0) {
+                    Ya.Predictor.createRequest(strip_tags(e.target.value.trim()));
+                }
+            });
+
+            addEvent(input, 'blur', function(e) {
+                Ya.Predictor.focus = false;
+            });
+
+            addEvent(input, 'keyup', function(e) {
+                if (e.keyCode == 40 || e.keyCode == 38) {
+                    return false;
+                }
+                if (strip_tags(e.target.value.trim()).length > 0) {
+                    Ya.Predictor.createRequest(strip_tags(e.target.value.trim()));
+                } else {
+                    overlay_input.value = "";
+                }
+            });
+
+            addEvent(input, 'keydown', function(e) {
+                if (e.keyCode == 27) {
+                    input.blur();
+                    return;
+                }
+                if (e.keyCode == 39 || e.keyCode == 13) {
+                    if (!overlay_input.value.length) {
+                        return;
+                    }
+                    input.value = overlay_input.value;
+                    input.focus();
+                }
+                if (e.keyCode == 38 || e.keyCode == 40) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
     }
 };

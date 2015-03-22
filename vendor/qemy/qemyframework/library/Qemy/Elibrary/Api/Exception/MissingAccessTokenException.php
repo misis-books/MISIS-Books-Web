@@ -7,7 +7,7 @@ use Qemy\Elibrary\Request\Exception\RequestException;
 class MissingAccessTokenException extends RequestException {
 
     const ERROR_MESSAGE = 'Missing Access Token';
-    const ERROR_DESCRIPTION = 'To call this method need a token';
+    const ERROR_DESCRIPTION = 'User authorization failed: no access_token passed.';
     const ERROR_CODE = 5;
 
     function __construct($params) {

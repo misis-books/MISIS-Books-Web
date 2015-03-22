@@ -23,8 +23,8 @@ class IndexModel extends AbstractModel {
                 $api_user = $api_manager->getApiUser($params);
                 $user = new User($this->getQemyDb());
                 $user->allocateUserById($api_user['user_id']);
-                if (!$user->hasSubscription()) {
-                    throw new NoSubscriptionException($params);
+                if ($user->isEmpty()) {
+                    throw new InvalidAccessTokenException($params);
                 }
             } catch (InvalidAccessTokenException $err) {
                 header("HTTP/1.1 403 Forbidden");
@@ -32,11 +32,6 @@ class IndexModel extends AbstractModel {
                 echo json_encode($err->getError());
                 return $this;
             } catch (MissingAccessTokenException $err) {
-                header("HTTP/1.1 403 Forbidden");
-                Application::setContentType('json');
-                echo json_encode($err->getError());
-                return $this;
-            } catch (NoSubscriptionException $err) {
                 header("HTTP/1.1 403 Forbidden");
                 Application::setContentType('json');
                 echo json_encode($err->getError());

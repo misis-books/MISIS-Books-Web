@@ -7,7 +7,7 @@ use Qemy\Elibrary\Request\Exception\RequestException;
 class InvalidVkAccessTokenException extends RequestException {
 
     const ERROR_MESSAGE = 'Invalid VK Access Token';
-    const ERROR_DESCRIPTION = 'Transfered not exist or incorrect VK access token';
+    const ERROR_DESCRIPTION = 'This access token does not exist.';
     const ERROR_CODE = 6;
 
     function __construct($params) {
