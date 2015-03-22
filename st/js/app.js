@@ -392,7 +392,7 @@ var App = {
                 }, photo_callback);
             }
         } catch (err) {
-            alert("Авторизация не прошла, попробуйте снова.");
+            alert("Произошла неизвестная ошибка, попробуйте снова.");
         }
     },
     signIn: function(target) {
