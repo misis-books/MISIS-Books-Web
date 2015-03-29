@@ -4,6 +4,7 @@
  * @var \Qemy\User\User $user
  */
 $user = $this->getData()['user'];
+$head_title = $this->getData()['head_title'];
 /**
  * @param $u \Qemy\User\User
  */
@@ -40,7 +41,7 @@ function printJsonUser($u) {
                     </a>
                 </div>
                 <div class="header-title__text" style="color: #fff; margin-left: 20px; cursor: default;">
-                    <strong>Оплата подписки</strong>
+                    <strong><?=($head_title ? $head_title : 'Оплата подписки')?></strong>
                 </div>
             </div>
         </div>

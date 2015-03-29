@@ -8,7 +8,7 @@ return array(
                 'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             ),
             'app' => array(
-                'version' => '22',
+                'version' => '23',
                 'file' => '/st/js/app.js'
             ),
             'modernizr' => array(
@@ -22,12 +22,20 @@ return array(
             'payment' => array(
                 'version' => '1',
                 'file' => '/st/js/payment.js'
+            ),
+            'dev' => array(
+                'version' => '1',
+                'file' => '/st/js/dev.js'
             )
         ),
         'css' => array(
             'desktop' => array(
                 'version' => '30',
                 'file' => '/st/css/desktop.css'
+            ),
+            'dev' => array(
+                'version' => '1',
+                'file' => '/st/css/dev.css'
             )
         ),
         'img' => array(

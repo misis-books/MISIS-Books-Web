@@ -7,6 +7,7 @@ use Api\Model\AddFaveModel;
 use Api\Model\DeleteAllFavesModel;
 use Api\Model\DeleteFaveModel;
 use Api\Model\GetCategoriesModel;
+use Api\Model\GetDocumentModel;
 use Api\Model\GetFavesModel;
 use Api\Model\GetPopularForWeekModel;
 use Api\Model\GetPopularModel;
@@ -78,6 +79,12 @@ class Controller extends AbstractController {
 
     public function accountGetInfoAction() {
         $model = new AccountGetInfoModel();
+        $response = $model->main()->getData();
+        echo json_encode($response);
+    }
+
+    public function getDocumentAction() {
+        $model = new GetDocumentModel();
         $response = $model->main()->getData();
         echo json_encode($response);
     }

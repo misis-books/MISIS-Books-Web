@@ -6,7 +6,7 @@
         <a href="/payment">Помощь проекту</a>
     </div>
     <div class="footer__element">
-        <a target="_blank" href="https://github.com/IPRIT/MISIS-Books">GitHub</a>
+        <a target="_blank" href="https://github.com/misis-books">GitHub</a>
     </div>
     <div class="footer__element">
         <a href="mailto:admin@twosphere.ru">admin@twosphere.ru</a>

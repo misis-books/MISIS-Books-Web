@@ -8,7 +8,7 @@
 <div class="content-search__popular-layer" style="margin-bottom: 20px;">
     <div class="content-search__items popular-layer">
         <div class="search-title__layer">
-            <div class="search-title">Популярное</div>
+            <div class="search-title">Популярное за неделю</div>
         </div>
         <div class="popular-items"></div>
     </div>

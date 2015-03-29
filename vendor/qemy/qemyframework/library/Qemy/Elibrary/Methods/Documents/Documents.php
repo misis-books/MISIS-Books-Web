@@ -16,7 +16,7 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
         parent::__construct($db);
     }
 
-    public function search($q, $category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 1) {
+    public function search($q, $category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 10) {
         $q = $this->db->real_escape_string($q);
         $query_cl = $this->invertKeyboard($q);
         $cl_flag = false;
@@ -78,7 +78,7 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
         return $result;
     }
 
-    public function getPopular($category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 1) {
+    public function getPopular($category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 10) {
         $category = (!empty($category)) ? intval($category) : 1;
         $count = (!empty($count)) ? intval($count) : 10;
         $offset = (!empty($offset)) ? intval($offset) : 0;
@@ -129,7 +129,7 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
         return $result;
     }
 
-    public function getPopularForWeek($category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 1) {
+    public function getPopularForWeek($category = 1, $offset = 0, $count = 10, $fields = 'all', $user_id = 10) {
         $category = (!empty($category)) ? intval($category) : 1;
         $count = (!empty($count)) ? intval($count) : 10;
         $offset = (!empty($offset)) ? intval($offset) : 0;
@@ -153,7 +153,7 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
 
         $where_category = $category != 1 ? ("WHERE `editions`.`category` = ".$category) : '';
         $res = $this->db->query(
-            "SELECT `static_popular`.*, `editions`.*,`faves`.*
+            "SELECT `static_popular`.*, `editions`.*, `faves`.*
             FROM `static_popular`
             LEFT JOIN `editions`
             ON `static_popular`.id_edition = `editions`.id
@@ -166,9 +166,20 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
         $result['items_count'] = $res->num_rows;
         $result['items'] = $this->getItemsWithFields($res, $fields);
         $result['category'] = array(
-            'key' => intval($category),
-            'value' => $this->getCategoryName($category)
+            'id' => intval($category),
+            'name' => $this->getCategoryName($category)
         );
+        $res = $this->db->query(
+            "SELECT `static_popular`.*, `editions`.*, `faves`.*
+            FROM `static_popular`
+            LEFT JOIN `editions`
+            ON `static_popular`.id_edition = `editions`.id
+            LEFT JOIN faves ON faves.edition_id = editions.id AND faves.user_id = ?i
+            ".$where_category."
+            ORDER BY `static_popular`.week_dl_count DESC",
+            $user_id
+        );
+        $result['all_items_count'] = $res->num_rows;
 
         return $result;
     }
@@ -183,5 +194,28 @@ class Documents extends AbstractDocuments implements DocumentsInterface {
             );
         }
         return $response;
+    }
+
+    public function getDocument($edition_id, $fields = 'all', $user_id = 10) {
+        $result = array(
+            "status" => 'OK',
+        );
+        $edition_ids = array_values(array_unique(explode(',', $edition_id)));
+        $edition_ids_whitelist = array();
+        $ids_num = 0;
+        foreach ($edition_ids as $edition_id_val) {
+            if (is_numeric($edition_id_val) && $ids_num <= 200) {
+                array_push($edition_ids_whitelist, intval($edition_id_val));
+                $ids_num++;
+            }
+        }
+        $result['items'] = array();
+        $res = $this->db->query("SELECT * FROM `editions` WHERE id IN (?a)", $edition_ids_whitelist);
+        $result['all_items_count'] = $res->num_rows;
+        if (!$res->num_rows) {
+            return $result;
+        }
+        $result['items'] = $this->getItemsWithFields($res, $fields);
+        return $result;
     }
 }

@@ -3,6 +3,7 @@
  * @var \Qemy\Core\View\AbstractView $this
  * @var \Qemy\User\User $user
  */
+$head_title = $this->getData()['head_title'];
 ?>
 <script type="text/javascript">
     var User = {a_l: 1, data: {}}, _User_json = '{}';
@@ -20,7 +21,7 @@
                     </a>
                 </div>
                 <div class="header-title__text" style="color: #fff; margin-left: 20px; cursor: default;">
-                    <strong>Оплата подписки</strong>
+                    <strong><?=($head_title ? $head_title : 'Оплата подписки')?></strong>
                 </div>
             </div>
         </div>

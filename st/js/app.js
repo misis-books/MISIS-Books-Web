@@ -109,6 +109,7 @@ $(document).ready(function() {
 
         $('#title_icon_back').show(0).on('click', function(e) {
             input[0].value = '';
+            ge('search_input_overlay').value = '';
             input[0].blur();
             $('#title_icon_fave').hide(0);
             $('#title_icon_search').hide(0);
@@ -243,7 +244,7 @@ $(document).ready(function() {
             App.insertPopular();
             App.actionListener();
             Ya.Predictor.init();
-            Page.initPreloader({min_height: 150});
+            //Page.initPreloader({min_height: 150});
         });
     }
     Page.updateTapEvent();
@@ -417,7 +418,7 @@ var App = {
         }
     },
     insertPopular: function() {
-        Materials.getPopular.initInvoke();
+        Materials.getPopularForWeek.initInvoke();
     },
     actionListener: function() {
         Page.controller.__init();
@@ -573,6 +574,7 @@ var Materials = {
     getPopularForWeek: {
         cache_params: null,
         invoke: function(params, callback) {
+            SpinLoader.activate();
             var obj = clone(Materials.methods.getPopularForWeek);
             for (var el in params) {
                 if (!params.hasOwnProperty(el) || typeof el == 'function') continue;
@@ -580,6 +582,25 @@ var Materials = {
             }
             this.cache_params = obj.data;
             Ajax.post.call(this, obj, callback);
+        },
+        initInvoke: function() {
+            this.invoke({category: Materials.search.category}, function(res){
+                $('.content-spin-loader').animate({opacity: 0}, 100, function() {
+                    $(this).hide(0);
+                });
+                setTimeout(function() {Page.insertPopular(res)}, 0);
+            });
+        },
+        offsetInvoke: function(offset) {
+            if (Materials.getPopularForWeek.cache_params == null) {
+                Materials.getPopularForWeek.cache_params = clone(Materials.methods.getPopularForWeek.data);
+            }
+            var params = clone(Materials.methods.getPopularForWeek.data);
+            params.category = Materials.search.category;
+            params.offset = offset;
+            this.invoke(params, function(res) {
+                setTimeout(function() {Page.insertPopularToEnd(res)}, 0);
+            });
         }
     },
     getCategories: {
@@ -1006,14 +1027,20 @@ var Page = {
                 );
             }
 
-            var res_count = Materials.getPopular.cache_params.offset + res.items_count;
-            if (res_count == Materials.getPopular.cache_params.offset + Materials.getPopular.cache_params.count
+            var res_count = Materials.getPopularForWeek.cache_params.offset + res.items_count;
+            if (res_count == Materials.getPopularForWeek.cache_params.offset + Materials.getPopularForWeek.cache_params.count
                 && res_count < res.all_items_count) {
                 layer.append(Page.dataBindTemplate('expand', {
                     method: 'popular',
-                    offset: Materials.getPopular.cache_params.offset + res.items_count,
+                    offset: Materials.getPopularForWeek.cache_params.offset + res.items_count,
                     remain_count: res.all_items_count - res_count,
-                    count: Math.min(Materials.getPopular.cache_params.count, res.all_items_count - res_count)
+                    count: Math.min(Materials.getPopularForWeek.cache_params.count, res.all_items_count - res_count)
+                }));
+            }
+
+            if (!res.items_count) {
+                layer.append(Page.dataBindTemplate('empty_block', {
+                    text: 'Этой категорией никто не интересовался на прошлой неделе.'
                 }));
             }
             Page.updateTapEvent();
@@ -1055,14 +1082,14 @@ var Page = {
                 );
             }
 
-            var res_count = Materials.getPopular.cache_params.offset + res.items_count;
-            if (res_count == Materials.getPopular.cache_params.offset + Materials.getPopular.cache_params.count
+            var res_count = Materials.getPopularForWeek.cache_params.offset + res.items_count;
+            if (res_count == Materials.getPopularForWeek.cache_params.offset + Materials.getPopularForWeek.cache_params.count
                 && res_count < res.all_items_count) {
                 layer.append(Page.dataBindTemplate('expand', {
                     method: 'popular',
-                    offset: Materials.getPopular.cache_params.offset + res.items_count,
+                    offset: Materials.getPopularForWeek.cache_params.offset + res.items_count,
                     remain_count: res.all_items_count - res_count,
-                    count: Math.min(Materials.getPopular.cache_params.count, res.all_items_count - res_count)
+                    count: Math.min(Materials.getPopularForWeek.cache_params.count, res.all_items_count - res_count)
                 }));
             }
             Page.updateTapEvent();
@@ -1190,7 +1217,7 @@ var Page = {
                 Materials.search.searchController.offsetInvoke(offset);
                 break;
             case 'popular':
-                Materials.getPopular.offsetInvoke(offset);
+                Materials.getPopularForWeek.offsetInvoke(offset);
                 break;
             case 'fave':
                 Fave.getFaves.offsetInvoke(offset);
@@ -1236,15 +1263,15 @@ var Page = {
         Materials.search.category = category;
         switch (Page.controller.cur_state) {
             case 'popular':
-                Materials.getPopular.initInvoke();
+                Materials.getPopularForWeek.initInvoke();
                 break;
             case 'search':
                 Materials.search.searchController.immediatelyInvoke();
-                Materials.getPopular.initInvoke();
+                Materials.getPopularForWeek.initInvoke();
                 break;
             case 'fave':
                 Fave.getFaves.updateInvoke();
-                Materials.getPopular.initInvoke();
+                Materials.getPopularForWeek.initInvoke();
                 break;
             default:
                 break;

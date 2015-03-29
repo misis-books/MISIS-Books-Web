@@ -45,6 +45,14 @@ class RequestHandler {
         return $result;
     }
 
+    protected function getDocument($params) {
+        /** @var User $user */
+        $user = $params['user'];
+        $documents = new Documents($this->db);
+        $result = $documents->getDocument($params['edition_id'], $params['fields'], $user->getId());
+        return $result;
+    }
+
     protected function getCategories($params) {
         $documents = new Documents($this->db);
         $result = $documents->getCategories();

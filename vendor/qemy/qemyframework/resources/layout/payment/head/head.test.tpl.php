@@ -3,6 +3,7 @@
  * @var \Qemy\Core\View\AbstractView $this
  * @var \Qemy\User\User $user
  */
+$head_title = $this->getData()['head_title'];
 ?>
 <script type="text/javascript">
     var User = {a_l: 1, data: {}}, _User_json = '{}';
