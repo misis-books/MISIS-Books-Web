@@ -72,6 +72,7 @@ class ApiManager extends RequestHandler {
         $api_user = $this->getApiUser($this->params);
         $user = new User($this->db);
         $user->allocateUserById($api_user['user_id']);
+        $user->updateRecentActivtyTime();
 
         if (!$user->hasSubscription() && !in_array($method, self::$methods_without_sub)) {
             throw new NoSubscriptionException($this->params);
