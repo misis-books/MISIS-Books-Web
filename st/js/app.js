@@ -237,8 +237,7 @@ $(document).ready(function() {
     });
 
     if (location.href.replace(/((\?|\#).*)$/i, '') == 'http://' + location.host + '/' && User.isAuth) {
-        CacheManager._init('templateCache');
-
+        Cache.init();
         App.initTemplates([
             'material'
         ], function() {
@@ -583,15 +582,23 @@ var Materials = {
                 obj.data[el] = params[el];
             }
             this.cache_params = obj.data;
-            Ajax.post.call(this, obj, callback);
+            if (Cache.popular.hasKey('popular_for_week_result_' + this.cache_params.category) && !this.cache_params.offset) {
+                callback(Cache.popular.get('popular_for_week_result_' + this.cache_params.category))
+            } else {
+                Ajax.post.call(this, obj, callback);
+            }
         },
         initInvoke: function() {
-            this.invoke({category: Materials.search.category}, function(res){
+            var callbackFunc = function(res) {
+                if (Cache.popular.isExpired('popular_for_week_result_' + Materials.getPopularForWeek.cache_params.category)) {
+                    Cache.popular.add('popular_for_week_result_' + Materials.getPopularForWeek.cache_params.category, res, 2 * 24 * 3600);
+                }
                 $('.content-spin-loader').animate({opacity: 0}, 100, function() {
                     $(this).hide(0);
                 });
                 setTimeout(function() {Page.insertPopular(res)}, 0);
-            });
+            };
+            this.invoke({category: Materials.search.category}, callbackFunc);
         },
         offsetInvoke: function(offset) {
             if (Materials.getPopularForWeek.cache_params == null) {
@@ -759,8 +766,8 @@ var Page = {
                     pattern: res,
                     data: {}
                 };
-                if (CacheManager.isExpired(template_name)) {
-                    CacheManager.add(template_name, res, 10 * 24 * 3600);
+                if (Cache.templates.isExpired(template_name)) {
+                    Cache.templates.add(template_name, res, 10 * 24 * 3600);
                 }
                 self.countSync++;
                 if (self.count == self.countSync) {
@@ -769,8 +776,8 @@ var Page = {
                     console.log("Templates has been loaded successfully.");
                 }
             };
-            if (CacheManager.hasKey(template_name)) {
-                callbackFunc(CacheManager.get(template_name));
+            if (Cache.templates.hasKey(template_name)) {
+                callbackFunc(Cache.templates.get(template_name));
             } else {
                 console.log('Template [' + template_name +  '] has been received from server.');
                 Ajax.simple_get.call(this, obj, callbackFunc);
@@ -1594,15 +1601,19 @@ var ObjectStorage = function ObjectStorage(b, d) {
 };
 ObjectStorage.instances = {};
 ObjectStorage.prototype = {
-    _save:function(a) {
-        var b = JSON.stringify(this[a]);
+    _save: function(a) {
+        var b = encodeURIComponent(JSON.stringify(this[a]));
         a = window[a + "Storage"];
         a.getItem(this._name) !== b && a.setItem(this._name, b);
     },
-    _get:function(a) {
-        this[a] = JSON.parse(window[a + "Storage"].getItem(this._name)) || {};
+    _get: function(a) {
+        var str = "{}";
+        if (window[a + "Storage"].getItem(this._name)) {
+            str = decodeURIComponent(window[a + "Storage"].getItem(this._name));
+        }
+        this[a] = JSON.parse(str) || {};
     },
-    _init:function() {
+    _init: function() {
         var a = this;
         a._get("local");
         a._get("session");
@@ -1622,56 +1633,82 @@ ObjectStorage.prototype = {
     session:{}
 };
 
-var CacheManager = {
-    storage:null,
-    default_namespace: 'cacheObjects',
-    _init: function(a) {
-        this.storage || (this.storage = (new ObjectStorage(a || this.default_namespace)).local, this.checkCache() || this.createCache());
-        return this.storage && this.checkCache() ? !0 : !1;
-    },
-    checkCache:function() {
-        return this.storage.items !== undefined;
-    },
-    createCache:function() {
-        this.storage.items = {};
-    },
-    add: function(key, value, cache_time) {
-        if (!this.checkCache()) {
+var CacheManager = function CacheManager(storage_name) {
+    var storage;
+
+    function init() {
+        storage = new ObjectStorage(storage_name).local;
+        storage.items = storage.items || {};
+    }
+
+    function isCorrect() {
+        return storage.items !== undefined;
+    }
+
+    function add(key, value, cache_time) {
+        if (!isCorrect()) {
             return;
         }
         cache_time = cache_time || 1e9;
-        this.storage.items[key] = {
-            obj: encodeURIComponent(value),
+
+        storage.items[key] = {
+            obj: typeof value == "string" ? encodeURIComponent(value) : value,
             _expired_time: new Date().getTime() + cache_time * 1000
         };
-    },
-    clear: function() {
-        if (!this.checkCache()) {
+    }
+
+    function clear() {
+        if (!isCorrect()) {
             return;
         }
-        this.storage.items = {};
-    },
-    remove: function(key) {
-        if (!this.checkCache()) {
+        storage.items = {};
+    }
+
+    function remove(key) {
+        if (!isCorrect()) {
             return;
         }
-        this.storage.items[key] = null;
-        delete this.storage.items[key];
-    },
-    get: function(key) {
-        if (!this.checkCache() || this.isExpired(key) || !this.storage.items[key]) {
+        storage.items[key] = null;
+        delete storage.items[key];
+    }
+
+    function get(key) {
+        if (!hasKey(key)) {
             return null;
         }
-        console.log('Cache obj [' + key +  ']', this.storage.items[key]);
-        return decodeURIComponent(this.storage.items[key].obj);
-    },
-    isExpired: function(key) {
-        return !this.storage.items[key] || new Date().getTime() > this.storage.items[key]._expired_time;
-    },
-    hasKey: function(key) {
-        if (!this.checkCache()) {
+        console.log('Cache obj [' + key +  ']', storage.items[key]);
+        return typeof storage.items[key].obj == "string" ? decodeURIComponent(storage.items[key].obj) : storage.items[key].obj;
+    }
+
+    function isExpired(key) {
+        return !storage.items[key] || new Date().getTime() > storage.items[key]._expired_time;
+    }
+
+    function hasKey(key) {
+        if (!isCorrect()) {
             return false;
         }
-        return this.storage.items[key] && !this.isExpired(key);
+        return storage.items[key] && !isExpired(key);
+    }
+
+    init();
+
+    return {
+        isCorrect: isCorrect,
+        add: add,
+        clear: clear,
+        remove: remove,
+        get: get,
+        isExpired: isExpired,
+        hasKey: hasKey
+    }
+};
+
+var Cache = {
+    templates: null,
+    popular: null,
+    init: function() {
+        this.templates = new CacheManager('templatesCached');
+        this.popular = new CacheManager('popularCached');
     }
 };
