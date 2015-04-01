@@ -237,8 +237,6 @@ $(document).ready(function() {
     });
 
     if (location.href.replace(/((\?|\#).*)$/i, '') == 'http://' + location.host + '/' && User.isAuth) {
-        CacheManager._init('templateCache');
-
         App.initTemplates([
             'material'
         ], function() {
@@ -753,28 +751,18 @@ var Page = {
                     name: template_name
                 }
             };
-            var callbackFunc = function(res) {
-                var self = Page.templates;
-                self[template_name] = {
+            Ajax.simple_get.call(this, obj, function(res) {
+                this[template_name] = {
                     pattern: res,
                     data: {}
                 };
-                if (CacheManager.isExpired(template_name)) {
-                    CacheManager.add(template_name, res, 10 * 24 * 3600);
+                this.countSync++;
+                if (this.count == this.countSync) {
+                    this.isSync = true;
+                    this.callbackSync();
+                    console.log("Templates has been loaded successfully. Callback invoked.");
                 }
-                self.countSync++;
-                if (self.count == self.countSync) {
-                    self.isSync = true;
-                    self.callbackSync();
-                    console.log("Templates has been loaded successfully.");
-                }
-            };
-            if (CacheManager.hasKey(template_name)) {
-                callbackFunc(CacheManager.get(template_name));
-            } else {
-                console.log('Template [' + template_name +  '] has been received from server.');
-                Ajax.simple_get.call(this, obj, callbackFunc);
-            }
+            });
         }
     },
     dataBindTemplate: function(template_name, data) {
@@ -1577,101 +1565,5 @@ var Ya = {
                 }
             });
         }
-    }
-};
-
-// ObjectStorage Advanced Library v1.0 by Alex Belov
-// https://github.com/IPRIT
-// Date: 03.09.2013
-// Released under the MIT license.
-var ObjectStorage = function ObjectStorage(b, d) {
-    var c;
-    b = b || "_objectStorage";
-    ObjectStorage.instances[b] ?
-        (c = ObjectStorage.instances[b], c.duration = d || c.duration) :
-        (c = this, c._name = b, c.duration = d || 500, c._init(), ObjectStorage.instances[b] = c);
-    return c;
-};
-ObjectStorage.instances = {};
-ObjectStorage.prototype = {
-    _save:function(a) {
-        var b = JSON.stringify(this[a]);
-        a = window[a + "Storage"];
-        a.getItem(this._name) !== b && a.setItem(this._name, b);
-    },
-    _get:function(a) {
-        this[a] = JSON.parse(window[a + "Storage"].getItem(this._name)) || {};
-    },
-    _init:function() {
-        var a = this;
-        a._get("local");
-        a._get("session");
-        (function d() {
-            a.timeoutId = setTimeout(function() {
-                a._save("local");
-                d();
-            }, a._duration);
-        })();
-        window.addEventListener("beforeunload", function() {
-            a._save("local");
-            a._save("session");
-        });
-    },
-    timeoutId: null,
-    local:{},
-    session:{}
-};
-
-var CacheManager = {
-    storage:null,
-    default_namespace: 'cacheObjects',
-    _init: function(a) {
-        this.storage || (this.storage = (new ObjectStorage(a || this.default_namespace)).local, this.checkCache() || this.createCache());
-        return this.storage && this.checkCache() ? !0 : !1;
-    },
-    checkCache:function() {
-        return this.storage.items !== undefined;
-    },
-    createCache:function() {
-        this.storage.items = {};
-    },
-    add: function(key, value, cache_time) {
-        if (!this.checkCache()) {
-            return;
-        }
-        cache_time = cache_time || 1e9;
-        this.storage.items[key] = {
-            obj: encodeURIComponent(value),
-            _expired_time: new Date().getTime() + cache_time * 1000
-        };
-    },
-    clear: function() {
-        if (!this.checkCache()) {
-            return;
-        }
-        this.storage.items = {};
-    },
-    remove: function(key) {
-        if (!this.checkCache()) {
-            return;
-        }
-        this.storage.items[key] = null;
-        delete this.storage.items[key];
-    },
-    get: function(key) {
-        if (!this.checkCache() || this.isExpired(key) || !this.storage.items[key]) {
-            return null;
-        }
-        console.log('Cache obj [' + key +  ']', this.storage.items[key]);
-        return decodeURIComponent(this.storage.items[key].obj);
-    },
-    isExpired: function(key) {
-        return !this.storage.items[key] || new Date().getTime() > this.storage.items[key]._expired_time;
-    },
-    hasKey: function(key) {
-        if (!this.checkCache()) {
-            return false;
-        }
-        return this.storage.items[key] && !this.isExpired(key);
     }
 };
