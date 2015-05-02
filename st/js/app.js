@@ -86,7 +86,7 @@ window.refresh = function(location) {
 
 $(document).ready(function() {
     if (!Modernizr.flexbox || !Modernizr.rgba) {
-        var answer = prompt("Ваш браузер не поддерживается. Возможны ошибки на странице. Вы действительно хотите продолжить?");
+        var answer = confirm("Ваш браузер не поддерживается. Возможны ошибки на странице. Вы действительно хотите продолжить?");
         if (!answer) {
             window.close();
         }
@@ -500,6 +500,15 @@ var Materials = {
                     if (input.value.trim() != Materials.search.cache_params.q.trim()) {
                         if (!input.value.trim().length) {
                             Page.controller.switcher($('.header-fave__toggle').hasClass('header-fave__toggled') ? 'fave' : 'popular');
+                        } else {
+                            if (Page.controller.cur_state != 'search') {
+                                Page.controller.switcher('search');
+                                if (input.setSelectionRange) {
+                                    var lth = input.value.trim().length;
+                                    input.setSelectionRange(lth, lth);
+                                }
+                                input.focus();
+                            }
                         }
                         var params = clone(Materials.methods.search.data);
                         params.q = input.value.trim();
@@ -508,6 +517,35 @@ var Materials = {
                             var self = this;
                             setTimeout(function() {Page.insertSearchResult.call(self, res)}, 0); /* new thread */
                         });
+                        if (input.value.trim().toLowerCase().indexOf('игра престолов') != -1 || input.value.trim().toLowerCase() == 'кино') {
+                            setTimeout(function() {
+                                var urls = [{
+                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/kerobas/_myvideo/232.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
+                                    name: 'Первая серия / 5 сезон (RUS | Озвучка: Кероб)'
+                                }, {
+                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/kerobas/_myvideo/233.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
+                                    name: 'Вторая серия / 5 сезон (RUS | Озвучка: Кероб)'
+                                }, {
+                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/svetarad85/_myvideo/34.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
+                                    name: 'Третья серия / 5 сезон'
+                                }, {
+                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/svetarad85/_myvideo/35.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
+                                    name: 'Четвертая серия / 5 сезон'
+                                }];
+                                var layer = $('.search-items').empty().css({textAlign: 'center'});
+                                for (var el in urls) {
+                                    if (typeof urls[el] === 'function') {
+                                        continue;
+                                    }
+                                    layer.append(
+                                        '<div class="button-block button-exit normal-animation" onclick="this.olol = this.olol || 1; if (this.olol == 1) { this.style.width = \'90%\'; this.style.height = \'600px\'; this.olol = 2; } else { this.style.width = \'45%\'; this.style.height = \'367px\'; this.olol = 1; };" style="z-index: 1; cursor: pointer; width: 45%; height: 367px; display: inline-block; padding: 15px;">' +
+                                        urls[el].url +
+                                        '<div style="text-align: center;">' + urls[el].name + '</div>' +
+                                        '</div>'
+                                    );
+                                }
+                            }, 1000);
+                        }
                     }
                 }, interval);
             },
@@ -582,17 +620,18 @@ var Materials = {
                 obj.data[el] = params[el];
             }
             this.cache_params = obj.data;
-            if (Cache.popular.hasKey('popular_for_week_result_' + this.cache_params.category) && !this.cache_params.offset) {
+            Ajax.post.call(this, obj, callback);
+            /*if (Cache.popular.hasKey('popular_for_week_result_' + this.cache_params.category) && !this.cache_params.offset) {
                 callback(Cache.popular.get('popular_for_week_result_' + this.cache_params.category))
             } else {
                 Ajax.post.call(this, obj, callback);
-            }
+            }*/
         },
         initInvoke: function() {
             var callbackFunc = function(res) {
-                if (Cache.popular.isExpired('popular_for_week_result_' + Materials.getPopularForWeek.cache_params.category)) {
+                /*if (Cache.popular.isExpired('popular_for_week_result_' + Materials.getPopularForWeek.cache_params.category)) {
                     Cache.popular.add('popular_for_week_result_' + Materials.getPopularForWeek.cache_params.category, res, 2 * 24 * 3600);
-                }
+                }*/
                 $('.content-spin-loader').animate({opacity: 0}, 100, function() {
                     $(this).hide(0);
                 });
@@ -1676,7 +1715,7 @@ var CacheManager = function CacheManager(storage_name) {
         if (!hasKey(key)) {
             return null;
         }
-        console.log('Cache obj [' + key +  ']', storage.items[key]);
+        console.log('Cache obj [' + key + ']', storage.items[key]);
         return typeof storage.items[key].obj == "string" ? decodeURIComponent(storage.items[key].obj) : storage.items[key].obj;
     }
 

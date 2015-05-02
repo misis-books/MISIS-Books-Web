@@ -8,7 +8,7 @@
         </div>
         <div class="content__not-auth__login-button">
             <div style="display: inline-block; padding: 10px; background-color: #F3F3F3;">
-                <button onclick="App.signIn(this); VK.Auth.login(App.authInfo);" class="button-flat-shadow__white">Войти</button>
+                <button onclick="App.signIn(this); VK.Auth.login(App.authInfo, 65536);" class="button-flat-shadow__white">Войти</button>
             </div>
         </div>
     </div>

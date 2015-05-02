@@ -174,7 +174,6 @@ final class Elibrary {
             $this->RefreshStats($file_in_db, $this->user);
             if ($this->CheckFileExist($file_in_db)) { 
                 $url = $file_in_db['file_url'].'?ssid=0fd23ae1cffa3adedd3298fc67fda390cf'; //0fd23ae1cffa3adedd3298fc67fda390cf
-
                 preg_match("/s.twosphere.ru\/(.*)/i", $url, $matches);
                 $filename = Q_PATH."/../s.twosphere.ru/".$matches[1];
 
@@ -183,6 +182,7 @@ final class Elibrary {
                 $this->Auth();
                 if ($this->success_auth) {
                     $file = $this->GetFile($this->CreateDocUrl($file_in_db['doc_id']));
+
                     $this->SavePreviewByDocId($file_in_db['doc_id']);
                     $name = $file_in_db['name'];
                     header("Content-type: application/pdf");
@@ -191,7 +191,9 @@ final class Elibrary {
                     $this->SaveFile($dir, $file);
                     $edition_id = $file_in_db['id'];
                     $file_url = 'http://s.twosphere.ru/doc/'.Elibrary::NameEncoding($name).'.pdf';
+                    header("Content-Length: " . filesize($dir));
                     $this->db->query("UPDATE editions SET file_url=?s WHERE `id` = ?i", $file_url, $edition_id);
+
                     echo $file;
                     unset($file);
                 } else {

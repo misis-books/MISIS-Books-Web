@@ -88,6 +88,15 @@ return array(
                         )
                     )
                 ),
+                'main.promo.confirm' => array(
+                    'authorized_mode' => false,
+                    'allocated_paths' => array(
+                        array(
+                            'range' => 'default',
+                            'value' => 'promo/confirm'
+                        )
+                    )
+                ),
                 'promoActivate' => array(
                     'authorized_mode' => true,
                     'allocated_paths' => array(

@@ -8,7 +8,7 @@ return array(
                 'file' => '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'
             ),
             'app' => array(
-                'version' => '29',
+                'version' => '33',
                 'file' => '/st/js/app.js'
             ),
             'modernizr' => array(
@@ -30,7 +30,7 @@ return array(
         ),
         'css' => array(
             'desktop' => array(
-                'version' => '30',
+                'version' => '33',
                 'file' => '/st/css/desktop.css'
             ),
             'dev' => array(

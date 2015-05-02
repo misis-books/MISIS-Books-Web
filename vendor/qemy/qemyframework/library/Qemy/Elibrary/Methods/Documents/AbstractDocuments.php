@@ -19,10 +19,10 @@ abstract class AbstractDocuments {
         $category = ($category != 1) ? "`category` = $category AND" : "";
         return $this->db->simpleQuery(
             "SELECT *,
-            MATCH (`name`, `author`)
+            MATCH (`name`, `author`, `aliases`)
             AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
             FROM `editions`
-            WHERE $category MATCH (`name`, `author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+            WHERE $category MATCH (`name`, `author`, `aliases`) AGAINST ('+".$query."' IN BOOLEAN MODE)
             ORDER BY REL DESC"
         );
     }
@@ -33,7 +33,7 @@ abstract class AbstractDocuments {
             "SELECT editions.*, faves.*
             FROM `editions`
             LEFT JOIN faves ON faves.edition_id = editions.id AND faves.user_id = $user_id
-            WHERE $category (`name` LIKE '%$query%' OR `author` LIKE '%$query%')
+            WHERE $category (`name` LIKE '%$query%' OR `author` LIKE '%$query%' OR `aliases` LIKE '%$query%')
             ORDER BY `dl_count` DESC
             LIMIT $offset, $count"
         );
@@ -44,7 +44,7 @@ abstract class AbstractDocuments {
         return $this->db->simpleQuery(
             "SELECT *
             FROM `editions`
-            WHERE $category `name` LIKE '%$query%'"
+            WHERE $category (`name` LIKE '%$query%' OR `author` LIKE '%$query%' OR `aliases` LIKE '%$query%')"
         );
     }
 
@@ -52,11 +52,11 @@ abstract class AbstractDocuments {
         $category = ($category != 1) ? "editions.`category` = $category AND" : "";
         return $this->db->simpleQuery(
             "SELECT faves.*,editions.*,
-            MATCH (editions.`name`, editions.`author`)
+            MATCH (editions.`name`, editions.`author`, editions.`aliases`)
             AGAINST ('+".$query."' IN BOOLEAN MODE) as REL
             FROM `editions`
             LEFT JOIN faves ON faves.edition_id = editions.id AND faves.user_id = $user_id
-            WHERE $category MATCH (editions.`name`, editions.`author`) AGAINST ('+".$query."' IN BOOLEAN MODE)
+            WHERE $category MATCH (editions.`name`, editions.`author`, editions.`aliases`) AGAINST ('+".$query."' IN BOOLEAN MODE)
             ORDER BY REL DESC
             LIMIT $offset, $count"
         );

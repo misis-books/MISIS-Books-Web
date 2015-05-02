@@ -4,6 +4,7 @@
  * @var \Qemy\User\User $user
  */
 $user = $this->getData()['user'];
+$q = trim($_GET['q']);
 /**
  * @param $u \Qemy\User\User
  */
@@ -72,7 +73,7 @@ function printJsonUser($u) {
                             </div>
                             <div class="header-search__input">
                                 <input id="search_input_overlay" autocorrect="off" spellcheck="false" disabled autocomplete="off" maxlength="500" class="search-input search-input__overlay" />
-                                <input id="search_input" autocorrect="off" spellcheck="false" placeholder="Поиск" autocomplete="off" maxlength="500" class="search-input search-input__main" />
+                                <input id="search_input" value="<?=$q?>" autocorrect="off" spellcheck="false" placeholder="Поиск" autocomplete="off" maxlength="500" class="search-input search-input__main" />
                                 <div class="header-search__category-layer">
                                     <div class="header-search__category">
                                         <div id="current_category" style="width: 15px; height: 15px;" class="header-search__circle-category category-1__category"></div>

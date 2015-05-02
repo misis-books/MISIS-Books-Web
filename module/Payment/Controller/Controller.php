@@ -56,7 +56,12 @@ class Controller extends AbstractController {
 
     public function promoAction() {
         $model = new PromoModel();
-        $model->main()->getData();
+        $data = $model->main()->getData();
+
+        $view = new View('Payment');
+        $view->setContent('main.promo.confirm');
+        $view->setData($data);
+        $view->generate();
     }
 
     public function activatePromoAction() {

@@ -277,7 +277,7 @@ b,strong {
     z-index: 1;
     display: -webkit-flex;
     display: flex;
-    will-change: top,left;
+    white-space: nowrap;
 }
 .header-search__input-layer {
     height: 100%;
@@ -1571,6 +1571,13 @@ b,strong {
 .payment__users-element img {
     border-radius: 50%;
 }
+.normal-animation {
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
 @-moz-keyframes carousel{
     0%{left: 0}
     100%{left: -10759px;}
@@ -1877,6 +1884,9 @@ b,strong {
     }
     .header-fave__toggle {
         cursor: default;
+    }
+    .content__not-auth__layer {
+        width: 80%;
     }
 }
 @media screen and (min-width: 480px) and (max-width: 800px) {

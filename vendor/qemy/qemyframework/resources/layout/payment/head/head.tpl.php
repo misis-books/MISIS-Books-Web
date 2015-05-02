@@ -28,7 +28,7 @@ $head_title = $this->getData()['head_title'];
         <div class="header-profile__layer">
             <div class="header-profile__wrapper">
                 <div class="header-profile__inner">
-                    <a target="_blank" class="header-siginin__link" style="cursor: pointer;" title="Войти через ВКонтакте" onclick="VK.Auth.login(App.authInfo);">
+                    <a target="_blank" class="header-siginin__link" style="cursor: pointer;" title="Войти через ВКонтакте" onclick="VK.Auth.login(App.authInfo, 65536);">
                         <div class="header-signin">
                             <span class="header-signin__text">Войти</span>
                         </div>

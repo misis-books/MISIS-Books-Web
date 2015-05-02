@@ -10,7 +10,7 @@ class Users {
 
     private $user_row;
 
-    const START_SUBSCRIPTION_PERIOD = 172800;
+    const START_SUBSCRIPTION_PERIOD = 604800;
 
     /**
      * @param $db \Qemy\Db\QemyDatabase
