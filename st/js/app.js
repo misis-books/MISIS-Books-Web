@@ -517,35 +517,6 @@ var Materials = {
                             var self = this;
                             setTimeout(function() {Page.insertSearchResult.call(self, res)}, 0); /* new thread */
                         });
-                        if (input.value.trim().toLowerCase().indexOf('игра престолов') != -1 || input.value.trim().toLowerCase() == 'кино') {
-                            setTimeout(function() {
-                                var urls = [{
-                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/kerobas/_myvideo/232.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
-                                    name: 'Первая серия / 5 сезон (RUS | Озвучка: Кероб)'
-                                }, {
-                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/kerobas/_myvideo/233.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
-                                    name: 'Вторая серия / 5 сезон (RUS | Озвучка: Кероб)'
-                                }, {
-                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/svetarad85/_myvideo/34.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
-                                    name: 'Третья серия / 5 сезон'
-                                }, {
-                                    url: '<iframe style="z-index: -1" src="http://videoapi.my.mail.ru/videos/embed/mail/svetarad85/_myvideo/35.html" width="100%" height="95%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>',
-                                    name: 'Четвертая серия / 5 сезон'
-                                }];
-                                var layer = $('.search-items').empty().css({textAlign: 'center'});
-                                for (var el in urls) {
-                                    if (typeof urls[el] === 'function') {
-                                        continue;
-                                    }
-                                    layer.append(
-                                        '<div class="button-block button-exit normal-animation" onclick="this.olol = this.olol || 1; if (this.olol == 1) { this.style.width = \'90%\'; this.style.height = \'600px\'; this.olol = 2; } else { this.style.width = \'45%\'; this.style.height = \'367px\'; this.olol = 1; };" style="z-index: 1; cursor: pointer; width: 45%; height: 367px; display: inline-block; padding: 15px;">' +
-                                        urls[el].url +
-                                        '<div style="text-align: center;">' + urls[el].name + '</div>' +
-                                        '</div>'
-                                    );
-                                }
-                            }, 1000);
-                        }
                     }
                 }, interval);
             },
