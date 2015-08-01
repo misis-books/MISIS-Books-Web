@@ -1,3 +1,0 @@
-User-Agent: *
-Disallow: /doc
-Host: s.twosphere.ru
